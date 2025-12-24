@@ -1,0 +1,38 @@
+{
+  "name": "midscene-automation",
+  "owner": {
+    "name": "Web Infra Dev",
+    "email": "midscene@bytedance.com"
+  },
+  "metadata": {
+    "description": "AI-powered browser automation tools using Midscene",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "midscene-automation",
+      "source": "https://github.com/web-infra-dev/midscene-skills",
+      "description": "Automate web browser interactions using natural language with Midscene's AI-powered visual and semantic understanding. Use when the user asks to browse websites, navigate web pages, extract data from websites, take screenshots, fill forms, click buttons, or interact with web applications. No CSS selectors needed - just describe what you want.",
+      "version": "0.0.1",
+      "author": {
+        "name": "Web Infra Dev"
+      },
+      "category": "automation",
+      "keywords": [
+        "browser",
+        "automation",
+        "web-scraping",
+        "midscene",
+        "screenshots",
+        "ai-powered",
+        "visual-understanding",
+        "data-extraction",
+        "no-selectors"
+      ],
+      "strict": false,
+      "skills": [
+        "./.claude/skills/midscene-automation"
+      ]
+    }
+  ]
+}

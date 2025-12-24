@@ -1,0 +1,35 @@
+{
+  "setupComplete": false,
+  "prerequisites": {
+    "chrome": {
+      "required": true,
+      "installed": false,
+      "description": "Google Chrome browser"
+    },
+    "dependencies": {
+      "required": true,
+      "installed": false,
+      "description": "Node.js dependencies (pnpm install completed)"
+    },
+    "projectBuilt": {
+      "required": true,
+      "installed": false,
+      "description": "Project built (pnpm build creates dist/ folder)"
+    },
+    "apiKey": {
+      "required": true,
+      "configured": false,
+      "description": "AI Model API key in .env file (OpenAI, Anthropic, etc.)"
+    }
+  },
+  "setupInstructions": [
+    "1. Run: pnpm install (install all dependencies)",
+    "2. Run: pnpm build (build TypeScript to dist/ folder)",
+    "3. Create .env file: cp .env.example .env",
+    "4. Edit .env and add your AI model credentials following: https://midscenejs.com/model-config.html",
+    "5. Ensure Google Chrome is installed on your system",
+    "6. Test installation: node dist/src/cli.js navigate https://example.com",
+    "7. Update this setup.json file: set all 'installed'/'configured' to true and 'setupComplete' to true"
+  ],
+  "verifySetup": "Run 'node dist/src/cli.js navigate https://example.com' to verify installation"
+}

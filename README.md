@@ -1,41 +1,73 @@
 # Midscene Skills
 
-Browser automation agent powered by Claude and Midscene.
+Browser automation plugin for Claude Code, powered by Midscene.
 
 ## Features
 
 - Natural language browser automation using Midscene
-- Multi-turn conversations with Claude Agent SDK
+- AI-powered visual and semantic understanding - no CSS selectors needed
 - Persistent browser sessions for faster operations
 - Screenshot capture and visual feedback
 - Structured data extraction
 
-## Installation
+## Install as Claude Code Plugin
+
+### Method 1: Direct Install (Recommended)
 
 ```bash
-pnpm install
+/plugin install https://github.com/web-infra-dev/midscene-skills
 ```
 
-## Setup
+### Method 2: Via Marketplace
 
-1. Configure environment variables for Midscene:
-   
-   Please follow the [Midscene Model Configuration Guide](https://midscenejs.com/model-config.html) to set up the required environment variables in your `.env` file.
+```bash
+# Add marketplace
+/plugin marketplace add https://github.com/web-infra-dev/midscene-skills
 
-2. Build the project:
-   ```bash
-   pnpm build
-   ```
+# Install plugin
+/plugin install midscene-automation@midscene-marketplace
+```
+
+## Post-Installation Setup
+
+After installing the plugin, navigate to the plugin directory and run:
+
+```bash
+# 1. Install dependencies
+pnpm install
+
+# 2. Build the project
+pnpm build
+
+# 3. Configure AI model API
+cp .env.example .env
+# Edit .env with your API credentials
+# See: https://midscenejs.com/model-config.html
+
+# 4. Test installation
+node dist/src/cli.js navigate https://example.com
+node dist/src/cli.js close
+```
 
 ## Usage
 
-Start an interactive session:
-```bash
-pnpm claude
+Once installed, just talk to Claude naturally:
+
+```
+You: Go to Google and search for "Midscene"
+Claude: [Automatically executes browser commands]
+
+You: What are the top 3 results?
+Claude: [Extracts and returns the data]
 ```
 
-Or provide an initial prompt:
+### Standalone Mode
+
+You can also run the interactive agent directly:
+
 ```bash
+pnpm claude
+# or with initial prompt
 pnpm claude "Navigate to example.com and take a screenshot"
 ```
 

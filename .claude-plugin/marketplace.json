@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "midscene-automation",
-      "source": "../",
+      "source": "./",
       "description": "AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.",
       "version": "0.0.1"
     }

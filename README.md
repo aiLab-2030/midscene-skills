@@ -1,52 +1,51 @@
-# Midscene Skills(still work in progress)
+# Midscene Skills
 
-Browser automation plugin for Claude Code, powered by Midscene.
+Claude Code plugin marketplace for browser automation, powered by Midscene.
 
-## Features
+## Available Plugins
 
+### 🤖 midscene-automation
+
+AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.
+
+[View Plugin Details →](./plugins/midscene-automation)
+
+**Features:**
 - Natural language browser automation using Midscene
 - AI-powered visual and semantic understanding - no CSS selectors needed
 - Persistent browser sessions for faster operations
 - Screenshot capture and visual feedback
 - Structured data extraction
 
-## Install as Claude Code Plugin
+## Installation
 
-### Installation Steps
+### Method 1: From GitHub (Recommended)
 
 ```bash
-# Add the plugin directly from GitHub
-/plugin add https://github.com/web-infra-dev/midscene-skills
+# Step 1: Add the marketplace
+/plugin marketplace add https://github.com/web-infra-dev/midscene-skills
 
-# Or from local clone
-git clone https://github.com/web-infra-dev/midscene-skills.git
-/plugin add ./midscene-skills
+# Step 2: Install the plugin
+/plugin install midscene-automation@midscene-marketplace
 ```
 
-## Post-Installation Setup
-
-After installing the plugin, navigate to the plugin directory and run:
+### Method 2: Local Development
 
 ```bash
-# 1. Install dependencies
-pnpm install
+# Clone the repository
+git clone https://github.com/web-infra-dev/midscene-skills.git
+cd midscene-skills
 
-# 2. Build the project
-pnpm build
+# Add marketplace locally
+/plugin marketplace add /absolute/path/to/midscene-skills
 
-# 3. Configure AI model API
-cp .env.example .env
-# Edit .env with your API credentials
-# See: https://midscenejs.com/model-config.html
-
-# 4. Test installation
-node dist/src/cli.js navigate https://example.com
-node dist/src/cli.js close
+# Install the plugin
+/plugin install midscene-automation@midscene-marketplace
 ```
 
 ## Usage
 
-Once installed, just talk to Claude naturally:
+Once installed, you can interact with Claude naturally for browser automation:
 
 ```
 You: Go to Google and search for "Midscene"
@@ -56,34 +55,17 @@ You: What are the top 3 results?
 Claude: [Extracts and returns the data]
 ```
 
-### Standalone Mode
+For detailed usage instructions, see the [midscene-automation plugin documentation](./plugins/midscene-automation).
 
-You can also run the interactive agent directly:
+## Contributing
 
-```bash
-pnpm claude
-# or with initial prompt
-pnpm claude "Navigate to example.com and take a screenshot"
-```
+To add a new plugin to this marketplace:
 
-## CLI Commands
+1. Create a new directory under `plugins/`
+2. Add a `.claude-plugin/plugin.json` file
+3. Update `.claude-plugin/marketplace.json` to include your plugin
+4. Submit a pull request
 
-The CLI provides the following commands for browser automation:
+## License
 
-- `node dist/src/cli.js navigate <url>` - Navigate to a URL and take screenshot
-- `node dist/src/cli.js act "<action>"` - Perform natural language action
-- `node dist/src/cli.js query "<query>"` - Query information from the page
-- `node dist/src/cli.js assert "<condition>"` - Assert a condition on the page
-- `node dist/src/cli.js screenshot` - Take a screenshot
-- `node dist/src/cli.js close` - Close the browser
-
-All commands output JSON with success status and relevant data.
-
-## Architecture
-
-This project combines:
-- **Claude Agent SDK** for AI-powered orchestration
-- **Midscene** for intelligent browser automation
-- **Puppeteer** for browser control
-
-The system maintains a persistent browser instance between commands for faster execution.
+MIT - See [LICENSE](./LICENSE) for details

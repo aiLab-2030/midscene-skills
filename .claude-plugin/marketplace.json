@@ -1,0 +1,15 @@
+{
+  "name": "midscene-marketplace",
+  "owner": {
+    "name": "Web Infra Dev",
+    "email": "midscene@bytedance.com"
+  },
+  "plugins": [
+    {
+      "name": "midscene-automation",
+      "source": "./plugins/midscene-automation",
+      "description": "AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.",
+      "version": "0.0.1"
+    }
+  ]
+}

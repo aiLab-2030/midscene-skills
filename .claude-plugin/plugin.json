@@ -1,0 +1,18 @@
+{
+  "name": "midscene-automation",
+  "version": "0.0.1",
+  "description": "AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.",
+  "author": {
+    "name": "Web Infra Dev",
+    "email": "midscene@bytedance.com"
+  },
+  "repository": "https://github.com/web-infra-dev/midscene-skills",
+  "keywords": [
+    "browser",
+    "automation",
+    "web-scraping",
+    "midscene",
+    "ai-powered",
+    "visual-understanding"
+  ]
+}

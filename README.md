@@ -12,20 +12,15 @@ Browser automation plugin for Claude Code, powered by Midscene.
 
 ## Install as Claude Code Plugin
 
-### Method 1: Direct Install (Recommended)
+### Installation Steps
 
 ```bash
-/plugin install https://github.com/web-infra-dev/midscene-skills
-```
+# Add the plugin directly from GitHub
+/plugin add https://github.com/web-infra-dev/midscene-skills
 
-### Method 2: Via Marketplace
-
-```bash
-# Add marketplace
-/plugin marketplace add https://github.com/web-infra-dev/midscene-skills
-
-# Install plugin
-/plugin install midscene-automation@midscene-marketplace
+# Or from local clone
+git clone https://github.com/web-infra-dev/midscene-skills.git
+/plugin add ./midscene-skills
 ```
 
 ## Post-Installation Setup

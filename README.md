@@ -1,4 +1,4 @@
-# Midscene Skills
+# Midscene Skills(still work in progress)
 
 Browser automation plugin for Claude Code, powered by Midscene.
 

@@ -12,36 +12,29 @@ AI-powered browser automation plugin for Claude Code, powered by Midscene.
 
 ## Installation
 
-This plugin is available through the [Midscene Skills Marketplace](https://github.com/web-infra-dev/midscene-skills).
+On Claude Code, add the marketplace and install:
 
 ```bash
-# Step 1: Add the marketplace
-/plugin marketplace add https://github.com/web-infra-dev/midscene-skills
-
-# Step 2: Install this plugin
+/plugin marketplace add web-infra-dev/midscene-skills
 /plugin install midscene-automation@midscene-marketplace
 ```
 
-## Post-Installation Setup
+## Setup
 
-After installing the plugin, navigate to the plugin directory and run:
+Set your AI model API key:
 
 ```bash
-# 1. Install dependencies
-pnpm install
-
-# 2. Build the project
-pnpm build
-
-# 3. Configure AI model API
-cp .env.example .env
-# Edit .env with your API credentials
-# See: https://midscenejs.com/model-config.html
-
-# 4. Test installation
-node dist/src/cli.js navigate https://example.com
-node dist/src/cli.js close
+export MIDSCENE_MODEL_API_KEY="your-api-key"
 ```
+
+Optional configuration:
+
+```bash
+export MIDSCENE_MODEL_NAME="gpt-4o"
+export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
+```
+
+See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
 
 ## Usage
 

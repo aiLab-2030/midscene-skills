@@ -6,35 +6,27 @@
       "installed": false,
       "description": "Google Chrome browser"
     },
-    "dependencies": {
-      "required": true,
-      "installed": false,
-      "description": "Node.js dependencies (pnpm install completed)"
-    },
-    "projectBuilt": {
-      "required": true,
-      "installed": false,
-      "description": "Project built (pnpm build creates dist/ folder)"
-    },
     "apiKey": {
       "required": true,
       "configured": false,
-      "description": "AI Model API key in .env file (OpenAI, Anthropic, etc.)",
+      "description": "AI Model API key via environment variable or .env file",
       "setupGuide": {
-        "documentationUrl": "https://midscenejs.com/model-config.html",
-        "instruction": "Please refer to the above document to configure the API Key of the AI model. Prepare the complete the.env file content or the path of the existing the.env file. Claude Code will copy it to the plugin directory",
-        "targetPath": ".env"
+        "documentationUrl": "https://midscenejs.com/zh/model-common-config.html",
+        "instruction": "Set your API key via environment variable. You can also provide .env file content or path, and Claude Code will copy it to the plugin directory.",
+        "envVariables": {
+          "required": ["MIDSCENE_MODEL_API_KEY"],
+          "optional": ["MIDSCENE_MODEL_BASE_URL", "MIDSCENE_MODEL_NAME", "MIDSCENE_MODEL_FAMILY"]
+        },
+        "quickSetup": "export MIDSCENE_MODEL_API_KEY=your-api-key"
       }
     }
   },
   "setupInstructions": [
-    "1. Run: pnpm install (install all dependencies)",
-    "2. Run: pnpm build (build TypeScript to dist/ folder)",
-    "3. Create .env file: cp .env.example .env",
-    "4. Edit .env and add your AI model credentials following: https://midscenejs.com/model-config.html",
-    "5. Ensure Google Chrome is installed on your system",
-    "6. Test installation: node dist/src/cli.js navigate https://example.com",
-    "7. Update this setup.json file: set all 'installed'/'configured' to true and 'setupComplete' to true"
+    "1. Set API key: export MIDSCENE_MODEL_API_KEY=your-api-key",
+    "2. (Optional) Set model: export MIDSCENE_MODEL_NAME=gpt-4o",
+    "3. (Optional) Set base URL: export MIDSCENE_MODEL_BASE_URL=https://api.openai.com/v1",
+    "4. Ensure Google Chrome is installed",
+    "5. Start using the skill!"
   ],
-  "verifySetup": "Run 'node dist/src/cli.js navigate https://example.com' to verify installation"
+  "verifySetup": "Ask Claude to navigate to any website"
 }

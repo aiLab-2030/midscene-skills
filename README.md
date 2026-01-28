@@ -19,17 +19,31 @@ AI-powered browser automation using Midscene. Automate web interactions with nat
 
 ## Installation
 
-### Method 1: From GitHub (Recommended)
+On Claude Code, add the marketplace and install:
 
 ```bash
-# Step 1: Add the marketplace
-/plugin marketplace add https://github.com/web-infra-dev/midscene-skills
-
-# Step 2: Install the plugin
+/plugin marketplace add web-infra-dev/midscene-skills
 /plugin install midscene-automation@midscene-marketplace
 ```
 
-### Method 2: Local Development
+## Setup
+
+Set your AI model API key:
+
+```bash
+export MIDSCENE_MODEL_API_KEY="your-api-key"
+```
+
+Optional configuration:
+
+```bash
+export MIDSCENE_MODEL_NAME="gpt-4o"
+export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
+```
+
+See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
+
+### Local Development
 
 ```bash
 # Clone the repository

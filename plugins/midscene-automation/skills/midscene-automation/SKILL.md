@@ -1,6 +1,6 @@
 ---
 name: Midscene Browser Automation
-description: Automate web browser interactions using natural language via Midscene CLI. Use when the user asks to browse websites, navigate web pages, extract data from websites, take screenshots, fill forms, click buttons, or interact with web applications. Triggers include "browse", "navigate to", "go to website", "extract data from webpage", "screenshot", "web scraping", "fill out form", "click on", "search for on the web". Midscene uses AI-powered visual and semantic understanding for intelligent element identification without selectors.
+description: Automate web browser interactions and frontend verification using natural language via Midscene CLI. Use when the user asks to browse websites, navigate web pages, extract data from websites, take screenshots, fill forms, click buttons, interact with web applications, or verify/check/validate frontend pages. Triggers include "browse", "navigate to", "go to website", "extract data from webpage", "screenshot", "web scraping", "fill out form", "click on", "search for on the web", "verify", "check", "validate", "test my page", "verify frontend", "check if page works", "validate UI", "验证", "检查", "测试一下". Midscene uses AI-powered visual and semantic understanding for intelligent element identification without selectors.
 allowed-tools: Bash
 ---
 
@@ -31,43 +31,25 @@ This skill uses a CLI-based approach where Claude calls browser automation comma
 
 ### If Setup is Required (`setupComplete: false`)
 
-Run these commands in the plugin directory:
+1. **Set API key** (required):
+   ```bash
+   export MIDSCENE_MODEL_API_KEY="your-api-key"
+   ```
 
-```bash
-# 1. Install dependencies (REQUIRED)
-pnpm install
+2. **Set model** (optional):
+   ```bash
+   export MIDSCENE_MODEL_NAME="gpt-4o"
+   export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
+   ```
 
-# 2. Build the project (REQUIRED)
-pnpm build
+3. **Ensure Google Chrome is installed** on your system.
 
-# 3. Configure AI Model API key (REQUIRED)
-# Copy the example env file
-cp .env.example .env
-
-# Edit .env and add your AI model credentials
-# Follow: https://midscenejs.com/model-config.html
-# Example for OpenAI:
-# OPENAI_BASE_URL=https://api.openai.com/v1
-# OPENAI_API_KEY=your-api-key-here
-# MIDSCENE_MODEL_NAME=gpt-4-vision-preview
-
-# 4. Verify Chrome is installed
-# Chrome should be at standard location for your OS
-
-# 5. Test the installation
-node dist/src/cli.js navigate https://example.com
-
-# 6. If test succeeds, update setup.json
-# Set all "installed"/"configured" fields to true
-# Set "setupComplete" to true
-```
+See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
 
 ### Prerequisites Summary
 
 - ✅ Google Chrome installed on your system
-- ✅ Node.js dependencies installed (`pnpm install`)
-- ✅ Project built (`pnpm build` creates `dist/` folder)
-- ✅ AI Model API key configured in `.env` file (OpenAI, Anthropic, or compatible providers)
+- ✅ AI Model API key configured via environment variable or `.env` file
 
 **DO NOT attempt to use browser commands if `setupComplete: false` in setup.json. Guide the user through setup first.**
 
@@ -226,6 +208,81 @@ node dist/src/cli.js assert "there is a login button visible"
 node dist/src/cli.js assert "the navigation menu has 5 items"
 node dist/src/cli.js close
 ```
+
+## Frontend Verification
+
+This skill is optimized for frontend verification. When the user asks to verify, check, or validate a page, follow this workflow.
+
+### Verification Workflow
+
+1. **Navigate** to the target URL
+2. **Identify verification points** based on the user's request
+3. **Execute each check** using `assert` or `query` commands
+4. **Take screenshots** as evidence for each step
+5. **Summarize results** in a structured format
+
+### Result Summary Format
+
+After completing verification, always present results in this format:
+
+```
+## Verification Results
+
+| # | Check | Status | Details |
+|---|-------|--------|---------|
+| 1 | Page title is correct | PASS | - |
+| 2 | Login form is visible | PASS | - |
+| 3 | Error message on invalid input | FAIL | No error shown |
+
+**Result**: 2/3 passed
+```
+
+### Common Verification Scenarios
+
+#### Form Validation
+```bash
+node dist/src/cli.js navigate http://localhost:3000/login
+node dist/src/cli.js act "click the submit button without filling any fields"
+node dist/src/cli.js assert "error messages are shown for required fields"
+node dist/src/cli.js act "type 'invalid-email' into the email field"
+node dist/src/cli.js act "click submit"
+node dist/src/cli.js assert "email format validation error is displayed"
+```
+
+#### Page Content Verification
+```bash
+node dist/src/cli.js navigate http://localhost:3000
+node dist/src/cli.js assert "the page title is visible"
+node dist/src/cli.js assert "the navigation menu contains expected items"
+node dist/src/cli.js assert "the footer contains copyright information"
+```
+
+#### User Flow Verification
+```bash
+node dist/src/cli.js navigate http://localhost:3000/login
+node dist/src/cli.js act "type 'user@test.com' into email field"
+node dist/src/cli.js act "type 'password123' into password field"
+node dist/src/cli.js act "click login button"
+node dist/src/cli.js assert "redirected to dashboard page"
+node dist/src/cli.js assert "welcome message is displayed"
+```
+
+#### Interactive Feedback Verification
+```bash
+node dist/src/cli.js navigate http://localhost:3000/settings
+node dist/src/cli.js act "click the save button"
+node dist/src/cli.js assert "success toast or notification appears"
+node dist/src/cli.js act "click the delete button"
+node dist/src/cli.js assert "confirmation dialog is shown"
+```
+
+### Verification Best Practices
+
+1. **Be specific about what to verify**: "the error message says 'Email is required'" is better than "there is an error"
+2. **Verify one thing at a time**: Each `assert` should check a single condition
+3. **Always take screenshots**: Visual evidence helps when verification fails
+4. **Check both positive and negative cases**: Verify what should appear AND what should not
+5. **Use `query` for data verification**: When you need to extract and compare values, use `query` instead of `assert`
 
 ## Troubleshooting
 

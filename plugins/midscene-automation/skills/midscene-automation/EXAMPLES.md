@@ -373,6 +373,178 @@ This document provides detailed examples of common browser automation tasks usin
 
 ---
 
+## Frontend Verification Examples
+
+### Example 11: Login Form Verification
+
+**User request**: "Verify the login form works correctly"
+
+**Workflow**:
+
+1. **Navigate** to login page:
+   ```bash
+   node dist/src/cli.js navigate http://localhost:3000/login
+   ```
+
+2. **Verify** form elements exist:
+   ```bash
+   node dist/src/cli.js assert "email input field is visible"
+   node dist/src/cli.js assert "password input field is visible"
+   node dist/src/cli.js assert "login button is visible"
+   ```
+
+3. **Test** empty submission:
+   ```bash
+   node dist/src/cli.js act "click the login button"
+   node dist/src/cli.js assert "validation error messages are shown for required fields"
+   ```
+
+4. **Test** invalid email:
+   ```bash
+   node dist/src/cli.js act "type 'not-an-email' into the email field"
+   node dist/src/cli.js act "click the login button"
+   node dist/src/cli.js assert "email format error message is displayed"
+   ```
+
+5. **Test** successful login:
+   ```bash
+   node dist/src/cli.js act "clear the email field and type 'user@example.com'"
+   node dist/src/cli.js act "type 'password123' into the password field"
+   node dist/src/cli.js act "click the login button"
+   node dist/src/cli.js assert "page redirected to dashboard"
+   ```
+
+6. **Screenshot** and **close**:
+   ```bash
+   node dist/src/cli.js screenshot
+   node dist/src/cli.js close
+   ```
+
+**Verification summary**:
+
+| # | Check | Status |
+|---|-------|--------|
+| 1 | Form elements visible | PASS |
+| 2 | Empty submission shows errors | PASS |
+| 3 | Invalid email shows error | PASS |
+| 4 | Valid login redirects to dashboard | PASS |
+
+---
+
+### Example 12: Interactive Feedback Verification
+
+**User request**: "Check that buttons and interactions give proper feedback"
+
+**Workflow**:
+
+1. **Navigate** to the page:
+   ```bash
+   node dist/src/cli.js navigate http://localhost:3000/settings
+   ```
+
+2. **Verify** button states:
+   ```bash
+   node dist/src/cli.js assert "the save button is visible and enabled"
+   ```
+
+3. **Test** save action feedback:
+   ```bash
+   node dist/src/cli.js act "click the save button"
+   node dist/src/cli.js assert "a success notification or toast message appears"
+   node dist/src/cli.js screenshot
+   ```
+
+4. **Test** delete confirmation:
+   ```bash
+   node dist/src/cli.js act "click the delete button"
+   node dist/src/cli.js assert "a confirmation dialog is shown"
+   node dist/src/cli.js act "click cancel in the confirmation dialog"
+   node dist/src/cli.js assert "the item is still present on the page"
+   ```
+
+5. **Close**:
+   ```bash
+   node dist/src/cli.js close
+   ```
+
+---
+
+### Example 13: Data Display Verification
+
+**User request**: "Verify the product list page shows correct data"
+
+**Workflow**:
+
+1. **Navigate** to product list:
+   ```bash
+   node dist/src/cli.js navigate http://localhost:3000/products
+   ```
+
+2. **Verify** list rendering:
+   ```bash
+   node dist/src/cli.js assert "the product list is visible with at least 1 item"
+   node dist/src/cli.js assert "each product shows name, price, and image"
+   ```
+
+3. **Extract** and verify data:
+   ```bash
+   node dist/src/cli.js query "How many products are displayed on the page?"
+   node dist/src/cli.js query "Extract the first 3 product names and prices as JSON"
+   ```
+
+4. **Verify** pagination:
+   ```bash
+   node dist/src/cli.js assert "pagination controls are visible at the bottom"
+   node dist/src/cli.js act "click the next page button"
+   node dist/src/cli.js assert "the product list updated with different products"
+   ```
+
+5. **Verify** empty state:
+   ```bash
+   node dist/src/cli.js navigate http://localhost:3000/products?search=nonexistent
+   node dist/src/cli.js assert "an empty state message like 'No products found' is shown"
+   ```
+
+6. **Close**:
+   ```bash
+   node dist/src/cli.js close
+   ```
+
+---
+
+### Example 14: Responsive Layout Verification
+
+**User request**: "Check if the page layout is correct on mobile"
+
+**Note**: This requires launching Chrome with mobile emulation or resizing the viewport. Currently this can be done by navigating with specific viewport parameters or through Chrome DevTools.
+
+**Workflow**:
+
+1. **Navigate** to the page:
+   ```bash
+   node dist/src/cli.js navigate http://localhost:3000
+   ```
+
+2. **Verify** desktop layout:
+   ```bash
+   node dist/src/cli.js assert "the navigation bar is visible at the top"
+   node dist/src/cli.js assert "the sidebar is visible on the left"
+   node dist/src/cli.js screenshot
+   ```
+
+3. **Verify** key content:
+   ```bash
+   node dist/src/cli.js assert "the main content area shows the expected content"
+   node dist/src/cli.js assert "the footer is present at the bottom of the page"
+   ```
+
+4. **Close**:
+   ```bash
+   node dist/src/cli.js close
+   ```
+
+---
+
 ## Tips for Effective Use
 
 ### Natural Language Descriptions

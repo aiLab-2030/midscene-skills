@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .login-card { background: #fff; border-radius: 12px; padding: 40px; width: 400px; box-shadow: 0 2px 16px rgba(0,0,0,0.1); }
+    .login-card h1 { font-size: 24px; margin-bottom: 8px; color: #333; }
+    .login-card p.subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 500; color: #333; margin-bottom: 6px; }
+    .form-group input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .form-group input:focus { border-color: #4f46e5; }
+    .form-group input.error { border-color: #ef4444; }
+    .error-msg { color: #ef4444; font-size: 12px; margin-top: 4px; display: none; }
+    .error-msg.visible { display: block; }
+    .btn { width: 100%; padding: 12px; background: #4f46e5; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+    .btn:hover { background: #4338ca; }
+    .btn:disabled { background: #a5b4fc; cursor: not-allowed; }
+    .toast { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: 14px; display: none; z-index: 100; }
+    .toast.success { background: #22c55e; display: block; }
+    .toast.error { background: #ef4444; display: block; }
+    .dashboard { display: none; text-align: center; }
+    .dashboard h1 { margin-bottom: 16px; }
+    .dashboard .user-info { background: #f0fdf4; padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+    .dashboard .logout-btn { background: #ef4444; }
+    .dashboard .logout-btn:hover { background: #dc2626; }
+    nav { display: none; position: fixed; top: 0; left: 0; right: 0; background: #fff; padding: 12px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    nav.visible { display: flex; justify-content: space-between; align-items: center; }
+    nav .nav-links a { margin-left: 16px; color: #4f46e5; text-decoration: none; font-size: 14px; }
+    footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 12px; color: #888; font-size: 12px; background: #fff; border-top: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <span style="font-weight:600;">MyApp</span>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+  </nav>
+
+  <div class="login-card" id="loginForm">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Please sign in to your account</p>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" placeholder="Enter your email">
+        <div class="error-msg" id="emailError"></div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password">
+        <div class="error-msg" id="passwordError"></div>
+      </div>
+      <button type="submit" class="btn" id="loginBtn">Login</button>
+    </form>
+  </div>
+
+  <div class="login-card dashboard" id="dashboard">
+    <h1>Dashboard</h1>
+    <div class="user-info">
+      <p>Welcome, <strong id="userName"></strong></p>
+      <p style="font-size:12px;color:#666;margin-top:4px;">You have successfully logged in.</p>
+    </div>
+    <button class="btn logout-btn" onclick="handleLogout()">Logout</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>Copyright 2025 MyApp. All rights reserved.</footer>
+
+  <script>
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.classList.add('visible');
+      el.previousElementSibling.classList.add('error');
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error-msg').forEach(el => {
+        el.classList.remove('visible');
+        el.textContent = '';
+      });
+      document.querySelectorAll('input').forEach(el => el.classList.remove('error'));
+    }
+
+    function showToast(msg, type) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.className = 'toast ' + type;
+      setTimeout(() => { toast.className = 'toast'; }, 3000);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      clearErrors();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      let hasError = false;
+
+      if (!email) {
+        showError('emailError', 'Email is required');
+        hasError = true;
+      } else if (!validateEmail(email)) {
+        showError('emailError', 'Please enter a valid email address');
+        hasError = true;
+      }
+
+      if (!password) {
+        showError('passwordError', 'Password is required');
+        hasError = true;
+      } else if (password.length < 6) {
+        showError('passwordError', 'Password must be at least 6 characters');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Simulate login
+      document.getElementById('loginBtn').disabled = true;
+      document.getElementById('loginBtn').textContent = 'Logging in...';
+
+      setTimeout(() => {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('userName').textContent = email;
+        document.getElementById('navbar').classList.add('visible');
+        showToast('Login successful!', 'success');
+      }, 800);
+    }
+
+    function handleLogout() {
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('navbar').classList.remove('visible');
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('loginBtn').disabled = false;
+      document.getElementById('loginBtn').textContent = 'Login';
+      showToast('Logged out successfully', 'success');
+    }
+  </script>
+</body>
+</html>

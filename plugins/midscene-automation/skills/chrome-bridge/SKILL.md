@@ -1,68 +1,49 @@
 ---
-name: Web Browser Automation
+name: Chrome Bridge Automation
 description: |
-  AI-powered web browser automation using Midscene. Use this skill when the user wants to:
-  - Browse, navigate, or open web pages and URLs
-  - Search the web using a real browser
-  - Scrape, extract, or collect data from websites
+  AI-powered browser automation using Midscene Bridge mode. Use this skill when the user wants to:
+  - Browse, navigate, or open web pages in the user's own Chrome browser
+  - Interact with pages that require login sessions, cookies, or existing browser state
+  - Scrape, extract, or collect data from websites using the user's real browser
   - Fill out forms, click buttons, or interact with web elements
   - Verify, validate, or test frontend UI behavior
   - Take screenshots of web pages
   - Automate multi-step web workflows
   - Check website content or appearance
 
+  This mode connects to the user's real Chrome browser via the Midscene Chrome Extension,
+  preserving cookies, sessions, and login state.
+
   Trigger keywords: browse, navigate, open url, web page, website, scrape, extract, crawl,
   fill form, click, interact, verify, validate, test, assert, screenshot, frontend, UI test,
-  web automation, search web, check page, login, submit
+  web automation, search web, check page, login, submit, chrome, bridge
 allowed-tools:
   - Bash
 ---
 
-# Web Browser Automation
+# Chrome Bridge Automation
 
 ## Overview
 
-This skill provides CLI-based browser automation powered by Midscene AI. All commands are executed via:
+This skill provides browser automation powered by Midscene AI in **Bridge mode**. It connects to the user's real Chrome browser via the Midscene Chrome Extension, preserving cookies, sessions, and login state.
+
+All commands are executed via:
 
 ```
-npx @midscene/cli web <command>
+npx @midscene/cli web <command> --bridge
 ```
 
-Midscene uses AI visual understanding to interact with web pages using natural language descriptions -- no CSS selectors or XPath needed.
+Midscene uses AI visual understanding to interact with web pages using natural language descriptions — no CSS selectors or XPath needed.
 
-## Mode Selection
+## When to Use
 
-**Always try Bridge mode (`--bridge`) first.** Only fall back to Puppeteer mode if Bridge connection fails (timeout error).
+Use Chrome Bridge mode when:
+- The user is already logged in and you need to preserve their session
+- You need access to cookies, extensions, or browser state
+- The user wants to see the automation happening in their own browser
+- Working with pages that require authentication
 
-### Bridge Mode (--bridge) -- Preferred
-
-Connects to your real Chrome browser via the Midscene Chrome Extension. Benefits:
-- Preserves cookies, sessions, and login state
-- Uses the same browser the user is already using
-- No extra Chrome process spawned
-
-```bash
-npx @midscene/cli web navigate "https://example.com" --bridge
-```
-
-**Prerequisite:** The [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) must be installed and enabled.
-
-### Puppeteer Mode (Fallback)
-
-Automatically launches a separate Chrome instance. Use only when:
-- Bridge mode fails with a connection timeout
-- The user explicitly requests Puppeteer mode
-- Running in CI/CD or headless environments
-
-```bash
-npx @midscene/cli web navigate "https://example.com"
-```
-
-### Fallback Strategy
-
-1. Run the command with `--bridge`
-2. If you get a "Bridge call timeout" error, re-run **without** `--bridge` (Puppeteer mode)
-3. Remember the mode that worked and use it for subsequent commands in the same session
+**Prerequisite:** The [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) must be installed and enabled in Chrome.
 
 ## Setup Verification
 
@@ -84,17 +65,19 @@ Before running commands, verify the environment is ready:
    export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
    ```
 
+4. **Ensure Chrome is open** with the Midscene Extension installed and showing "Connected" status.
+
 See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for details.
 
 ## Available Commands
 
-### navigate -- Open a URL
+### navigate — Open a URL
 
 ```bash
 npx @midscene/cli web navigate "https://example.com" --bridge
 ```
 
-### act -- Interact with the page
+### act — Interact with the page
 
 Perform actions using natural language descriptions.
 
@@ -105,7 +88,7 @@ npx @midscene/cli web act "scroll down to the footer" --bridge
 npx @midscene/cli web act "select 'Large' from the size dropdown" --bridge
 ```
 
-### query -- Extract data from the page
+### query — Extract data from the page
 
 Ask questions about page content and get structured results.
 
@@ -115,7 +98,7 @@ npx @midscene/cli web query "get the main headline text" --bridge
 npx @midscene/cli web query "list all navigation menu items" --bridge
 ```
 
-### assert -- Verify conditions
+### assert — Verify conditions
 
 Assert that something is true about the current page state. Returns success or failure.
 
@@ -125,13 +108,13 @@ npx @midscene/cli web assert "there is a login form visible" --bridge
 npx @midscene/cli web assert "the error message is not displayed" --bridge
 ```
 
-### screenshot -- Capture the current page
+### screenshot — Capture the current page
 
 ```bash
 npx @midscene/cli web screenshot --bridge
 ```
 
-### close -- Close the browser
+### close — Close the browser
 
 ```bash
 npx @midscene/cli web close --bridge
@@ -224,21 +207,14 @@ When asked to verify or test a frontend application:
 
 ## Troubleshooting
 
-### "Could not find Chrome installation"
-Chrome must be installed on the system. The CLI auto-detects Chrome at standard installation paths.
-
-### "Chrome failed to start"
-- Another Chrome instance may be using the debug port (9222). Close it or check for port conflicts.
-- Try running `npx @midscene/cli web close` first.
-
-### API Key Errors
-- Ensure `MIDSCENE_MODEL_API_KEY` is set in the environment.
-- Verify the key is valid for the configured model provider.
-
 ### Bridge Mode Connection Failures
 - Ensure Chrome is open with the Midscene Extension installed and enabled.
 - Check that the extension shows "Connected" status.
 - See the [Bridge Mode documentation](https://midscenejs.com/bridge-mode-by-chrome-extension.html).
+
+### API Key Errors
+- Ensure `MIDSCENE_MODEL_API_KEY` is set in the environment.
+- Verify the key is valid for the configured model provider.
 
 ### Timeouts
 - Web pages may take time to load. After navigation, take a screenshot to verify readiness before interacting.
@@ -246,3 +222,6 @@ Chrome must be installed on the system. The CLI auto-detects Chrome at standard 
 
 ### Screenshots Not Displaying
 - The screenshot path is an absolute path to a temporary file. Use the Read tool to view it.
+
+### If Bridge Mode Fails
+If you get a "Bridge call timeout" error, consider using the **Browser Automation** skill instead, which launches a separate Chrome instance via Puppeteer and does not require the Chrome Extension.

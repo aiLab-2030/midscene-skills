@@ -25,7 +25,7 @@ allowed-tools:
 This skill provides CLI-based browser automation powered by Midscene AI. All commands are executed via:
 
 ```
-npx @midscene/cli skill web <command>
+npx @midscene/cli web <command>
 ```
 
 Midscene uses AI visual understanding to interact with web pages using natural language descriptions -- no CSS selectors or XPath needed.
@@ -42,7 +42,7 @@ Connects to your real Chrome browser via the Midscene Chrome Extension. Benefits
 - No extra Chrome process spawned
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com" --bridge
+npx @midscene/cli web navigate "https://example.com" --bridge
 ```
 
 **Prerequisite:** The [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) must be installed and enabled.
@@ -55,7 +55,7 @@ Automatically launches a separate Chrome instance. Use only when:
 - Running in CI/CD or headless environments
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com"
+npx @midscene/cli web navigate "https://example.com"
 ```
 
 ### Fallback Strategy
@@ -91,7 +91,7 @@ See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) fo
 ### navigate -- Open a URL
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com" --bridge
+npx @midscene/cli web navigate "https://example.com" --bridge
 ```
 
 ### act -- Interact with the page
@@ -99,10 +99,10 @@ npx @midscene/cli skill web navigate "https://example.com" --bridge
 Perform actions using natural language descriptions.
 
 ```bash
-npx @midscene/cli skill web act "click the Login button" --bridge
-npx @midscene/cli skill web act "type 'hello world' into the search box" --bridge
-npx @midscene/cli skill web act "scroll down to the footer" --bridge
-npx @midscene/cli skill web act "select 'Large' from the size dropdown" --bridge
+npx @midscene/cli web act "click the Login button" --bridge
+npx @midscene/cli web act "type 'hello world' into the search box" --bridge
+npx @midscene/cli web act "scroll down to the footer" --bridge
+npx @midscene/cli web act "select 'Large' from the size dropdown" --bridge
 ```
 
 ### query -- Extract data from the page
@@ -110,9 +110,9 @@ npx @midscene/cli skill web act "select 'Large' from the size dropdown" --bridge
 Ask questions about page content and get structured results.
 
 ```bash
-npx @midscene/cli skill web query "what are all the product names and prices on this page?" --bridge
-npx @midscene/cli skill web query "get the main headline text" --bridge
-npx @midscene/cli skill web query "list all navigation menu items" --bridge
+npx @midscene/cli web query "what are all the product names and prices on this page?" --bridge
+npx @midscene/cli web query "get the main headline text" --bridge
+npx @midscene/cli web query "list all navigation menu items" --bridge
 ```
 
 ### assert -- Verify conditions
@@ -120,21 +120,21 @@ npx @midscene/cli skill web query "list all navigation menu items" --bridge
 Assert that something is true about the current page state. Returns success or failure.
 
 ```bash
-npx @midscene/cli skill web assert "the page title contains 'Dashboard'" --bridge
-npx @midscene/cli skill web assert "there is a login form visible" --bridge
-npx @midscene/cli skill web assert "the error message is not displayed" --bridge
+npx @midscene/cli web assert "the page title contains 'Dashboard'" --bridge
+npx @midscene/cli web assert "there is a login form visible" --bridge
+npx @midscene/cli web assert "the error message is not displayed" --bridge
 ```
 
 ### screenshot -- Capture the current page
 
 ```bash
-npx @midscene/cli skill web screenshot --bridge
+npx @midscene/cli web screenshot --bridge
 ```
 
 ### close -- Close the browser
 
 ```bash
-npx @midscene/cli skill web close --bridge
+npx @midscene/cli web close --bridge
 ```
 
 ## Output Format
@@ -173,41 +173,41 @@ Fields:
 ### Simple Browsing
 
 ```bash
-npx @midscene/cli skill web navigate "https://news.ycombinator.com" --bridge
-npx @midscene/cli skill web query "what are the top 5 stories on the front page?" --bridge
-npx @midscene/cli skill web close --bridge
+npx @midscene/cli web navigate "https://news.ycombinator.com" --bridge
+npx @midscene/cli web query "what are the top 5 stories on the front page?" --bridge
+npx @midscene/cli web close --bridge
 ```
 
 ### Data Extraction
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com/products" --bridge
-npx @midscene/cli skill web query "extract all product names, prices, and ratings as a JSON array" --bridge
-npx @midscene/cli skill web close --bridge
+npx @midscene/cli web navigate "https://example.com/products" --bridge
+npx @midscene/cli web query "extract all product names, prices, and ratings as a JSON array" --bridge
+npx @midscene/cli web close --bridge
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com" --bridge
-npx @midscene/cli skill web act "click the Sign In link" --bridge
-npx @midscene/cli skill web act "type 'user@example.com' into the email field" --bridge
-npx @midscene/cli skill web act "type 'password123' into the password field" --bridge
-npx @midscene/cli skill web act "click the Log In button" --bridge
-npx @midscene/cli skill web screenshot --bridge
-npx @midscene/cli skill web close --bridge
+npx @midscene/cli web navigate "https://example.com" --bridge
+npx @midscene/cli web act "click the Sign In link" --bridge
+npx @midscene/cli web act "type 'user@example.com' into the email field" --bridge
+npx @midscene/cli web act "type 'password123' into the password field" --bridge
+npx @midscene/cli web act "click the Log In button" --bridge
+npx @midscene/cli web screenshot --bridge
+npx @midscene/cli web close --bridge
 ```
 
 ### Frontend Verification
 
 ```bash
-npx @midscene/cli skill web navigate "http://localhost:3000" --bridge
-npx @midscene/cli skill web assert "the login form is visible with email and password fields" --bridge
-npx @midscene/cli skill web act "type 'test@example.com' into the email field" --bridge
-npx @midscene/cli skill web act "type 'password' into the password field" --bridge
-npx @midscene/cli skill web act "click the Submit button" --bridge
-npx @midscene/cli skill web assert "the welcome message is displayed" --bridge
-npx @midscene/cli skill web close --bridge
+npx @midscene/cli web navigate "http://localhost:3000" --bridge
+npx @midscene/cli web assert "the login form is visible with email and password fields" --bridge
+npx @midscene/cli web act "type 'test@example.com' into the email field" --bridge
+npx @midscene/cli web act "type 'password' into the password field" --bridge
+npx @midscene/cli web act "click the Submit button" --bridge
+npx @midscene/cli web assert "the welcome message is displayed" --bridge
+npx @midscene/cli web close --bridge
 ```
 
 ## Frontend Verification Workflow
@@ -229,7 +229,7 @@ Chrome must be installed on the system. The CLI auto-detects Chrome at standard 
 
 ### "Chrome failed to start"
 - Another Chrome instance may be using the debug port (9222). Close it or check for port conflicts.
-- Try running `npx @midscene/cli skill web close` first.
+- Try running `npx @midscene/cli web close` first.
 
 ### API Key Errors
 - Ensure `MIDSCENE_MODEL_API_KEY` is set in the environment.

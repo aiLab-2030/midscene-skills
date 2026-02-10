@@ -23,7 +23,7 @@ allowed-tools:
 
 # Android Device Automation
 
-Automate Android devices using natural language through `npx @midscene/cli skill android <command>`. Powered by Midscene's AI visual understanding, this skill lets you interact with any Android device connected via ADB -- no element IDs or XPath selectors needed.
+Automate Android devices using natural language through `npx @midscene/cli android <command>`. Powered by Midscene's AI visual understanding, this skill lets you interact with any Android device connected via ADB -- no element IDs or XPath selectors needed.
 
 ## Setup Verification
 
@@ -43,44 +43,44 @@ If any prerequisite is missing, guide the user through setup before proceeding.
 Execute a natural language action on the device:
 
 ```bash
-npx @midscene/cli skill android act "<action description>"
+npx @midscene/cli android act "<action description>"
 ```
 
 Examples:
-- `npx @midscene/cli skill android act "tap the Settings icon"`
-- `npx @midscene/cli skill android act "swipe up to scroll down"`
-- `npx @midscene/cli skill android act "type 'hello world' in the search field"`
+- `npx @midscene/cli android act "tap the Settings icon"`
+- `npx @midscene/cli android act "swipe up to scroll down"`
+- `npx @midscene/cli android act "type 'hello world' in the search field"`
 
 ### Query the Screen
 
 Extract information from the current device screen:
 
 ```bash
-npx @midscene/cli skill android query "<query description>"
+npx @midscene/cli android query "<query description>"
 ```
 
 Examples:
-- `npx @midscene/cli skill android query "what is the battery percentage?"`
-- `npx @midscene/cli skill android query "list all visible app names"`
+- `npx @midscene/cli android query "what is the battery percentage?"`
+- `npx @midscene/cli android query "list all visible app names"`
 
 ### Assert Screen State
 
 Verify a condition on the current screen:
 
 ```bash
-npx @midscene/cli skill android assert "<condition>"
+npx @midscene/cli android assert "<condition>"
 ```
 
 Examples:
-- `npx @midscene/cli skill android assert "the Wi-Fi toggle is enabled"`
-- `npx @midscene/cli skill android assert "the Settings app is open"`
+- `npx @midscene/cli android assert "the Wi-Fi toggle is enabled"`
+- `npx @midscene/cli android assert "the Settings app is open"`
 
 ### Take a Screenshot
 
 Capture the current device screen:
 
 ```bash
-npx @midscene/cli skill android screenshot
+npx @midscene/cli android screenshot
 ```
 
 ### Connect to Device
@@ -88,13 +88,13 @@ npx @midscene/cli skill android screenshot
 Connect to the default device:
 
 ```bash
-npx @midscene/cli skill android connect
+npx @midscene/cli android connect
 ```
 
 Connect to a specific device by ID:
 
 ```bash
-npx @midscene/cli skill android connect --device <device-id>
+npx @midscene/cli android connect --device <device-id>
 ```
 
 Use `adb devices` to list available device IDs.
@@ -131,38 +131,38 @@ All commands return JSON with the following structure:
 ### Open an App
 
 ```bash
-npx @midscene/cli skill android act "open the Settings app"
+npx @midscene/cli android act "open the Settings app"
 ```
 
 ### Navigate Through Menus
 
 ```bash
-npx @midscene/cli skill android act "tap on 'Wi-Fi'"
-npx @midscene/cli skill android act "tap on the network named 'MyNetwork'"
+npx @midscene/cli android act "tap on 'Wi-Fi'"
+npx @midscene/cli android act "tap on the network named 'MyNetwork'"
 ```
 
 ### Fill a Form
 
 ```bash
-npx @midscene/cli skill android act "tap the username field"
-npx @midscene/cli skill android act "type 'user@example.com'"
-npx @midscene/cli skill android act "tap the password field"
-npx @midscene/cli skill android act "type 'mypassword'"
-npx @midscene/cli skill android act "tap the Login button"
+npx @midscene/cli android act "tap the username field"
+npx @midscene/cli android act "type 'user@example.com'"
+npx @midscene/cli android act "tap the password field"
+npx @midscene/cli android act "type 'mypassword'"
+npx @midscene/cli android act "tap the Login button"
 ```
 
 ### Verify Screen State
 
 ```bash
-npx @midscene/cli skill android assert "the home screen is displayed"
-npx @midscene/cli skill android query "what app is currently in the foreground?"
+npx @midscene/cli android assert "the home screen is displayed"
+npx @midscene/cli android query "what app is currently in the foreground?"
 ```
 
 ### Scroll and Find Content
 
 ```bash
-npx @midscene/cli skill android act "swipe up to scroll down"
-npx @midscene/cli skill android query "is there a 'About phone' option visible?"
+npx @midscene/cli android act "swipe up to scroll down"
+npx @midscene/cli android query "is there a 'About phone' option visible?"
 ```
 
 ## Troubleshooting

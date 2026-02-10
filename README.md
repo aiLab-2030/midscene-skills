@@ -58,24 +58,24 @@ Claude will automatically pick the right skill and execute the commands via `@mi
 
 ## How It Works
 
-All commands run through `npx @midscene/cli skill <platform> <command>`, which auto-downloads on first use — no pre-installation needed.
+All commands run through `npx @midscene/cli <platform> <command>`, which auto-downloads on first use — no pre-installation needed.
 
 ```bash
 # Web
-npx @midscene/cli skill web navigate "https://example.com" --bridge
-npx @midscene/cli skill web query "what is the page title?" --bridge
+npx @midscene/cli web navigate "https://example.com" --bridge
+npx @midscene/cli web query "what is the page title?" --bridge
 
 # Computer
-npx @midscene/cli skill computer act "press Command+Space to open Spotlight"
-npx @midscene/cli skill computer screenshot
+npx @midscene/cli computer act "press Command+Space to open Spotlight"
+npx @midscene/cli computer screenshot
 
 # Android
-npx @midscene/cli skill android act "tap the Settings icon"
-npx @midscene/cli skill android query "what is the battery percentage?"
+npx @midscene/cli android act "tap the Settings icon"
+npx @midscene/cli android query "what is the battery percentage?"
 
 # iOS
-npx @midscene/cli skill ios act "tap the Safari icon"
-npx @midscene/cli skill ios assert "Safari is open"
+npx @midscene/cli ios act "tap the Safari icon"
+npx @midscene/cli ios assert "Safari is open"
 ```
 
 ## Local Development

@@ -11,7 +11,7 @@ allowed-tools:
 
 # Desktop Computer Automation
 
-Control your entire macOS desktop with natural language using `npx @midscene/cli skill computer <command>`. Perform clicks, type text, take screenshots, run keyboard shortcuts, and automate multi-step desktop workflows -- all powered by AI visual understanding.
+Control your entire macOS desktop with natural language using `npx @midscene/cli computer <command>`. Perform clicks, type text, take screenshots, run keyboard shortcuts, and automate multi-step desktop workflows -- all powered by AI visual understanding.
 
 ## Setup Verification
 
@@ -73,23 +73,23 @@ See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) fo
 
 ## Available Commands
 
-All commands follow the pattern: `npx @midscene/cli skill computer <command>`
+All commands follow the pattern: `npx @midscene/cli computer <command>`
 
 ### act -- Perform a Desktop Action
 
 Execute a natural language action on the desktop. The AI interprets your intent and performs the corresponding mouse/keyboard operations.
 
 ```bash
-npx @midscene/cli skill computer act "<action description>"
+npx @midscene/cli computer act "<action description>"
 ```
 
 Examples:
 
 ```bash
-npx @midscene/cli skill computer act "click the Safari icon in the Dock"
-npx @midscene/cli skill computer act "type 'Hello World' in the text field"
-npx @midscene/cli skill computer act "press Command+Space to open Spotlight"
-npx @midscene/cli skill computer act "double-click the Documents folder on the desktop"
+npx @midscene/cli computer act "click the Safari icon in the Dock"
+npx @midscene/cli computer act "type 'Hello World' in the text field"
+npx @midscene/cli computer act "press Command+Space to open Spotlight"
+npx @midscene/cli computer act "double-click the Documents folder on the desktop"
 ```
 
 ### query -- Extract Information from the Screen
@@ -97,15 +97,15 @@ npx @midscene/cli skill computer act "double-click the Documents folder on the d
 Ask a question about the current screen content. Returns structured data extracted by the AI.
 
 ```bash
-npx @midscene/cli skill computer query "<question>"
+npx @midscene/cli computer query "<question>"
 ```
 
 Examples:
 
 ```bash
-npx @midscene/cli skill computer query "what is the title of the frontmost window?"
-npx @midscene/cli skill computer query "list all visible application names in the Dock"
-npx @midscene/cli skill computer query "what text is shown in the notification?"
+npx @midscene/cli computer query "what is the title of the frontmost window?"
+npx @midscene/cli computer query "list all visible application names in the Dock"
+npx @midscene/cli computer query "what text is shown in the notification?"
 ```
 
 ### assert -- Verify Screen State
@@ -113,15 +113,15 @@ npx @midscene/cli skill computer query "what text is shown in the notification?"
 Assert a condition about the current screen. Returns success or failure with details.
 
 ```bash
-npx @midscene/cli skill computer assert "<condition>"
+npx @midscene/cli computer assert "<condition>"
 ```
 
 Examples:
 
 ```bash
-npx @midscene/cli skill computer assert "Safari is the frontmost application"
-npx @midscene/cli skill computer assert "the file 'report.pdf' is visible in Finder"
-npx @midscene/cli skill computer assert "the menu bar shows Wi-Fi is connected"
+npx @midscene/cli computer assert "Safari is the frontmost application"
+npx @midscene/cli computer assert "the file 'report.pdf' is visible in Finder"
+npx @midscene/cli computer assert "the menu bar shows Wi-Fi is connected"
 ```
 
 ### screenshot -- Capture the Desktop
@@ -129,7 +129,7 @@ npx @midscene/cli skill computer assert "the menu bar shows Wi-Fi is connected"
 Take a screenshot of the current desktop state.
 
 ```bash
-npx @midscene/cli skill computer screenshot
+npx @midscene/cli computer screenshot
 ```
 
 ### connect -- Connect to a Display
@@ -137,13 +137,13 @@ npx @midscene/cli skill computer screenshot
 Connect to the default display for automation.
 
 ```bash
-npx @midscene/cli skill computer connect
+npx @midscene/cli computer connect
 ```
 
 Connect to a specific display by ID:
 
 ```bash
-npx @midscene/cli skill computer connect --display <id>
+npx @midscene/cli computer connect --display <id>
 ```
 
 ## Output Format
@@ -207,9 +207,9 @@ Help the AI locate elements by describing their position on screen:
 Keyboard shortcuts are often more reliable than clicking UI elements:
 
 ```bash
-npx @midscene/cli skill computer act "press Command+C to copy"
-npx @midscene/cli skill computer act "press Command+V to paste"
-npx @midscene/cli skill computer act "press Command+Tab to switch application"
+npx @midscene/cli computer act "press Command+C to copy"
+npx @midscene/cli computer act "press Command+V to paste"
+npx @midscene/cli computer act "press Command+Tab to switch application"
 ```
 
 ## Common Patterns
@@ -217,47 +217,47 @@ npx @midscene/cli skill computer act "press Command+Tab to switch application"
 ### Open an Application via Spotlight
 
 ```bash
-npx @midscene/cli skill computer act "press Command+Space to open Spotlight"
-npx @midscene/cli skill computer act "type 'Visual Studio Code' in the Spotlight search field"
-npx @midscene/cli skill computer act "press Enter to launch the application"
+npx @midscene/cli computer act "press Command+Space to open Spotlight"
+npx @midscene/cli computer act "type 'Visual Studio Code' in the Spotlight search field"
+npx @midscene/cli computer act "press Enter to launch the application"
 ```
 
 ### Keyboard Shortcuts
 
 ```bash
-npx @midscene/cli skill computer act "press Command+A to select all"
-npx @midscene/cli skill computer act "press Command+C to copy"
-npx @midscene/cli skill computer act "press Command+V to paste"
-npx @midscene/cli skill computer act "press Command+Z to undo"
-npx @midscene/cli skill computer act "press Command+Shift+3 to take a system screenshot"
+npx @midscene/cli computer act "press Command+A to select all"
+npx @midscene/cli computer act "press Command+C to copy"
+npx @midscene/cli computer act "press Command+V to paste"
+npx @midscene/cli computer act "press Command+Z to undo"
+npx @midscene/cli computer act "press Command+Shift+3 to take a system screenshot"
 ```
 
 ### Multi-step Workflow
 
 ```bash
 # Open Terminal
-npx @midscene/cli skill computer act "press Command+Space to open Spotlight"
-npx @midscene/cli skill computer act "type 'Terminal'"
-npx @midscene/cli skill computer act "press Enter"
+npx @midscene/cli computer act "press Command+Space to open Spotlight"
+npx @midscene/cli computer act "type 'Terminal'"
+npx @midscene/cli computer act "press Enter"
 
 # Verify Terminal opened
-npx @midscene/cli skill computer assert "Terminal window is visible"
+npx @midscene/cli computer assert "Terminal window is visible"
 
 # Type a command
-npx @midscene/cli skill computer act "type 'ls -la' in the Terminal window"
-npx @midscene/cli skill computer act "press Enter"
+npx @midscene/cli computer act "type 'ls -la' in the Terminal window"
+npx @midscene/cli computer act "press Enter"
 
 # Check the output
-npx @midscene/cli skill computer query "what files are listed in the Terminal output?"
+npx @midscene/cli computer query "what files are listed in the Terminal output?"
 ```
 
 ### Window Management
 
 ```bash
-npx @midscene/cli skill computer act "press Command+M to minimize the current window"
-npx @midscene/cli skill computer act "press Command+W to close the current tab"
-npx @midscene/cli skill computer act "press Command+Q to quit the current application"
-npx @midscene/cli skill computer act "press Command+Tab to switch to the next application"
+npx @midscene/cli computer act "press Command+M to minimize the current window"
+npx @midscene/cli computer act "press Command+W to close the current tab"
+npx @midscene/cli computer act "press Command+Q to quit the current application"
+npx @midscene/cli computer act "press Command+Tab to switch to the next application"
 ```
 
 ## Troubleshooting

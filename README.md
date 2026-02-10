@@ -48,7 +48,7 @@ export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
 
 See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
 
-Each platform has additional prerequisites (see the skill's `setup.json` for details):
+Each platform has additional prerequisites (see the skill's SKILL.md for details):
 - **Web**: Google Chrome (Puppeteer mode) or Midscene Chrome Extension (Bridge mode)
 - **Computer**: macOS Accessibility permission + Xcode CLI Tools
 - **Android**: ADB + USB-connected device with debugging enabled

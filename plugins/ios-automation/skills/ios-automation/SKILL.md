@@ -17,22 +17,20 @@ Automate iOS devices and simulators using natural language through `npx @midscen
 
 Before running any commands, verify the following prerequisites:
 
-1. **Check setup.json** in this skill directory for prerequisite status.
-
-2. **Node.js** (>= 18.19.0):
+1. **Node.js** (>= 18.19.0):
    ```bash
    node --version
    ```
 
-3. **Xcode** installed:
+2. **Xcode** installed:
    ```bash
    xcodebuild -version
    ```
 
-4. **WebDriverAgent** running on the target iOS device or simulator. WebDriverAgent must be accessible at `http://<device-ip>:8100`. For simulators, this is typically `http://localhost:8100`.
+3. **WebDriverAgent** running on the target iOS device or simulator. WebDriverAgent must be accessible at `http://<device-ip>:8100`. For simulators, this is typically `http://localhost:8100`.
    - Documentation: https://midscenejs.com/zh/usage-ios.html
 
-5. **API Key** configured:
+4. **API Key** configured:
    ```bash
    echo $MIDSCENE_MODEL_API_KEY
    ```

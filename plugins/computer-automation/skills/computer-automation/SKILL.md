@@ -15,7 +15,7 @@ Control your entire macOS desktop with natural language using `npx @midscene/cli
 
 ## Setup Verification
 
-Before using this skill, verify the following prerequisites from `setup.json`:
+Before using this skill, verify the following prerequisites:
 
 ### 1. Node.js
 

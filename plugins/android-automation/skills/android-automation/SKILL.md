@@ -27,7 +27,7 @@ Automate Android devices using natural language through `npx @midscene/cli skill
 
 ## Setup Verification
 
-Before using this skill, verify the following prerequisites from `setup.json`:
+Before using this skill, verify the following prerequisites:
 
 1. **Node.js**: Run `node --version` to confirm Node.js >= 18.19.0 is installed.
 2. **ADB**: Run `adb devices` to confirm ADB is installed and at least one device is listed.

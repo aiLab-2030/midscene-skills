@@ -1,0 +1,11 @@
+{
+  "name": "web-automation",
+  "version": "0.0.1",
+  "description": "AI-powered web browser automation using Midscene. Control web pages with natural language - supports both Puppeteer and Chrome Bridge modes.",
+  "author": {
+    "name": "Web Infra Dev",
+    "email": "midscene@bytedance.com"
+  },
+  "repository": "https://github.com/web-infra-dev/midscene-skills",
+  "keywords": ["browser", "automation", "web", "puppeteer", "midscene", "ai-powered"]
+}

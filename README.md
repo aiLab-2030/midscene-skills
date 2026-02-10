@@ -1,29 +1,34 @@
 # Midscene Skills
 
-Claude Code plugin marketplace for browser automation, powered by Midscene.
+Claude Code plugin marketplace for AI-powered automation across multiple platforms, powered by [Midscene](https://midscenejs.com).
 
 ## Available Plugins
 
-### 🤖 midscene-automation
+### Web Automation
+AI-powered web browser automation. Control web pages with natural language - supports both Puppeteer (auto-launch) and Chrome Bridge (real browser) modes.
 
-AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.
+### Computer Automation
+AI-powered desktop automation (macOS). Control your computer with natural language - click, type, take screenshots, and more.
 
-[View Plugin Details →](./plugins/midscene-automation)
+### Android Automation
+AI-powered Android device automation. Control Android devices with natural language via ADB.
 
-**Features:**
-- Natural language browser automation using Midscene
-- AI-powered visual and semantic understanding - no CSS selectors needed
-- Persistent browser sessions for faster operations
-- Screenshot capture and visual feedback
-- Structured data extraction
+### iOS Automation
+AI-powered iOS device automation. Control iOS devices/simulators with natural language via WebDriverAgent.
 
 ## Installation
 
-On Claude Code, add the marketplace and install:
+On Claude Code, add the marketplace and install the plugins you need:
 
 ```bash
+# Add marketplace
 /plugin marketplace add web-infra-dev/midscene-skills
-/plugin install midscene-automation@midscene-marketplace
+
+# Install plugins (choose the ones you need)
+/plugin install web-automation@midscene-marketplace
+/plugin install computer-automation@midscene-marketplace
+/plugin install android-automation@midscene-marketplace
+/plugin install ios-automation@midscene-marketplace
 ```
 
 ## Setup
@@ -43,42 +48,41 @@ export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
 
 See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
 
-### Local Development
+Each platform has additional prerequisites (see the skill's `setup.json` for details):
+- **Web**: Google Chrome (Puppeteer mode) or Midscene Chrome Extension (Bridge mode)
+- **Computer**: macOS Accessibility permission + Xcode CLI Tools
+- **Android**: ADB + USB-connected device with debugging enabled
+- **iOS**: WebDriverAgent + Xcode
+
+## Usage
+
+Once installed, interact with Claude naturally:
+
+```
+You: Go to Google and search for "Midscene"
+Claude: [Uses web-automation to navigate and search]
+
+You: Take a screenshot of my desktop
+Claude: [Uses computer-automation to capture screenshot]
+
+You: Open Settings on my Android phone
+Claude: [Uses android-automation to interact with device]
+```
+
+All commands are powered by `@midscene/cli` and run via `npx` (auto-downloads, no pre-installation needed).
+
+## Local Development
 
 ```bash
-# Clone the repository
 git clone https://github.com/web-infra-dev/midscene-skills.git
 cd midscene-skills
 
 # Add marketplace locally
 /plugin marketplace add /absolute/path/to/midscene-skills
 
-# Install the plugin
-/plugin install midscene-automation@midscene-marketplace
+# Install plugins
+/plugin install web-automation@midscene-marketplace
 ```
-
-## Usage
-
-Once installed, you can interact with Claude naturally for browser automation:
-
-```
-You: Go to Google and search for "Midscene"
-Claude: [Automatically executes browser commands]
-
-You: What are the top 3 results?
-Claude: [Extracts and returns the data]
-```
-
-For detailed usage instructions, see the [midscene-automation plugin documentation](./plugins/midscene-automation).
-
-## Contributing
-
-To add a new plugin to this marketplace:
-
-1. Create a new directory under `plugins/`
-2. Add a `.claude-plugin/plugin.json` file
-3. Update `.claude-plugin/marketplace.json` to include your plugin
-4. Submit a pull request
 
 ## License
 

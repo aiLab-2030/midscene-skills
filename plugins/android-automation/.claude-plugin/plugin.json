@@ -1,0 +1,11 @@
+{
+  "name": "android-automation",
+  "version": "0.0.1",
+  "description": "AI-powered Android device automation using Midscene. Control Android devices with natural language via ADB.",
+  "author": {
+    "name": "Web Infra Dev",
+    "email": "midscene@bytedance.com"
+  },
+  "repository": "https://github.com/web-infra-dev/midscene-skills",
+  "keywords": ["android", "automation", "mobile", "adb", "midscene", "ai-powered"]
+}

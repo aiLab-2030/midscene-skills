@@ -146,14 +146,6 @@ Connect to a specific display by ID:
 npx @midscene/cli skill computer connect --display <id>
 ```
 
-### displays -- List Available Displays
-
-List all available displays and their IDs.
-
-```bash
-npx @midscene/cli skill computer displays
-```
-
 ## Output Format
 
 All commands return JSON output with the following structure:

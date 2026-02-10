@@ -6,27 +6,9 @@
   },
   "plugins": [
     {
-      "name": "web-automation",
-      "source": "./plugins/web-automation",
-      "description": "AI-powered web browser automation using Midscene. Control web pages with natural language - supports Puppeteer and Chrome Bridge modes.",
-      "version": "0.0.1"
-    },
-    {
-      "name": "computer-automation",
-      "source": "./plugins/computer-automation",
-      "description": "AI-powered desktop automation using Midscene. Control your computer with natural language.",
-      "version": "0.0.1"
-    },
-    {
-      "name": "android-automation",
-      "source": "./plugins/android-automation",
-      "description": "AI-powered Android device automation using Midscene. Control Android devices with natural language via ADB.",
-      "version": "0.0.1"
-    },
-    {
-      "name": "ios-automation",
-      "source": "./plugins/ios-automation",
-      "description": "AI-powered iOS device automation using Midscene. Control iOS devices with natural language via WebDriverAgent.",
+      "name": "midscene-automation",
+      "source": "./plugins/midscene-automation",
+      "description": "AI-powered automation across web, desktop, Android, and iOS using Midscene. Control any platform with natural language.",
       "version": "0.0.1"
     }
   ]

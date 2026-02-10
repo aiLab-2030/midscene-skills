@@ -1,34 +1,24 @@
 # Midscene Skills
 
-Claude Code plugin marketplace for AI-powered automation across multiple platforms, powered by [Midscene](https://midscenejs.com).
+Claude Code plugin for AI-powered automation across multiple platforms, powered by [Midscene](https://midscenejs.com).
 
-## Available Plugins
+## Supported Platforms
 
-### Web Automation
-AI-powered web browser automation. Control web pages with natural language - supports both Puppeteer (auto-launch) and Chrome Bridge (real browser) modes.
-
-### Computer Automation
-AI-powered desktop automation (macOS). Control your computer with natural language - click, type, take screenshots, and more.
-
-### Android Automation
-AI-powered Android device automation. Control Android devices with natural language via ADB.
-
-### iOS Automation
-AI-powered iOS device automation. Control iOS devices/simulators with natural language via WebDriverAgent.
+- **Web** - Browser automation (Puppeteer or Chrome Bridge mode)
+- **Computer** - Desktop automation (macOS)
+- **Android** - Android device automation via ADB
+- **iOS** - iOS device/simulator automation via WebDriverAgent
 
 ## Installation
 
-On Claude Code, add the marketplace and install the plugins you need:
+On Claude Code, add the marketplace and install the plugin:
 
 ```bash
 # Add marketplace
 /plugin marketplace add web-infra-dev/midscene-skills
 
-# Install plugins (choose the ones you need)
-/plugin install web-automation@midscene-marketplace
-/plugin install computer-automation@midscene-marketplace
-/plugin install android-automation@midscene-marketplace
-/plugin install ios-automation@midscene-marketplace
+# Install (includes all 4 platform skills)
+/plugin install midscene-automation@midscene-marketplace
 ```
 
 ## Setup
@@ -80,8 +70,8 @@ cd midscene-skills
 # Add marketplace locally
 /plugin marketplace add /absolute/path/to/midscene-skills
 
-# Install plugins
-/plugin install web-automation@midscene-marketplace
+# Install plugin
+/plugin install midscene-automation@midscene-marketplace
 ```
 
 ## License

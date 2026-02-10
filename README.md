@@ -1,17 +1,19 @@
 # Midscene Skills
 
-Claude Code plugin for AI-powered automation across multiple platforms, powered by [Midscene](https://midscenejs.com).
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills for AI-powered automation, powered by [Midscene](https://midscenejs.com).
+
+One plugin, four platforms — control web browsers, desktops, Android devices, and iOS devices with natural language.
 
 ## Supported Platforms
 
-- **Web** - Browser automation (Puppeteer or Chrome Bridge mode)
-- **Computer** - Desktop automation (macOS)
-- **Android** - Android device automation via ADB
-- **iOS** - iOS device/simulator automation via WebDriverAgent
+| Platform | Description | Prerequisites |
+|----------|-------------|---------------|
+| **Web** | Browser automation via Puppeteer or [Chrome Bridge](https://midscenejs.com/bridge-mode-by-chrome-extension.html) mode | Chrome / Midscene Chrome Extension |
+| **Computer** | macOS desktop automation | Accessibility permission, Xcode CLI Tools |
+| **Android** | Android device automation via ADB | ADB, USB-connected device |
+| **iOS** | iOS device/simulator automation via [WebDriverAgent](https://midscenejs.com/zh/usage-ios.html) | Xcode, WebDriverAgent |
 
 ## Installation
-
-On Claude Code, add the marketplace and install the plugin:
 
 ```bash
 # Add marketplace
@@ -29,37 +31,52 @@ Set your AI model API key:
 export MIDSCENE_MODEL_API_KEY="your-api-key"
 ```
 
-Optional configuration:
+Optional — use a custom model or endpoint:
 
 ```bash
 export MIDSCENE_MODEL_NAME="gpt-4o"
 export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
 ```
 
-See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
-
-Each platform has additional prerequisites (see the skill's SKILL.md for details):
-- **Web**: Google Chrome (Puppeteer mode) or Midscene Chrome Extension (Bridge mode)
-- **Computer**: macOS Accessibility permission + Xcode CLI Tools
-- **Android**: ADB + USB-connected device with debugging enabled
-- **iOS**: WebDriverAgent + Xcode
+See [Model Configuration](https://midscenejs.com/model-provider.html) for all supported providers.
 
 ## Usage
 
-Once installed, interact with Claude naturally:
+Once installed, just talk to Claude naturally:
 
 ```
-You: Go to Google and search for "Midscene"
-Claude: [Uses web-automation to navigate and search]
+> Open Hacker News and tell me the top 3 stories
 
-You: Take a screenshot of my desktop
-Claude: [Uses computer-automation to capture screenshot]
+> Take a screenshot of my desktop
 
-You: Open Settings on my Android phone
-Claude: [Uses android-automation to interact with device]
+> Open the Settings app on my Android phone
+
+> Check what Wi-Fi network my iPhone is connected to
 ```
 
-All commands are powered by `@midscene/cli` and run via `npx` (auto-downloads, no pre-installation needed).
+Claude will automatically pick the right skill and execute the commands via `@midscene/cli`.
+
+## How It Works
+
+All commands run through `npx @midscene/cli skill <platform> <command>`, which auto-downloads on first use — no pre-installation needed.
+
+```bash
+# Web
+npx @midscene/cli skill web navigate "https://example.com" --bridge
+npx @midscene/cli skill web query "what is the page title?" --bridge
+
+# Computer
+npx @midscene/cli skill computer act "press Command+Space to open Spotlight"
+npx @midscene/cli skill computer screenshot
+
+# Android
+npx @midscene/cli skill android act "tap the Settings icon"
+npx @midscene/cli skill android query "what is the battery percentage?"
+
+# iOS
+npx @midscene/cli skill ios act "tap the Safari icon"
+npx @midscene/cli skill ios assert "Safari is open"
+```
 
 ## Local Development
 
@@ -76,4 +93,4 @@ cd midscene-skills
 
 ## License
 
-MIT - See [LICENSE](./LICENSE) for details
+MIT

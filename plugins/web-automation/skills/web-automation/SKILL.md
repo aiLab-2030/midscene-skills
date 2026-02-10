@@ -30,31 +30,39 @@ npx @midscene/cli skill web <command>
 
 Midscene uses AI visual understanding to interact with web pages using natural language descriptions -- no CSS selectors or XPath needed.
 
-## Modes
+## Mode Selection
 
-### Puppeteer Mode (Default)
+**Always try Bridge mode (`--bridge`) first.** Only fall back to Puppeteer mode if Bridge connection fails (timeout error).
 
-Automatically launches a headless Chrome instance. Best for:
-- Automated scraping and data extraction
-- CI/CD testing pipelines
-- Tasks that do not require existing login sessions
+### Bridge Mode (--bridge) -- Preferred
 
-```bash
-npx @midscene/cli skill web navigate "https://example.com"
-```
-
-### Bridge Mode (--bridge)
-
-Connects to your real Chrome browser via the Midscene Chrome Extension. Best for:
-- Pages requiring authentication (cookies/sessions preserved)
-- Interacting with pages behind login walls
-- Debugging and development workflows
+Connects to your real Chrome browser via the Midscene Chrome Extension. Benefits:
+- Preserves cookies, sessions, and login state
+- Uses the same browser the user is already using
+- No extra Chrome process spawned
 
 ```bash
 npx @midscene/cli skill web navigate "https://example.com" --bridge
 ```
 
-**Prerequisite:** Install the [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) and enable it before using Bridge mode.
+**Prerequisite:** The [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) must be installed and enabled.
+
+### Puppeteer Mode (Fallback)
+
+Automatically launches a separate Chrome instance. Use only when:
+- Bridge mode fails with a connection timeout
+- The user explicitly requests Puppeteer mode
+- Running in CI/CD or headless environments
+
+```bash
+npx @midscene/cli skill web navigate "https://example.com"
+```
+
+### Fallback Strategy
+
+1. Run the command with `--bridge`
+2. If you get a "Bridge call timeout" error, re-run **without** `--bridge` (Puppeteer mode)
+3. Remember the mode that worked and use it for subsequent commands in the same session
 
 ## Setup Verification
 
@@ -83,10 +91,6 @@ See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) fo
 ### navigate -- Open a URL
 
 ```bash
-# Puppeteer mode (default)
-npx @midscene/cli skill web navigate "https://example.com"
-
-# Bridge mode
 npx @midscene/cli skill web navigate "https://example.com" --bridge
 ```
 
@@ -95,10 +99,10 @@ npx @midscene/cli skill web navigate "https://example.com" --bridge
 Perform actions using natural language descriptions.
 
 ```bash
-npx @midscene/cli skill web act "click the Login button"
-npx @midscene/cli skill web act "type 'hello world' into the search box"
-npx @midscene/cli skill web act "scroll down to the footer"
-npx @midscene/cli skill web act "select 'Large' from the size dropdown"
+npx @midscene/cli skill web act "click the Login button" --bridge
+npx @midscene/cli skill web act "type 'hello world' into the search box" --bridge
+npx @midscene/cli skill web act "scroll down to the footer" --bridge
+npx @midscene/cli skill web act "select 'Large' from the size dropdown" --bridge
 ```
 
 ### query -- Extract data from the page
@@ -106,9 +110,9 @@ npx @midscene/cli skill web act "select 'Large' from the size dropdown"
 Ask questions about page content and get structured results.
 
 ```bash
-npx @midscene/cli skill web query "what are all the product names and prices on this page?"
-npx @midscene/cli skill web query "get the main headline text"
-npx @midscene/cli skill web query "list all navigation menu items"
+npx @midscene/cli skill web query "what are all the product names and prices on this page?" --bridge
+npx @midscene/cli skill web query "get the main headline text" --bridge
+npx @midscene/cli skill web query "list all navigation menu items" --bridge
 ```
 
 ### assert -- Verify conditions
@@ -116,21 +120,21 @@ npx @midscene/cli skill web query "list all navigation menu items"
 Assert that something is true about the current page state. Returns success or failure.
 
 ```bash
-npx @midscene/cli skill web assert "the page title contains 'Dashboard'"
-npx @midscene/cli skill web assert "there is a login form visible"
-npx @midscene/cli skill web assert "the error message is not displayed"
+npx @midscene/cli skill web assert "the page title contains 'Dashboard'" --bridge
+npx @midscene/cli skill web assert "there is a login form visible" --bridge
+npx @midscene/cli skill web assert "the error message is not displayed" --bridge
 ```
 
 ### screenshot -- Capture the current page
 
 ```bash
-npx @midscene/cli skill web screenshot
+npx @midscene/cli skill web screenshot --bridge
 ```
 
 ### close -- Close the browser
 
 ```bash
-npx @midscene/cli skill web close
+npx @midscene/cli skill web close --bridge
 ```
 
 ## Output Format
@@ -169,41 +173,41 @@ Fields:
 ### Simple Browsing
 
 ```bash
-npx @midscene/cli skill web navigate "https://news.ycombinator.com"
-npx @midscene/cli skill web query "what are the top 5 stories on the front page?"
-npx @midscene/cli skill web close
+npx @midscene/cli skill web navigate "https://news.ycombinator.com" --bridge
+npx @midscene/cli skill web query "what are the top 5 stories on the front page?" --bridge
+npx @midscene/cli skill web close --bridge
 ```
 
 ### Data Extraction
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com/products"
-npx @midscene/cli skill web query "extract all product names, prices, and ratings as a JSON array"
-npx @midscene/cli skill web close
+npx @midscene/cli skill web navigate "https://example.com/products" --bridge
+npx @midscene/cli skill web query "extract all product names, prices, and ratings as a JSON array" --bridge
+npx @midscene/cli skill web close --bridge
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/cli skill web navigate "https://example.com"
-npx @midscene/cli skill web act "click the Sign In link"
-npx @midscene/cli skill web act "type 'user@example.com' into the email field"
-npx @midscene/cli skill web act "type 'password123' into the password field"
-npx @midscene/cli skill web act "click the Log In button"
-npx @midscene/cli skill web screenshot
-npx @midscene/cli skill web close
+npx @midscene/cli skill web navigate "https://example.com" --bridge
+npx @midscene/cli skill web act "click the Sign In link" --bridge
+npx @midscene/cli skill web act "type 'user@example.com' into the email field" --bridge
+npx @midscene/cli skill web act "type 'password123' into the password field" --bridge
+npx @midscene/cli skill web act "click the Log In button" --bridge
+npx @midscene/cli skill web screenshot --bridge
+npx @midscene/cli skill web close --bridge
 ```
 
 ### Frontend Verification
 
 ```bash
-npx @midscene/cli skill web navigate "http://localhost:3000"
-npx @midscene/cli skill web assert "the login form is visible with email and password fields"
-npx @midscene/cli skill web act "type 'test@example.com' into the email field"
-npx @midscene/cli skill web act "type 'password' into the password field"
-npx @midscene/cli skill web act "click the Submit button"
-npx @midscene/cli skill web assert "the welcome message is displayed"
-npx @midscene/cli skill web close
+npx @midscene/cli skill web navigate "http://localhost:3000" --bridge
+npx @midscene/cli skill web assert "the login form is visible with email and password fields" --bridge
+npx @midscene/cli skill web act "type 'test@example.com' into the email field" --bridge
+npx @midscene/cli skill web act "type 'password' into the password field" --bridge
+npx @midscene/cli skill web act "click the Submit button" --bridge
+npx @midscene/cli skill web assert "the welcome message is displayed" --bridge
+npx @midscene/cli skill web close --bridge
 ```
 
 ## Frontend Verification Workflow

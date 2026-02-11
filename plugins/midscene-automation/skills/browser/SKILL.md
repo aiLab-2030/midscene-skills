@@ -1,17 +1,17 @@
 ---
 name: Browser Automation
 description: |
-  AI-powered browser automation using Midscene with Puppeteer. Use this skill when the user wants to:
-  - Browse, navigate, or open web pages in an automated browser
-  - Scrape, extract, or collect data from websites without needing login state
+  AI-powered browser automation using Midscene. Use this skill when the user wants to:
+  - Browse, navigate, or open web pages
+  - Scrape, extract, or collect data from websites
   - Fill out forms, click buttons, or interact with web elements
   - Verify, validate, or test frontend UI behavior
   - Take screenshots of web pages
-  - Automate multi-step web workflows in a clean browser environment
-  - Run browser automation in CI/CD or headless environments
+  - Automate multi-step web workflows
+  - Run browser automation or check website content
 
-  This mode launches a separate Chrome instance via Puppeteer. It does NOT preserve
-  existing cookies, sessions, or login state from the user's browser.
+  This mode connects to the user's Chrome browser via the Midscene Chrome Extension,
+  opening a new tab for the target URL.
 
   Trigger keywords: browse, navigate, open url, web page, website, scrape, extract, crawl,
   fill form, click, interact, verify, validate, test, assert, screenshot, frontend, UI test,
@@ -22,28 +22,17 @@ allowed-tools:
 
 # Browser Automation
 
-## Overview
-
-This skill provides browser automation powered by Midscene AI using **Puppeteer mode**. It automatically launches a separate Chrome instance for automation.
-
-All commands are executed via:
-
-```
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command>
-```
-
-Midscene uses AI visual understanding to interact with web pages using natural language descriptions — no CSS selectors or XPath needed.
+Automate the user's Chrome browser using `npx @midscene/web@1.3.12-beta-20260211123127.0`. This connects via the Midscene Chrome Extension (Bridge mode), opening a new tab for each URL. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## When to Use
 
-Use Puppeteer (Browser) mode when:
-- The Chrome Bridge mode fails with a connection timeout
-- The user explicitly requests Puppeteer mode
-- Running in CI/CD or headless environments
-- You don't need to preserve existing cookies, sessions, or login state
-- You want a clean browser environment for testing
+Use this skill when:
+- The user wants to browse or navigate to a specific URL
+- You need to scrape, extract, or collect data from websites
+- You want to verify or test frontend UI behavior
+- The user wants screenshots of web pages
 
-**Note:** This mode launches a new Chrome instance. It does NOT share cookies, sessions, or extensions with the user's existing browser. If you need to preserve login state, use the **Chrome Bridge Automation** skill instead.
+If you need to preserve login sessions or work with the user's existing browser tabs, use the **Chrome Bridge Automation** skill instead.
 
 ## Setup Verification
 
@@ -59,131 +48,153 @@ Before running commands, verify the environment is ready:
    export MIDSCENE_MODEL_API_KEY="your-api-key"
    ```
 
+3. **Ensure Chrome is open** with the [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) installed and showing "Connected" status.
+
 See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for details.
 
-## Available Commands
+## Command Discovery
 
-### navigate — Open a URL
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://example.com"
-```
-
-### act — Interact with the page
-
-Perform actions using natural language descriptions.
+First, run help to see all available commands:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Login button"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'hello world' into the search box"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "scroll down to the footer"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "select 'Large' from the size dropdown"
+npx @midscene/web@1.3.12-beta-20260211123127.0 --help
 ```
 
-### query — Extract data from the page
+## Common Commands
 
-Ask questions about page content and get structured results.
+### Connect to a Web Page
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "what are all the product names and prices on this page?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "get the main headline text"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "list all navigation menu items"
+npx @midscene/web@1.3.12-beta-20260211123127.0 connect --url https://example.com
 ```
 
-### assert — Verify conditions
-
-Assert that something is true about the current page state. Returns success or failure.
+### Take Screenshot
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the page title contains 'Dashboard'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "there is a login form visible"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the error message is not displayed"
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
 ```
 
-### screenshot — Capture the current page
+After taking a screenshot, read the saved image file to understand the current page state before deciding the next action.
+
+### Perform Actions
+
+Use actionSpace tools to interact with the page:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot
+npx @midscene/web@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the Login button"}'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Scroll --direction down
+npx @midscene/web@1.3.12-beta-20260211123127.0 Hover --locate '{"prompt":"the navigation menu"}'
+npx @midscene/web@1.3.12-beta-20260211123127.0 KeyboardPress --value Enter
+npx @midscene/web@1.3.12-beta-20260211123127.0 DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
-### close — Close the browser
+### Natural Language Action
+
+Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 close
+npx @midscene/web@1.3.12-beta-20260211123127.0 act --prompt "click the country dropdown and select Japan"
 ```
 
-## Output Format
+### Disconnect
 
-All commands return JSON to stdout:
-
-```json
-{
-  "success": true,
-  "message": "Successfully navigated to https://example.com",
-  "screenshot": "/tmp/midscene-screenshot-1234567890.png",
-  "result": null
-}
+```bash
+npx @midscene/web@1.3.12-beta-20260211123127.0 disconnect
 ```
 
-Fields:
-- **success** (boolean): Whether the command succeeded
-- **message** (string): Human-readable status message
-- **screenshot** (string): Absolute path to the screenshot image file
-- **result** (any): Data returned by `query` commands; null for other commands
-- **error** (string): Error message when `success` is false
+## Workflow Pattern
 
-**IMPORTANT:** After every command, read the screenshot file to visually verify the page state before proceeding to the next step.
+Since CLI commands are stateless between invocations, follow this pattern:
+
+1. **Connect** to a URL to establish a session
+2. **Take screenshot** to see the current state
+3. **Analyze** the screenshot to decide the next action
+4. **Execute action** (Tap, Input, Scroll, etc.)
+5. **Take screenshot** again to verify the result
+6. **Repeat** steps 3-5 until the task is complete
+7. **Disconnect** when done
 
 ## Best Practices
 
-1. **Always navigate first.** Before any interaction, navigate to the target URL.
-2. **View screenshots after each step.** Read the screenshot file path from the JSON output to verify the page state.
-3. **Be specific in action descriptions.** Instead of "click the button", say "click the Submit button in the contact form".
-4. **Use natural language.** Describe what you see on the page, not CSS selectors. Say "the red Buy Now button" instead of "#buy-btn".
-5. **Handle loading states.** After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
-6. **Close the browser when done.** Always run the close command when finished to free resources.
-7. **Combine transient UI interactions.** Dropdowns, autocomplete popups, tooltips, and confirm dialogs may disappear between commands. Combine all interactions with transient UI into a single `act` (e.g., `"click the country dropdown and select 'Japan'"`).
+1. **Always connect first**: Navigate to the target URL with `connect --url` before any interaction.
+2. **Take screenshots frequently**: Before and after each action to verify state changes.
+3. **Be specific in locate prompts**: Instead of `"the button"`, say `"the blue Submit button in the contact form"`.
+4. **Use natural language**: Describe what you see on the page, not CSS selectors. Say `"the red Buy Now button"` instead of `"#buy-btn"`.
+5. **Handle loading states**: After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
+6. **Disconnect when done**: Always disconnect to free resources.
+
+### Handle Transient UI
+
+Dropdowns, autocomplete popups, tooltips, and confirm dialogs **disappear** between commands. When interacting with transient UI:
+
+- **Use `act` for multi-step transient interactions** — it executes everything in a single process
+- **Or execute commands rapidly in sequence** — do NOT take screenshots between steps
+- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
+- Persistent UI (page content, navigation bars, sidebars) is fine to interact with across separate commands
+
+**Example — Dropdown selection using `act` (recommended for transient UI):**
+
+```bash
+npx @midscene/web@1.3.12-beta-20260211123127.0 act --prompt "click the country dropdown and select Japan"
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+```
+
+**Example — Dropdown selection using individual commands (alternative):**
+
+```bash
+# These commands must be run back-to-back WITHOUT screenshots in between
+npx @midscene/web@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the country dropdown"}'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"Japan option in the dropdown list"}'
+# NOW take a screenshot to verify the result
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+```
 
 ## Common Patterns
 
 ### Simple Browsing
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://news.ycombinator.com"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "what are the top 5 stories on the front page?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 close
-```
-
-### Data Extraction
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://example.com/products"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "extract all product names, prices, and ratings as a JSON array"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 close
+npx @midscene/web@1.3.12-beta-20260211123127.0 connect --url 'https://news.ycombinator.com'
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+# Read the screenshot, then decide next action
+npx @midscene/web@1.3.12-beta-20260211123127.0 disconnect
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://example.com"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Sign In link"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'user@example.com' into the email field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'password123' into the password field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Log In button"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot
-npx @midscene/cli@1.3.11-beta-20260211031343.0 close
+npx @midscene/web@1.3.12-beta-20260211123127.0 connect --url 'https://example.com'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the Sign In link"}'
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+npx @midscene/web@1.3.12-beta-20260211123127.0 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Input --locate '{"prompt":"the password field"}' --value 'password123'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the Log In button"}'
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+npx @midscene/web@1.3.12-beta-20260211123127.0 disconnect
 ```
 
 ### Frontend Verification
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "http://localhost:3000"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the login form is visible with email and password fields"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'test@example.com' into the email field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'password' into the password field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Submit button"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the welcome message is displayed"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 close
+npx @midscene/web@1.3.12-beta-20260211123127.0 connect --url 'http://localhost:3000'
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+# Analyze: verify login form is visible
+npx @midscene/web@1.3.12-beta-20260211123127.0 Input --locate '{"prompt":"the email field"}' --value 'test@example.com'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Input --locate '{"prompt":"the password field"}' --value 'password'
+npx @midscene/web@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the Submit button"}'
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+# Analyze: verify the welcome message is displayed
+npx @midscene/web@1.3.12-beta-20260211123127.0 disconnect
+```
+
+### Data Extraction
+
+```bash
+npx @midscene/web@1.3.12-beta-20260211123127.0 connect --url 'https://example.com/products'
+npx @midscene/web@1.3.12-beta-20260211123127.0 take_screenshot
+# Read the screenshot to extract product names, prices, and ratings
+npx @midscene/web@1.3.12-beta-20260211123127.0 disconnect
 ```
 
 ## Frontend Verification Workflow
@@ -191,29 +202,27 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 close
 When asked to verify or test a frontend application:
 
 1. **Start the dev server** if not already running (e.g., `npm run dev`).
-2. **Navigate** to the local URL (e.g., `http://localhost:3000`).
+2. **Connect** to the local URL (e.g., `http://localhost:3000`).
 3. **Take a screenshot** to see the initial state.
-4. **Run assertions** to verify expected UI elements are present.
-5. **Perform interactions** (fill forms, click buttons) to test user flows.
-6. **Assert outcomes** (success messages, navigation changes, data display).
-7. **Close the browser** when finished.
+4. **Analyze the screenshot** to verify expected UI elements are present.
+5. **Perform interactions** (Tap, Input, Scroll) to test user flows.
+6. **Take screenshots** after each step to verify outcomes.
+7. **Disconnect** when finished.
 
 ## Troubleshooting
 
-### "Could not find Chrome installation"
-Chrome must be installed on the system. The CLI auto-detects Chrome at standard installation paths.
-
-### "Chrome failed to start"
-- Another Chrome instance may be using the debug port (9222). Close it or check for port conflicts.
-- Try running `npx @midscene/cli@1.3.11-beta-20260211031343.0 close` first.
+### Bridge Mode Connection Failures
+- Ensure Chrome is open with the Midscene Extension installed and enabled.
+- Check that the extension shows "Connected" status.
+- See the [Bridge Mode documentation](https://midscenejs.com/bridge-mode-by-chrome-extension.html).
 
 ### API Key Errors
 - Ensure `MIDSCENE_MODEL_API_KEY` is set in the environment.
 - Verify the key is valid for the configured model provider.
 
 ### Timeouts
-- Web pages may take time to load. After navigation, take a screenshot to verify readiness before interacting.
+- Web pages may take time to load. After connecting, take a screenshot to verify readiness before interacting.
 - For slow pages, wait briefly between steps.
 
 ### Screenshots Not Displaying
-- The screenshot path is an absolute path to a temporary file. Use the Read tool to view it.
+- The screenshot path is an absolute path to a local file. Use the Read tool to view it.

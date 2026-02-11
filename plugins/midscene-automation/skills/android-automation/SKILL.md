@@ -23,7 +23,7 @@ allowed-tools:
 
 # Android Device Automation
 
-Automate Android devices using natural language through `npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> -p android`. Powered by Midscene's AI visual understanding, this skill lets you interact with any Android device connected via ADB -- no element IDs or XPath selectors needed.
+Automate Android devices using `npx @midscene/android`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Setup Verification
 
@@ -36,135 +36,70 @@ Before using this skill, verify the following prerequisites:
 
 If any prerequisite is missing, guide the user through setup before proceeding.
 
-## Available Commands
+## Command Discovery
 
-### Perform an Action
-
-Execute a natural language action on the device:
+First, run help to see all available commands:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "<action description>"
+npx @midscene/android --help
 ```
 
-Examples:
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the Settings icon"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "swipe up to scroll down"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "type 'hello world' in the search field"`
-
-### Query the Screen
-
-Extract information from the current device screen:
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "<query description>"
-```
-
-Examples:
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "what is the battery percentage?"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "list all visible app names"`
-
-### Assert Screen State
-
-Verify a condition on the current screen:
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "<condition>"
-```
-
-Examples:
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "the Wi-Fi toggle is enabled"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "the Settings app is open"`
-
-### Take a Screenshot
-
-Capture the current device screen:
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p android
-```
+## Common Commands
 
 ### Connect to Device
 
-Connect to the default device:
+```bash
+npx @midscene/android connect
+npx @midscene/android connect --deviceId emulator-5554
+```
+
+### Take Screenshot
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p android
+npx @midscene/android take_screenshot
 ```
 
-Connect to a specific device by ID:
+After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
+
+### Perform Actions
+
+Use actionSpace tools to interact with the device. Each action uses `--locate` to describe which element to target:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p android --device <device-id>
+npx @midscene/android Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/android Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/android Scroll --direction down
+npx @midscene/android Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/android KeyboardPress --value Enter
+npx @midscene/android LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android Launch --uri 'com.android.settings'
 ```
 
-Use `adb devices` to list available device IDs.
+### Disconnect
 
-## Output Format
-
-All commands return JSON with the following structure:
-
-```json
-{
-  "success": true,
-  "message": "Action completed successfully",
-  "screenshot": "/path/to/screenshot.png",
-  "result": {}
-}
+```bash
+npx @midscene/android disconnect
 ```
 
-- **success**: Boolean indicating whether the command succeeded.
-- **message**: Human-readable description of the outcome.
-- **screenshot**: Path to a screenshot taken after the command executed (when available).
-- **result**: Command-specific data (e.g., query results, assertion outcomes).
+## Workflow Pattern
+
+Since CLI commands are stateless between invocations, follow this pattern:
+
+1. **Connect** to establish a session
+2. **Take screenshot** to see the current state
+3. **Analyze** the screenshot to decide the next action
+4. **Execute action** (Tap, Input, Scroll, etc.)
+5. **Take screenshot** again to verify the result
+6. **Repeat** steps 3-5 until the task is complete
+7. **Disconnect** when done
 
 ## Best Practices
 
-1. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., "the search icon at the top right" rather than vague references).
-2. **Take screenshots first**: Before performing complex actions, capture a screenshot to understand the current screen state. This helps you give more accurate instructions.
-3. **Handle app launches explicitly**: Use `act` to open apps before interacting with them (e.g., `act "open the Chrome app"`).
-4. **Wait for transitions**: After navigation actions (tapping a button that loads a new screen), take a screenshot to confirm the new screen has loaded before proceeding.
+1. **Take screenshots frequently**: Before and after each action to verify state changes.
+2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions in `--locate` prompts.
+3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
+4. **Handle transient UI**: Popup menus, toasts, and bottom sheets may disappear. If you need to interact with transient UI, do it immediately after it appears.
 5. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
-6. **Use assert for verification**: After completing a workflow, use `assert` to confirm the expected state rather than relying solely on screenshots.
-7. **Combine transient UI interactions**: Popup menus, toasts, bottom sheets, and snackbars may disappear between commands. Combine all interactions with transient UI into a single `act` (e.g., `"long press the message and tap 'Delete' in the popup menu"`).
-
-## Common Patterns
-
-### Open an App
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "open the Settings app"
-```
-
-### Navigate Through Menus
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap on 'Wi-Fi'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap on the network named 'MyNetwork'"
-```
-
-### Fill a Form
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the username field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "type 'user@example.com'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the password field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "type 'mypassword'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the Login button"
-```
-
-### Verify Screen State
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "the home screen is displayed"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "what app is currently in the foreground?"
-```
-
-### Scroll and Find Content
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "swipe up to scroll down"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "is there a 'About phone' option visible?"
-```
 
 ## Troubleshooting
 
@@ -176,4 +111,4 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "is there a '
 | **Device shows "offline"** | Disconnect and reconnect the USB cable. Run `adb kill-server && adb start-server`. |
 | **Command timeout** | The device screen may be off or locked. Wake the device with `adb shell input keyevent KEYCODE_WAKEUP` and unlock it. |
 | **API key error** | Verify `MIDSCENE_MODEL_API_KEY` is set: `echo $MIDSCENE_MODEL_API_KEY`. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html). |
-| **Wrong device targeted** | If multiple devices are connected, use `--device <id>` flag to specify the target device. |
+| **Wrong device targeted** | If multiple devices are connected, use `--deviceId <id>` flag with the `connect` command. |

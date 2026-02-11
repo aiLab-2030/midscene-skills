@@ -11,7 +11,7 @@ allowed-tools:
 
 # iOS Device Automation
 
-Automate iOS devices and simulators using natural language through `npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> -p ios`. This skill leverages Midscene's AI-powered visual understanding to interact with any iOS app without requiring accessibility IDs or XPath selectors.
+Automate iOS devices and simulators using `npx @midscene/ios`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Setup Verification
 
@@ -34,162 +34,70 @@ Before running any commands, verify the following prerequisites:
    ```bash
    echo $MIDSCENE_MODEL_API_KEY
    ```
-   If not set, configure it:
-   ```bash
-   export MIDSCENE_MODEL_API_KEY=your-api-key
-   ```
-   See https://midscenejs.com/zh/model-common-config.html for model configuration options.
 
-## Available Commands
+## Command Discovery
 
-### act - Perform an Action
-
-Execute a natural language action on the iOS device (tap, swipe, type, scroll, etc.).
+First, run help to see all available commands:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "<action description>"
+npx @midscene/ios --help
 ```
 
-**Examples:**
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Settings icon"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Swipe up on the screen"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Type 'hello world' in the search field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Scroll down to find the Privacy section"
-```
+## Common Commands
 
-### query - Extract Information
-
-Extract information from the current screen using natural language.
+### Connect to Device
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "<query description>"
+npx @midscene/ios connect
 ```
 
-**Examples:**
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What is the current battery percentage?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What are all the visible app names on the home screen?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What is the title of the current page?"
-```
-
-### assert - Verify Screen State
-
-Assert that a condition is true on the current screen. Returns success or failure with details.
+### Take Screenshot
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "<condition>"
+npx @midscene/ios take_screenshot
 ```
 
-**Examples:**
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The Settings app is open"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The Wi-Fi toggle is turned on"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "A search bar is visible at the top of the screen"
-```
+After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
 
-### screenshot - Capture Screen
+### Perform Actions
 
-Take a screenshot of the current device screen.
+Use actionSpace tools to interact with the device:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p ios
+npx @midscene/ios Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/ios Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/ios Scroll --direction down
+npx @midscene/ios Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/ios KeyboardPress --value Enter
+npx @midscene/ios LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/ios Launch --uri 'com.apple.Preferences'
 ```
 
-### connect - Connect to Device
-
-Verify and establish connection to the iOS device via WebDriverAgent.
+### Disconnect
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p ios
+npx @midscene/ios disconnect
 ```
 
-## Output Format
+## Workflow Pattern
 
-All commands return JSON output with the following structure:
+Since CLI commands are stateless between invocations, follow this pattern:
 
-```json
-{
-  "success": true,
-  "message": "Action completed successfully",
-  "screenshot": "/path/to/screenshot.png",
-  "result": null
-}
-```
-
-- **success**: `true` if the command executed without errors, `false` otherwise.
-- **message**: A human-readable description of the outcome.
-- **screenshot**: Path to the screenshot taken after the command executed (if applicable).
-- **result**: Command-specific result data. For `query`, this contains the extracted information. For `assert`, this contains the assertion result. For `act` and `screenshot`, this is typically `null`.
+1. **Connect** to establish a session
+2. **Take screenshot** to see the current state
+3. **Analyze** the screenshot to decide the next action
+4. **Execute action** (Tap, Input, Scroll, etc.)
+5. **Take screenshot** again to verify the result
+6. **Repeat** steps 3-5 until the task is complete
+7. **Disconnect** when done
 
 ## Best Practices
 
-### Describe UI Elements Clearly
-Use descriptive, visual language when referring to UI elements. The AI model identifies elements by their visual appearance on screen.
-
-- **Good:** "Tap the blue 'Send' button at the bottom right"
-- **Good:** "Tap the gear icon labeled 'Settings'"
-- **Bad:** "Tap button #3"
-- **Bad:** "Click the element with id=send-btn"
-
-### Take Screenshots Before Complex Actions
-Before performing multi-step workflows, take a screenshot first to understand the current screen state:
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p ios
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the first item in the list"
-```
-
-### Handle App State Transitions
-iOS apps may have loading screens, animations, or transitions. Allow time for these to complete or verify the expected state:
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Login button"
-# Wait briefly for navigation
-sleep 2
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The home screen is displayed"
-```
-
-### Use Assert for Verification
-After performing actions, use `assert` to verify the expected outcome before proceeding:
-
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Toggle the Wi-Fi switch"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "Wi-Fi is turned off"
-```
-
-### Combine Transient UI Interactions
-Action sheets, alerts, popup menus, and notification banners may disappear between commands. Combine all interactions with transient UI into a single `act` (e.g., `"tap the Share button and select 'Copy Link' from the action sheet"`).
-
-## Common Patterns
-
-### Open an App from Home Screen
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Press the Home button"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Safari icon"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "Safari is open"
-```
-
-### Navigate Within an App
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the 'General' option in the Settings list"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the back button in the top left"
-```
-
-### Fill a Form
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Username text field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Type 'john@example.com'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Password text field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Type 'securepassword123'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Sign In button"
-```
-
-### Verify Screen Content
-```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What is the current page title?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The profile page shows the username 'john'"
-```
+1. **Take screenshots frequently**: Before and after each action to verify state changes.
+2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions in `--locate` prompts.
+3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
+4. **Handle transient UI**: Action sheets, alerts, and popup menus may disappear. If you need to interact with transient UI, do it immediately after it appears.
+5. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
 
 ## Troubleshooting
 
@@ -205,25 +113,9 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The profile pag
 **Solution:**
 - For physical devices: ensure the device is connected via USB and trusted.
 - For simulators: verify a simulator is booted with `xcrun simctl list devices booted`.
-- Run `npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p ios` to diagnose connectivity.
-
-### Actions Not Targeting the Right Element
-**Symptom:** The AI taps or interacts with the wrong element.
-**Solution:**
-- Be more specific in your action descriptions (include color, position, label text).
-- Take a screenshot first to understand what the AI sees.
-- Break complex actions into smaller, more specific steps.
-
-### Slow Response Times
-**Symptom:** Commands take a long time to complete.
-**Solution:**
-- Check network connectivity to the AI model API.
-- Ensure the device/simulator is not overloaded.
-- Verify WebDriverAgent is responsive at its status endpoint.
 
 ### API Key Issues
 **Symptom:** Authentication or model errors.
 **Solution:**
 - Verify `MIDSCENE_MODEL_API_KEY` is set correctly: `echo $MIDSCENE_MODEL_API_KEY`
-- Check optional configuration: `MIDSCENE_MODEL_BASE_URL`, `MIDSCENE_MODEL_NAME`.
 - See https://midscenejs.com/zh/model-common-config.html for details.

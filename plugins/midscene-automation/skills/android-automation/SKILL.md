@@ -23,7 +23,7 @@ allowed-tools:
 
 # Android Device Automation
 
-Automate Android devices using `npx @midscene/android`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate Android devices using `npx @midscene/android@1.3.12-beta-20260211110624.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Setup Verification
 
@@ -41,7 +41,7 @@ If any prerequisite is missing, guide the user through setup before proceeding.
 First, run help to see all available commands:
 
 ```bash
-npx @midscene/android --help
+npx @midscene/android@1.3.12-beta-20260211110624.0 --help
 ```
 
 ## Common Commands
@@ -49,14 +49,14 @@ npx @midscene/android --help
 ### Connect to Device
 
 ```bash
-npx @midscene/android connect
-npx @midscene/android connect --deviceId emulator-5554
+npx @midscene/android@1.3.12-beta-20260211110624.0 connect
+npx @midscene/android@1.3.12-beta-20260211110624.0 connect --deviceId emulator-5554
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/android take_screenshot
+npx @midscene/android@1.3.12-beta-20260211110624.0 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -66,19 +66,19 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device. Each action uses `--locate` to describe which element to target:
 
 ```bash
-npx @midscene/android Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/android Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/android Scroll --direction down
-npx @midscene/android Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/android KeyboardPress --value Enter
-npx @midscene/android LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/android Launch --uri 'com.android.settings'
+npx @midscene/android@1.3.12-beta-20260211110624.0 Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/android@1.3.12-beta-20260211110624.0 Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/android@1.3.12-beta-20260211110624.0 Scroll --direction down
+npx @midscene/android@1.3.12-beta-20260211110624.0 Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/android@1.3.12-beta-20260211110624.0 KeyboardPress --value Enter
+npx @midscene/android@1.3.12-beta-20260211110624.0 LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android@1.3.12-beta-20260211110624.0 Launch --uri 'com.android.settings'
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/android disconnect
+npx @midscene/android@1.3.12-beta-20260211110624.0 disconnect
 ```
 
 ## Workflow Pattern
@@ -96,10 +96,27 @@ Since CLI commands are stateless between invocations, follow this pattern:
 ## Best Practices
 
 1. **Take screenshots frequently**: Before and after each action to verify state changes.
-2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions in `--locate` prompts.
+2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the search icon at the top right"` rather than vague references).
 3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
-4. **Handle transient UI**: Popup menus, toasts, and bottom sheets may disappear. If you need to interact with transient UI, do it immediately after it appears.
-5. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+
+### Handle Transient UI
+
+Popup menus, toasts, bottom sheets, and snackbars **disappear** between commands. When interacting with transient UI:
+
+- **Execute commands rapidly in sequence** — do NOT take screenshots between steps
+- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
+- Persistent UI (app screens, navigation drawers that stay open) is fine to interact with across separate commands
+
+**Example — Long press popup menu (transient):**
+
+```bash
+# These commands must be run back-to-back WITHOUT screenshots in between
+npx @midscene/android@1.3.12-beta-20260211110624.0 LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android@1.3.12-beta-20260211110624.0 Tap --locate '{"prompt":"Delete option in the popup menu"}'
+# NOW take a screenshot to verify the result
+npx @midscene/android@1.3.12-beta-20260211110624.0 take_screenshot
+```
 
 ## Troubleshooting
 

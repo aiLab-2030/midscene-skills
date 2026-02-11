@@ -11,7 +11,7 @@ allowed-tools:
 
 # iOS Device Automation
 
-Automate iOS devices and simulators using `npx @midscene/ios`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate iOS devices and simulators using `npx @midscene/ios@1.3.12-beta-20260211110624.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Setup Verification
 
@@ -40,7 +40,7 @@ Before running any commands, verify the following prerequisites:
 First, run help to see all available commands:
 
 ```bash
-npx @midscene/ios --help
+npx @midscene/ios@1.3.12-beta-20260211110624.0 --help
 ```
 
 ## Common Commands
@@ -48,13 +48,13 @@ npx @midscene/ios --help
 ### Connect to Device
 
 ```bash
-npx @midscene/ios connect
+npx @midscene/ios@1.3.12-beta-20260211110624.0 connect
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/ios take_screenshot
+npx @midscene/ios@1.3.12-beta-20260211110624.0 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -64,19 +64,19 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device:
 
 ```bash
-npx @midscene/ios Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/ios Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/ios Scroll --direction down
-npx @midscene/ios Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/ios KeyboardPress --value Enter
-npx @midscene/ios LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/ios Launch --uri 'com.apple.Preferences'
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Scroll --direction down
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/ios@1.3.12-beta-20260211110624.0 KeyboardPress --value Enter
+npx @midscene/ios@1.3.12-beta-20260211110624.0 LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Launch --uri 'com.apple.Preferences'
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/ios disconnect
+npx @midscene/ios@1.3.12-beta-20260211110624.0 disconnect
 ```
 
 ## Workflow Pattern
@@ -94,10 +94,27 @@ Since CLI commands are stateless between invocations, follow this pattern:
 ## Best Practices
 
 1. **Take screenshots frequently**: Before and after each action to verify state changes.
-2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions in `--locate` prompts.
+2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the Settings icon in the top-right corner"` rather than vague references).
 3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
-4. **Handle transient UI**: Action sheets, alerts, and popup menus may disappear. If you need to interact with transient UI, do it immediately after it appears.
-5. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+
+### Handle Transient UI
+
+Action sheets, alerts, popup menus, and share sheets **disappear** between commands. When interacting with transient UI:
+
+- **Execute commands rapidly in sequence** — do NOT take screenshots between steps
+- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
+- Persistent UI (app screens, tab bars, navigation bars) is fine to interact with across separate commands
+
+**Example — Alert dialog (transient):**
+
+```bash
+# Tap the button that triggers the alert, then interact with the alert back-to-back
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Tap --locate '{"prompt":"the Delete button"}'
+npx @midscene/ios@1.3.12-beta-20260211110624.0 Tap --locate '{"prompt":"Confirm in the alert dialog"}'
+# NOW take a screenshot to verify the result
+npx @midscene/ios@1.3.12-beta-20260211110624.0 take_screenshot
+```
 
 ## Troubleshooting
 

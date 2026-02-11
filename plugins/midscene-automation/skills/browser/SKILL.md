@@ -10,8 +10,7 @@ description: |
   - Automate multi-step web workflows
   - Run browser automation or check website content
 
-  This mode connects to the user's Chrome browser via the Midscene Chrome Extension,
-  opening a new tab for the target URL.
+  Opens a new browser tab for each target URL via Midscene.
 
   Trigger keywords: browse, navigate, open url, web page, website, scrape, extract, crawl,
   fill form, click, interact, verify, validate, test, assert, screenshot, frontend, UI test,
@@ -22,7 +21,7 @@ allowed-tools:
 
 # Browser Automation
 
-Automate the user's Chrome browser using `npx -p @midscene/web@1.3.12-beta-20260211123127.0 midscene-web`. This connects via the Midscene Chrome Extension (Bridge mode), opening a new tab for each URL. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate web browsing using `npx -p @midscene/web@1.3.12-beta-20260211123127.0 midscene-web`. Opens a new browser tab for each URL. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## When to Use
 
@@ -47,8 +46,6 @@ Before running commands, verify the environment is ready:
    ```bash
    export MIDSCENE_MODEL_API_KEY="your-api-key"
    ```
-
-3. **Ensure Chrome is open** with the [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) installed and showing "Connected" status.
 
 See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for details.
 
@@ -211,10 +208,9 @@ When asked to verify or test a frontend application:
 
 ## Troubleshooting
 
-### Bridge Mode Connection Failures
-- Ensure Chrome is open with the Midscene Extension installed and enabled.
-- Check that the extension shows "Connected" status.
-- See the [Bridge Mode documentation](https://midscenejs.com/bridge-mode-by-chrome-extension.html).
+### Connection Failures
+- Ensure Chrome is installed on the system.
+- If using Bridge mode, ensure the [Midscene Chrome Extension](https://midscenejs.com/bridge-mode-by-chrome-extension.html) is installed and showing "Connected" status.
 
 ### API Key Errors
 - Ensure `MIDSCENE_MODEL_API_KEY` is set in the environment.

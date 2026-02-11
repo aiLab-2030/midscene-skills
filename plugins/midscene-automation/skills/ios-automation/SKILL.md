@@ -158,6 +158,9 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Toggle the Wi-Fi switch"
 npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "Wi-Fi is turned off"
 ```
 
+### Combine Transient UI Interactions
+Action sheets, alerts, popup menus, and notification banners may disappear between commands. Combine all interactions with transient UI into a single `act` (e.g., `"tap the Share button and select 'Copy Link' from the action sheet"`).
+
 ## Common Patterns
 
 ### Open an App from Home Screen

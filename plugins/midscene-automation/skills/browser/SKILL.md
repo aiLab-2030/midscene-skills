@@ -148,6 +148,7 @@ Fields:
 4. **Use natural language.** Describe what you see on the page, not CSS selectors. Say "the red Buy Now button" instead of "#buy-btn".
 5. **Handle loading states.** After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
 6. **Close the browser when done.** Always run the close command when finished to free resources.
+7. **Combine transient UI interactions.** Dropdowns, autocomplete popups, tooltips, and confirm dialogs may disappear between commands. Combine all interactions with transient UI into a single `act` (e.g., `"click the country dropdown and select 'Japan'"`).
 
 ## Common Patterns
 

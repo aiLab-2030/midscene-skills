@@ -125,6 +125,7 @@ All commands return JSON with the following structure:
 4. **Wait for transitions**: After navigation actions (tapping a button that loads a new screen), take a screenshot to confirm the new screen has loaded before proceeding.
 5. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
 6. **Use assert for verification**: After completing a workflow, use `assert` to confirm the expected state rather than relying solely on screenshots.
+7. **Combine transient UI interactions**: Popup menus, toasts, bottom sheets, and snackbars may disappear between commands. Combine all interactions with transient UI into a single `act` (e.g., `"long press the message and tap 'Delete' in the popup menu"`).
 
 ## Common Patterns
 

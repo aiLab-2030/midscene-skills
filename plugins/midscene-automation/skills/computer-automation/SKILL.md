@@ -202,6 +202,15 @@ Help the AI locate elements by describing their position on screen:
 - `"the text field in the center of the dialog"`
 - `"the third item in the left sidebar"`
 
+### Combine Transient UI Interactions
+
+Transient UI elements (Spotlight, context menus, dropdown menus, notification popups) **disappear** between commands. Always combine all interactions with transient UI into a single `act`:
+
+- **Good**: `"press Command+Space, type 'Safari', press Enter"`
+- **Bad**: Three separate commands for Spotlight → type → Enter (Spotlight disappears between them)
+
+Persistent UI (app windows, Finder) is fine to interact with across separate commands.
+
 ### Use Keyboard Shortcuts for Reliability
 
 Keyboard shortcuts are often more reliable than clicking UI elements:
@@ -216,11 +225,13 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Tab t
 
 ### Open an Application via Spotlight
 
+**IMPORTANT:** Spotlight closes when it loses focus. Since each command runs in a separate process, you MUST combine the Spotlight workflow into a single `act` command:
+
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "type 'Visual Studio Code' in the Spotlight search field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Enter to launch the application"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight, type 'Visual Studio Code', then press Enter"
 ```
+
+Do NOT split Spotlight interactions into multiple commands — Spotlight will close between commands when the terminal regains focus.
 
 ### Keyboard Shortcuts
 
@@ -235,17 +246,14 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Shift
 ### Multi-step Workflow
 
 ```bash
-# Open Terminal
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "type 'Terminal'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Enter"
+# Open Terminal via Spotlight (combined into one command)
+npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight, type 'Terminal', then press Enter"
 
 # Verify Terminal opened
 npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "Terminal window is visible"
 
-# Type a command
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "type 'ls -la' in the Terminal window"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Enter"
+# Type a command and run it
+npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "type 'ls -la' in the Terminal window and press Enter"
 
 # Check the output
 npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "what files are listed in the Terminal output?"

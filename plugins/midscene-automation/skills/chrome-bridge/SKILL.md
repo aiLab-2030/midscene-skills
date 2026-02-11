@@ -30,7 +30,7 @@ This skill provides browser automation powered by Midscene AI in **Bridge mode**
 All commands are executed via:
 
 ```
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web <command> --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> --bridge
 ```
 
 Midscene uses AI visual understanding to interact with web pages using natural language descriptions — no CSS selectors or XPath needed.
@@ -74,7 +74,7 @@ See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) fo
 ### navigate — Open a URL
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web navigate "https://example.com" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://example.com" --bridge
 ```
 
 ### act — Interact with the page
@@ -82,10 +82,10 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 web navigate "https://example.com
 Perform actions using natural language descriptions.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "click the Login button" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "type 'hello world' into the search box" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "scroll down to the footer" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "select 'Large' from the size dropdown" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Login button" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'hello world' into the search box" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "scroll down to the footer" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "select 'Large' from the size dropdown" --bridge
 ```
 
 ### query — Extract data from the page
@@ -93,9 +93,9 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "select 'Large' from the 
 Ask questions about page content and get structured results.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web query "what are all the product names and prices on this page?" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web query "get the main headline text" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web query "list all navigation menu items" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "what are all the product names and prices on this page?" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "get the main headline text" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "list all navigation menu items" --bridge
 ```
 
 ### assert — Verify conditions
@@ -103,21 +103,21 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 web query "list all navigation me
 Assert that something is true about the current page state. Returns success or failure.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web assert "the page title contains 'Dashboard'" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web assert "there is a login form visible" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web assert "the error message is not displayed" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the page title contains 'Dashboard'" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "there is a login form visible" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the error message is not displayed" --bridge
 ```
 
 ### screenshot — Capture the current page
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web screenshot --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot --bridge
 ```
 
 ### close — Close the browser
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web close --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 close --bridge
 ```
 
 ## Output Format
@@ -157,41 +157,41 @@ Fields:
 ### Simple Browsing
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web navigate "https://news.ycombinator.com" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web query "what are the top 5 stories on the front page?" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web close --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://news.ycombinator.com" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "what are the top 5 stories on the front page?" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 close --bridge
 ```
 
 ### Data Extraction
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web navigate "https://example.com/products" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web query "extract all product names, prices, and ratings as a JSON array" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web close --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://example.com/products" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query "extract all product names, prices, and ratings as a JSON array" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 close --bridge
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web navigate "https://example.com" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "click the Sign In link" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "type 'user@example.com' into the email field" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "type 'password123' into the password field" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "click the Log In button" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web screenshot --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web close --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "https://example.com" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Sign In link" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'user@example.com' into the email field" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'password123' into the password field" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Log In button" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 close --bridge
 ```
 
 ### Frontend Verification
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web navigate "http://localhost:3000" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web assert "the login form is visible with email and password fields" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "type 'test@example.com' into the email field" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "type 'password' into the password field" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web act "click the Submit button" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web assert "the welcome message is displayed" --bridge
-npx @midscene/cli@1.3.11-beta-20260211031343.0 web close --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do navigate "http://localhost:3000" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the login form is visible with email and password fields" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'test@example.com' into the email field" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "type 'password' into the password field" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act "click the Submit button" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert "the welcome message is displayed" --bridge
+npx @midscene/cli@1.3.11-beta-20260211031343.0 close --bridge
 ```
 
 ## Frontend Verification Workflow

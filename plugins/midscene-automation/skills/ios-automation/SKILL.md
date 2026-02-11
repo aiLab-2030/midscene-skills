@@ -11,7 +11,7 @@ allowed-tools:
 
 # iOS Device Automation
 
-Automate iOS devices and simulators using natural language through `npx @midscene/cli@1.3.11-beta-20260211031343.0 ios <command>`. This skill leverages Midscene's AI-powered visual understanding to interact with any iOS app without requiring accessibility IDs or XPath selectors.
+Automate iOS devices and simulators using natural language through `npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> -p ios`. This skill leverages Midscene's AI-powered visual understanding to interact with any iOS app without requiring accessibility IDs or XPath selectors.
 
 ## Setup Verification
 
@@ -47,15 +47,15 @@ Before running any commands, verify the following prerequisites:
 Execute a natural language action on the iOS device (tap, swipe, type, scroll, etc.).
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "<action description>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "<action description>"
 ```
 
 **Examples:**
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the Settings icon"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Swipe up on the screen"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Type 'hello world' in the search field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Scroll down to find the Privacy section"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Settings icon"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Swipe up on the screen"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Type 'hello world' in the search field"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Scroll down to find the Privacy section"
 ```
 
 ### query - Extract Information
@@ -63,14 +63,14 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Scroll down to find the 
 Extract information from the current screen using natural language.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios query "<query description>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "<query description>"
 ```
 
 **Examples:**
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios query "What is the current battery percentage?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios query "What are all the visible app names on the home screen?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios query "What is the title of the current page?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What is the current battery percentage?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What are all the visible app names on the home screen?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What is the title of the current page?"
 ```
 
 ### assert - Verify Screen State
@@ -78,14 +78,14 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 ios query "What is the title of t
 Assert that a condition is true on the current screen. Returns success or failure with details.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "<condition>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "<condition>"
 ```
 
 **Examples:**
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "The Settings app is open"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "The Wi-Fi toggle is turned on"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "A search bar is visible at the top of the screen"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The Settings app is open"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The Wi-Fi toggle is turned on"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "A search bar is visible at the top of the screen"
 ```
 
 ### screenshot - Capture Screen
@@ -93,7 +93,7 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "A search bar is visib
 Take a screenshot of the current device screen.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios screenshot
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p ios
 ```
 
 ### connect - Connect to Device
@@ -101,7 +101,7 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 ios screenshot
 Verify and establish connection to the iOS device via WebDriverAgent.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios connect
+npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p ios
 ```
 
 ## Output Format
@@ -136,26 +136,26 @@ Use descriptive, visual language when referring to UI elements. The AI model ide
 Before performing multi-step workflows, take a screenshot first to understand the current screen state:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios screenshot
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the first item in the list"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p ios
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the first item in the list"
 ```
 
 ### Handle App State Transitions
 iOS apps may have loading screens, animations, or transitions. Allow time for these to complete or verify the expected state:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the Login button"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Login button"
 # Wait briefly for navigation
 sleep 2
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "The home screen is displayed"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The home screen is displayed"
 ```
 
 ### Use Assert for Verification
 After performing actions, use `assert` to verify the expected outcome before proceeding:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Toggle the Wi-Fi switch"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "Wi-Fi is turned off"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Toggle the Wi-Fi switch"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "Wi-Fi is turned off"
 ```
 
 ### Combine Transient UI Interactions
@@ -165,30 +165,30 @@ Action sheets, alerts, popup menus, and notification banners may disappear betwe
 
 ### Open an App from Home Screen
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Press the Home button"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the Safari icon"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "Safari is open"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Press the Home button"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Safari icon"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "Safari is open"
 ```
 
 ### Navigate Within an App
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the 'General' option in the Settings list"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the back button in the top left"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the 'General' option in the Settings list"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the back button in the top left"
 ```
 
 ### Fill a Form
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the Username text field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Type 'john@example.com'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the Password text field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Type 'securepassword123'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios act "Tap the Sign In button"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Username text field"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Type 'john@example.com'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Password text field"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Type 'securepassword123'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p ios "Tap the Sign In button"
 ```
 
 ### Verify Screen Content
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios query "What is the current page title?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "The profile page shows the username 'john'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p ios "What is the current page title?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p ios "The profile page shows the username 'john'"
 ```
 
 ## Troubleshooting
@@ -205,7 +205,7 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 ios assert "The profile page show
 **Solution:**
 - For physical devices: ensure the device is connected via USB and trusted.
 - For simulators: verify a simulator is booted with `xcrun simctl list devices booted`.
-- Run `npx @midscene/cli@1.3.11-beta-20260211031343.0 ios connect` to diagnose connectivity.
+- Run `npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p ios` to diagnose connectivity.
 
 ### Actions Not Targeting the Right Element
 **Symptom:** The AI taps or interacts with the wrong element.

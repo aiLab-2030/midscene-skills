@@ -23,7 +23,7 @@ allowed-tools:
 
 # Android Device Automation
 
-Automate Android devices using natural language through `npx @midscene/cli@1.3.11-beta-20260211031343.0 android <command>`. Powered by Midscene's AI visual understanding, this skill lets you interact with any Android device connected via ADB -- no element IDs or XPath selectors needed.
+Automate Android devices using natural language through `npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> -p android`. Powered by Midscene's AI visual understanding, this skill lets you interact with any Android device connected via ADB -- no element IDs or XPath selectors needed.
 
 ## Setup Verification
 
@@ -43,44 +43,44 @@ If any prerequisite is missing, guide the user through setup before proceeding.
 Execute a natural language action on the device:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "<action description>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "<action description>"
 ```
 
 Examples:
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "tap the Settings icon"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "swipe up to scroll down"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "type 'hello world' in the search field"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the Settings icon"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "swipe up to scroll down"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "type 'hello world' in the search field"`
 
 ### Query the Screen
 
 Extract information from the current device screen:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android query "<query description>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "<query description>"
 ```
 
 Examples:
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android query "what is the battery percentage?"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android query "list all visible app names"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "what is the battery percentage?"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "list all visible app names"`
 
 ### Assert Screen State
 
 Verify a condition on the current screen:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android assert "<condition>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "<condition>"
 ```
 
 Examples:
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android assert "the Wi-Fi toggle is enabled"`
-- `npx @midscene/cli@1.3.11-beta-20260211031343.0 android assert "the Settings app is open"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "the Wi-Fi toggle is enabled"`
+- `npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "the Settings app is open"`
 
 ### Take a Screenshot
 
 Capture the current device screen:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android screenshot
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p android
 ```
 
 ### Connect to Device
@@ -88,13 +88,13 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 android screenshot
 Connect to the default device:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android connect
+npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p android
 ```
 
 Connect to a specific device by ID:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android connect --device <device-id>
+npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p android --device <device-id>
 ```
 
 Use `adb devices` to list available device IDs.
@@ -132,38 +132,38 @@ All commands return JSON with the following structure:
 ### Open an App
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "open the Settings app"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "open the Settings app"
 ```
 
 ### Navigate Through Menus
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "tap on 'Wi-Fi'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "tap on the network named 'MyNetwork'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap on 'Wi-Fi'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap on the network named 'MyNetwork'"
 ```
 
 ### Fill a Form
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "tap the username field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "type 'user@example.com'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "tap the password field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "type 'mypassword'"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "tap the Login button"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the username field"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "type 'user@example.com'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the password field"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "type 'mypassword'"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "tap the Login button"
 ```
 
 ### Verify Screen State
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android assert "the home screen is displayed"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android query "what app is currently in the foreground?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p android "the home screen is displayed"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "what app is currently in the foreground?"
 ```
 
 ### Scroll and Find Content
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android act "swipe up to scroll down"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 android query "is there a 'About phone' option visible?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p android "swipe up to scroll down"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p android "is there a 'About phone' option visible?"
 ```
 
 ## Troubleshooting

@@ -11,7 +11,7 @@ allowed-tools:
 
 # Desktop Computer Automation
 
-Control your entire macOS desktop with natural language using `npx @midscene/cli@1.3.11-beta-20260211031343.0 computer <command>`. Perform clicks, type text, take screenshots, run keyboard shortcuts, and automate multi-step desktop workflows -- all powered by AI visual understanding.
+Control your entire macOS desktop with natural language using `npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> -p computer`. Perform clicks, type text, take screenshots, run keyboard shortcuts, and automate multi-step desktop workflows -- all powered by AI visual understanding.
 
 ## Setup Verification
 
@@ -73,23 +73,23 @@ See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) fo
 
 ## Available Commands
 
-All commands follow the pattern: `npx @midscene/cli@1.3.11-beta-20260211031343.0 computer <command>`
+All commands follow the pattern: `npx @midscene/cli@1.3.11-beta-20260211031343.0 do <command> -p computer`
 
 ### act -- Perform a Desktop Action
 
 Execute a natural language action on the desktop. The AI interprets your intent and performs the corresponding mouse/keyboard operations.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "<action description>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "<action description>"
 ```
 
 Examples:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "click the Safari icon in the Dock"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "type 'Hello World' in the text field"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "double-click the Documents folder on the desktop"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "click the Safari icon in the Dock"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "type 'Hello World' in the text field"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Space to open Spotlight"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "double-click the Documents folder on the desktop"
 ```
 
 ### query -- Extract Information from the Screen
@@ -97,15 +97,15 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "double-click the Do
 Ask a question about the current screen content. Returns structured data extracted by the AI.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "<question>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p computer "<question>"
 ```
 
 Examples:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "what is the title of the frontmost window?"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "list all visible application names in the Dock"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "what text is shown in the notification?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p computer "what is the title of the frontmost window?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p computer "list all visible application names in the Dock"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p computer "what text is shown in the notification?"
 ```
 
 ### assert -- Verify Screen State
@@ -113,15 +113,15 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "what text is show
 Assert a condition about the current screen. Returns success or failure with details.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "<condition>"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p computer "<condition>"
 ```
 
 Examples:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "Safari is the frontmost application"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "the file 'report.pdf' is visible in Finder"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "the menu bar shows Wi-Fi is connected"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p computer "Safari is the frontmost application"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p computer "the file 'report.pdf' is visible in Finder"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p computer "the menu bar shows Wi-Fi is connected"
 ```
 
 ### screenshot -- Capture the Desktop
@@ -129,7 +129,7 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "the menu bar sho
 Take a screenshot of the current desktop state.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer screenshot
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do screenshot -p computer
 ```
 
 ### connect -- Connect to a Display
@@ -137,13 +137,13 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer screenshot
 Connect to the default display for automation.
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer connect
+npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p computer
 ```
 
 Connect to a specific display by ID:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer connect --display <id>
+npx @midscene/cli@1.3.11-beta-20260211031343.0 connect -p computer --display <id>
 ```
 
 ## Output Format
@@ -216,9 +216,9 @@ Persistent UI (app windows, Finder) is fine to interact with across separate com
 Keyboard shortcuts are often more reliable than clicking UI elements:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+C to copy"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+V to paste"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Tab to switch application"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+C to copy"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+V to paste"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Tab to switch application"
 ```
 
 ## Common Patterns
@@ -228,7 +228,7 @@ npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Tab t
 **IMPORTANT:** Spotlight closes when it loses focus. Since each command runs in a separate process, you MUST combine the Spotlight workflow into a single `act` command:
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight, type 'Visual Studio Code', then press Enter"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Space to open Spotlight, type 'Visual Studio Code', then press Enter"
 ```
 
 Do NOT split Spotlight interactions into multiple commands — Spotlight will close between commands when the terminal regains focus.
@@ -236,36 +236,36 @@ Do NOT split Spotlight interactions into multiple commands — Spotlight will cl
 ### Keyboard Shortcuts
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+A to select all"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+C to copy"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+V to paste"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Z to undo"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Shift+3 to take a system screenshot"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+A to select all"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+C to copy"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+V to paste"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Z to undo"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Shift+3 to take a system screenshot"
 ```
 
 ### Multi-step Workflow
 
 ```bash
 # Open Terminal via Spotlight (combined into one command)
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Space to open Spotlight, type 'Terminal', then press Enter"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Space to open Spotlight, type 'Terminal', then press Enter"
 
 # Verify Terminal opened
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer assert "Terminal window is visible"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do assert -p computer "Terminal window is visible"
 
 # Type a command and run it
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "type 'ls -la' in the Terminal window and press Enter"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "type 'ls -la' in the Terminal window and press Enter"
 
 # Check the output
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer query "what files are listed in the Terminal output?"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do query -p computer "what files are listed in the Terminal output?"
 ```
 
 ### Window Management
 
 ```bash
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+M to minimize the current window"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+W to close the current tab"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Q to quit the current application"
-npx @midscene/cli@1.3.11-beta-20260211031343.0 computer act "press Command+Tab to switch to the next application"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+M to minimize the current window"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+W to close the current tab"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Q to quit the current application"
+npx @midscene/cli@1.3.11-beta-20260211031343.0 do act -p computer "press Command+Tab to switch to the next application"
 ```
 
 ## Troubleshooting

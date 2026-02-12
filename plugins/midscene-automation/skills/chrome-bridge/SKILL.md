@@ -23,17 +23,19 @@ allowed-tools:
 
 # Chrome Bridge Automation
 
-Automate the user's real Chrome browser using `npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge`. This connects via the Midscene Chrome Extension (Bridge mode), preserving cookies, sessions, and login state. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate the user's real Chrome browser via the Midscene Chrome Extension (Bridge mode), preserving cookies, sessions, and login state. You (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
-**IMPORTANT:** All commands MUST include the `--bridge` flag to use Bridge mode.
+## Command Format
 
-## When to Use
+**CRITICAL — Every command MUST use this EXACT format. Do NOT modify the syntax.**
 
-Use Chrome Bridge mode when:
-- The user is already logged in and you need to preserve their session
-- You need access to cookies, extensions, or browser state
-- The user wants to see the automation happening in their own browser
-- Working with pages that require authentication
+```
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 <subcommand> [args]
+```
+
+- `MIDSCENE_USE_BRIDGE=1` — Required env var prefix that activates Bridge mode
+- `npx @midscene/web@1.3.12-beta-20260212033510.0` — Package with pinned version. Do NOT use `npx -p` syntax
+- `<subcommand>` — The command to execute (connect, take_screenshot, Tap, Input, etc.)
 
 ## Prerequisites
 
@@ -47,33 +49,31 @@ echo $MIDSCENE_MODEL_API_KEY
 
 If empty, ask the user for their API key. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
 
-## Common Commands
+## Commands
 
 ### Connect to a Web Page
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge connect --url https://example.com
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 connect --url https://example.com
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current page state before deciding the next action.
 
 ### Perform Actions
 
-Use actionSpace tools to interact with the page:
-
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Tap --locate '{"prompt":"the Login button"}'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Scroll --direction down
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Hover --locate '{"prompt":"the navigation menu"}'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge KeyboardPress --value Enter
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Login button"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Scroll --direction down
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Hover --locate '{"prompt":"the navigation menu"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 KeyboardPress --value Enter
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
 ### Natural Language Action
@@ -81,13 +81,13 @@ npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge DragAndDrop --locate '{"
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge act --prompt "click the country dropdown and select Japan"
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 act --prompt "click the country dropdown and select Japan"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge disconnect
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 disconnect
 ```
 
 ## Workflow Pattern
@@ -123,18 +123,18 @@ Dropdowns, autocomplete popups, tooltips, and confirm dialogs **disappear** betw
 **Example — Dropdown selection using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge act --prompt "click the country dropdown and select Japan"
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 act --prompt "click the country dropdown and select Japan"
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 **Example — Dropdown selection using individual commands (alternative):**
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Tap --locate '{"prompt":"the country dropdown"}'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Tap --locate '{"prompt":"Japan option in the dropdown list"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the country dropdown"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"Japan option in the dropdown list"}'
 # NOW take a screenshot to verify the result
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 ## Common Patterns
@@ -142,37 +142,23 @@ npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
 ### Simple Browsing
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge connect --url 'https://news.ycombinator.com'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 connect --url 'https://news.ycombinator.com'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 take_screenshot
 # Read the screenshot, then decide next action
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge disconnect
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 disconnect
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge connect --url 'https://example.com'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Tap --locate '{"prompt":"the Sign In link"}'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Input --locate '{"prompt":"the password field"}' --value 'password123'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Tap --locate '{"prompt":"the Log In button"}'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge disconnect
-```
-
-### Frontend Verification
-
-```bash
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge connect --url 'http://localhost:3000'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
-# Analyze: verify login form is visible
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Input --locate '{"prompt":"the email field"}' --value 'test@example.com'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Input --locate '{"prompt":"the password field"}' --value 'password'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge Tap --locate '{"prompt":"the Submit button"}'
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge take_screenshot
-# Analyze: verify the welcome message is displayed
-npx @midscene/web@1.3.12-beta-20260212025734.0 --bridge disconnect
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 connect --url 'https://example.com'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Sign In link"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 take_screenshot
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"the password field"}' --value 'password123'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Log In button"}'
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 take_screenshot
+MIDSCENE_USE_BRIDGE=1 npx @midscene/web@1.3.12-beta-20260212033510.0 disconnect
 ```
 
 ## Troubleshooting

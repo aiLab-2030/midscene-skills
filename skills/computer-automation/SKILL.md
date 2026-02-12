@@ -216,3 +216,7 @@ Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 1. Take a screenshot to verify the element is actually visible
 2. Use more specific descriptions (include color, position, surrounding text)
 3. Ensure the element is not hidden behind another window
+
+## Safety Warning
+
+AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

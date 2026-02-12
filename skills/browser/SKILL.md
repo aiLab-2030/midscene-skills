@@ -257,3 +257,7 @@ When asked to verify or test a frontend application:
 
 ### Screenshots Not Displaying
 - The screenshot path is an absolute path to a local file. Use the Read tool to view it.
+
+## Safety Warning
+
+AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

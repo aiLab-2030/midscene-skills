@@ -175,3 +175,7 @@ npx @midscene/android take_screenshot
 | **Command timeout** | The device screen may be off or locked. Wake the device with `adb shell input keyevent KEYCODE_WAKEUP` and unlock it. |
 | **API key error** | Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html). |
 | **Wrong device targeted** | If multiple devices are connected, use `--deviceId <id>` flag with the `connect` command. |
+
+## Safety Warning
+
+AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

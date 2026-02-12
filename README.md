@@ -7,7 +7,7 @@
 <strong> Vision-driven cross-platform automation </strong>
 
 - Natural-language driven UI control
-- Built on [Midscene.js](https://midscenejs.com)'s vision-based automation capabilities
+- Built on [Midscene.js](https://midscenejs.com)'s vision-based automation capabilities — no DOM or accessibility labels required, operates entirely from screenshots, making cross-platform support reliable
 - This repository contains Skills for the following platforms:
   - Browser (Puppeteer, headless Chrome): [`skills/browser`](skills/browser)
   - Chrome Bridge (user's own Chrome browser): [`skills/chrome-bridge`](skills/chrome-bridge)
@@ -22,7 +22,14 @@ Make sure you have [Node.js](https://nodejs.org) installed.
 Then install the skills:
 
 ```bash
-npx skills add midscene/skills
+# General installation
+npx skills add web-infra-dev/midscene-skills
+
+# Claude Code 
+npx skills add web-infra-dev/midscene-skills -a claude-code
+
+# OpenClaw
+npx skills add web-infra-dev/midscene-skills -a openclaw
 ```
 
 ## Model Setup
@@ -76,7 +83,13 @@ Model setup docs:
 - Doubao Seed 1.6: https://midscenejs.com/model-common-config
 
 
+## Issues
 
+For bug reports, feature requests, and discussions, please visit the main Midscene repository: https://github.com/web-infra-dev/midscene/issues
+
+## Safety Warning
+
+AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.
 
 ## License
 

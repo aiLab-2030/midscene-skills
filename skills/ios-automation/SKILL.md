@@ -171,3 +171,7 @@ npx @midscene/ios take_screenshot
 **Solution:**
 - Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 - See https://midscenejs.com/zh/model-common-config.html for details.
+
+## Safety Warning
+
+AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

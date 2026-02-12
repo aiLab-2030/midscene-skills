@@ -1,10 +1,26 @@
+<p align="center">
+  <img alt="Midscene.js" width="260" src="https://github.com/user-attachments/assets/f60de3c1-dd6f-4213-97a1-85bf7c6e79e4">
+</p>
+
 # Midscene Skills
 
-AI skills for cross-platform automation, powered by [Midscene](https://midscenejs.com). Control web browsers, computers, Android devices, and iOS devices with natural language.
+<strong> Vision-driven cross-platform automation </strong>
 
-Skills follow the [Agent Skills](https://agentskills.io/) format.
+- Natural-language driven UI control
+- Built on [Midscene.js](https://midscenejs.com)'s vision-based automation capabilities
+- Skill set for browser, desktop, Android, and iOS automation
 
-## Available Skills
+## Installation
+
+Make sure you have [Node.js](https://nodejs.org) installed.
+
+Then install the skills:
+
+```bash
+npx skills add midscene/skills
+```
+
+## Skills
 
 ### browser
 
@@ -31,7 +47,7 @@ Automate the user's real Chrome browser via the Midscene Chrome Extension, prese
 
 ### computer-automation
 
-Control the computer (macOS, Windows, Linux) with natural language — click, type, keyboard shortcuts, app launching, and more.
+Control the computer (macOS, Windows, Linux) with natural language - click, type, keyboard shortcuts, app launching, and more.
 
 **Use when:**
 - "Take a screenshot of my computer"
@@ -61,12 +77,6 @@ iOS device and simulator automation via WebDriverAgent. Tap, swipe, type, and la
 - "Tap Delete, then confirm in the alert dialog"
 
 **CLI:** `npx @midscene/ios`
-
-## Installation
-
-```bash
-npx skills add web-infra-dev/midscene-skills
-```
 
 ## Setup
 
@@ -112,9 +122,9 @@ Check what Wi-Fi network my iPhone is connected to
 
 ## How It Works
 
-Each platform has its own CLI package. The AI agent calls `npx @midscene/<platform> <command>` — npx auto-downloads on first use, no pre-installation needed.
+Each platform has its own CLI package. The AI agent calls `npx @midscene/<platform> <command>` - npx auto-downloads on first use, no pre-installation needed.
 
-The agent follows a **screenshot → analyze → act** loop: take a screenshot, decide what to do, execute one action, repeat.
+The agent follows a **screenshot -> analyze -> act** loop: take a screenshot, decide what to do, execute one action, repeat.
 
 ## Skill Structure
 

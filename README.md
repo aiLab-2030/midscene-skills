@@ -1,28 +1,25 @@
 # Midscene Skills
 
-Claude Code plugin marketplace for browser automation, powered by Midscene.
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills for AI-powered automation, powered by [Midscene](https://midscenejs.com).
 
-## Available Plugins
+One plugin, four platforms — control web browsers, desktops, Android devices, and iOS devices with natural language.
 
-### 🤖 midscene-automation
+## Supported Platforms
 
-AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.
-
-[View Plugin Details →](./plugins/midscene-automation)
-
-**Features:**
-- Natural language browser automation using Midscene
-- AI-powered visual and semantic understanding - no CSS selectors needed
-- Persistent browser sessions for faster operations
-- Screenshot capture and visual feedback
-- Structured data extraction
+| Platform | Description | Prerequisites |
+|----------|-------------|---------------|
+| **Web** | Browser automation via Puppeteer or [Chrome Bridge](https://midscenejs.com/bridge-mode-by-chrome-extension.html) mode | Chrome / Midscene Chrome Extension |
+| **Computer** | macOS desktop automation | Accessibility permission, Xcode CLI Tools |
+| **Android** | Android device automation via ADB | ADB, USB-connected device |
+| **iOS** | iOS device/simulator automation via [WebDriverAgent](https://midscenejs.com/zh/usage-ios.html) | Xcode, WebDriverAgent |
 
 ## Installation
 
-On Claude Code, add the marketplace and install:
-
 ```bash
+# Add marketplace
 /plugin marketplace add web-infra-dev/midscene-skills
+
+# Install (includes all 4 platform skills)
 /plugin install midscene-automation@midscene-marketplace
 ```
 
@@ -34,52 +31,66 @@ Set your AI model API key:
 export MIDSCENE_MODEL_API_KEY="your-api-key"
 ```
 
-Optional configuration:
+Optional — use a custom model or endpoint:
 
 ```bash
 export MIDSCENE_MODEL_NAME="gpt-4o"
 export MIDSCENE_MODEL_BASE_URL="https://api.openai.com/v1"
 ```
 
-See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for more options.
+See [Model Configuration](https://midscenejs.com/model-provider.html) for all supported providers.
 
-### Local Development
+## Usage
+
+Once installed, just talk to Claude naturally:
+
+```
+> Open Hacker News and tell me the top 3 stories
+
+> Take a screenshot of my desktop
+
+> Open the Settings app on my Android phone
+
+> Check what Wi-Fi network my iPhone is connected to
+```
+
+Claude will automatically pick the right skill and execute the commands via `@midscene/cli`.
+
+## How It Works
+
+All commands run through `npx @midscene/cli <platform> <command>`, which auto-downloads on first use — no pre-installation needed.
 
 ```bash
-# Clone the repository
+# Web
+npx @midscene/cli web navigate "https://example.com" --bridge
+npx @midscene/cli web query "what is the page title?" --bridge
+
+# Computer
+npx @midscene/cli computer act "press Command+Space to open Spotlight"
+npx @midscene/cli computer screenshot
+
+# Android
+npx @midscene/cli android act "tap the Settings icon"
+npx @midscene/cli android query "what is the battery percentage?"
+
+# iOS
+npx @midscene/cli ios act "tap the Safari icon"
+npx @midscene/cli ios assert "Safari is open"
+```
+
+## Local Development
+
+```bash
 git clone https://github.com/web-infra-dev/midscene-skills.git
 cd midscene-skills
 
 # Add marketplace locally
 /plugin marketplace add /absolute/path/to/midscene-skills
 
-# Install the plugin
+# Install plugin
 /plugin install midscene-automation@midscene-marketplace
 ```
 
-## Usage
-
-Once installed, you can interact with Claude naturally for browser automation:
-
-```
-You: Go to Google and search for "Midscene"
-Claude: [Automatically executes browser commands]
-
-You: What are the top 3 results?
-Claude: [Extracts and returns the data]
-```
-
-For detailed usage instructions, see the [midscene-automation plugin documentation](./plugins/midscene-automation).
-
-## Contributing
-
-To add a new plugin to this marketplace:
-
-1. Create a new directory under `plugins/`
-2. Add a `.claude-plugin/plugin.json` file
-3. Update `.claude-plugin/marketplace.json` to include your plugin
-4. Submit a pull request
-
 ## License
 
-MIT - See [LICENSE](./LICENSE) for details
+MIT

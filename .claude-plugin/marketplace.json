@@ -8,7 +8,7 @@
     {
       "name": "midscene-automation",
       "source": "./plugins/midscene-automation",
-      "description": "AI-powered browser automation using Midscene. Automate web interactions with natural language - no CSS selectors needed.",
+      "description": "AI-powered automation across web, desktop, Android, and iOS using Midscene. Control any platform with natural language.",
       "version": "0.0.1"
     }
   ]

@@ -11,74 +11,39 @@ allowed-tools:
 
 # Desktop Computer Automation
 
-Control your entire macOS desktop using `npx @midscene/computer@1.3.12-beta-20260211155735.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Control your entire macOS desktop using `npx @midscene/computer@1.3.12-beta-20260212033510.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
-## Setup Verification
+## Prerequisites
 
-Before using this skill, verify the following prerequisites:
-
-### 1. Node.js
+The CLI automatically loads `.env` from the current working directory. Before first use, verify the `.env` file exists and contains the API key:
 
 ```bash
-node --version
+cat .env | grep MIDSCENE_MODEL_API_KEY | head -c 30
 ```
 
-Requires Node.js >= 18.19.0.
+If no `.env` file or no API key, ask the user to create one. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
 
-### 2. macOS Accessibility Permission
+**Do NOT run `echo $MIDSCENE_MODEL_API_KEY`** — the key is loaded from `.env` at runtime, not from shell environment.
 
-Your terminal app must have Accessibility permission enabled:
-
-- Open **System Settings > Privacy & Security > Accessibility**
-- Enable your terminal app (Terminal, iTerm2, Warp, etc.)
-
-### 3. Xcode Command Line Tools
-
-```bash
-xcode-select -p
-```
-
-If not installed, run:
-
-```bash
-xcode-select --install
-```
-
-### 4. AI Model API Key
-
-```bash
-echo $MIDSCENE_MODEL_API_KEY
-```
-
-See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for all supported providers and options.
-
-## Command Discovery
-
-First, run help to see all available commands:
-
-```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 --help
-```
-
-## Common Commands
+## Commands
 
 ### Connect to Desktop
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 connect
-npx @midscene/computer@1.3.12-beta-20260211155735.0 connect --displayId <id>
+npx @midscene/computer@1.3.12-beta-20260212033510.0 connect
+npx @midscene/computer@1.3.12-beta-20260212033510.0 connect --displayId <id>
 ```
 
 ### List Displays
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 list_displays
+npx @midscene/computer@1.3.12-beta-20260212033510.0 list_displays
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
+npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -88,13 +53,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the desktop:
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 Tap --locate '{"prompt":"the Safari icon in the Dock"}'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 DoubleClick --locate '{"prompt":"the Documents folder"}'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 RightClick --locate '{"prompt":"the desktop background"}'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 Input --locate '{"prompt":"the search field"}' --content 'hello world'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 Scroll --direction down
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+Space'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Safari icon in the Dock"}'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 DoubleClick --locate '{"prompt":"the Documents folder"}'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 RightClick --locate '{"prompt":"the desktop background"}'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"the search field"}' --content 'hello world'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 Scroll --direction down
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Space'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
 ```
 
 ### Natural Language Action
@@ -102,13 +67,13 @@ npx @midscene/computer@1.3.12-beta-20260211155735.0 DragAndDrop --locate '{"prom
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions like Spotlight:
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "press Command+Space, type Safari, press Enter"
+npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "press Command+Space, type Safari, press Enter"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 disconnect
+npx @midscene/computer@1.3.12-beta-20260212033510.0 disconnect
 ```
 
 ## Workflow Pattern
@@ -141,22 +106,22 @@ Each CLI command runs as a **separate process**. When a process exits, macOS ret
 **Example — Open an app via Spotlight:**
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
-npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
+npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
+npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 **Example — Context menu interaction:**
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "right-click the file icon, then click Delete in the context menu"
-npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
+npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "right-click the file icon, then click Delete in the context menu"
+npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 **Example — Dropdown menu:**
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "click the File menu, then click New Window"
-npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
+npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "click the File menu, then click New Window"
+npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 ## Common Patterns
@@ -166,26 +131,26 @@ npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
 **MUST use `act`** — Spotlight dismisses when the CLI process exits, so individual commands will always fail.
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
-npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
+npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
+npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
 ```
 
 ### Keyboard Shortcuts
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+C'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+V'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+Z'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+A'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+C'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+V'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Z'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+A'
 ```
 
 ### Window Management
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+M'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+W'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+Q'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+Tab'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+M'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+W'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Q'
+npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Tab'
 ```
 
 ## Troubleshooting
@@ -202,9 +167,7 @@ xcode-select --install
 ```
 
 ### API Key Not Set
-```bash
-export MIDSCENE_MODEL_API_KEY=your-api-key
-```
+Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 
 ### AI Cannot Find the Element
 1. Take a screenshot to verify the element is actually visible

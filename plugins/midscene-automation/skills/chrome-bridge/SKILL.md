@@ -41,13 +41,15 @@ npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge <subcommand> [args]
 
 The user has already prepared Chrome and the Midscene Extension. Do NOT check browser or extension status — just connect directly.
 
-Before first use, verify the API key is set:
+The CLI automatically loads `.env` from the current working directory. Before first use, verify the `.env` file exists and contains the API key:
 
 ```bash
-echo $MIDSCENE_MODEL_API_KEY
+cat .env | grep MIDSCENE_MODEL_API_KEY | head -c 30
 ```
 
-If empty, ask the user for their API key. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
+If no `.env` file or no API key, ask the user to create one. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
+
+**Do NOT run `echo $MIDSCENE_MODEL_API_KEY`** — the key is loaded from `.env` at runtime, not from shell environment.
 
 ## Commands
 
@@ -169,7 +171,7 @@ npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge disconnect
 - See the [Bridge Mode documentation](https://midscenejs.com/bridge-mode-by-chrome-extension.html).
 
 ### API Key Errors
-- Ensure `MIDSCENE_MODEL_API_KEY` is set in the environment.
+- Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 - Verify the key is valid for the configured model provider.
 
 ### Timeouts

@@ -13,9 +13,8 @@ allowed-tools:
 
 > **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
 >
-> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/ios` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
-> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
-> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+> 1. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
+> 2. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
 
 Automate iOS devices and simulators using `npx @midscene/ios`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
@@ -93,7 +92,6 @@ Since CLI commands are stateless between invocations, follow this pattern:
 2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the Settings icon in the top-right corner"` rather than vague references).
 3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
 4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
-5. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
 
 ### Handle Transient UI
 

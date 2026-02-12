@@ -130,54 +130,45 @@ Since CLI commands are stateless between invocations, follow this pattern:
 3. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
 4. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
 
-### Handle Transient UI
+### Handle Transient UI — MUST Use `act`
 
-Transient UI elements (Spotlight, context menus, dropdown menus, notification popups) **disappear** when the terminal regains focus or between commands. When interacting with transient UI:
+Each CLI command runs as a **separate process**. When a process exits, macOS returns focus to the terminal, which instantly dismisses any transient UI (Spotlight, context menus, dropdown menus, notification popups, etc.). This means **individual commands like `KeyboardPress` → `Input` will NEVER work for transient UI** — the UI disappears between commands.
 
-- **Use `act` for multi-step transient interactions** — it executes everything in a single process (recommended)
-- **Or execute commands rapidly in sequence** — do NOT take screenshots between steps
-- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
+**You MUST use `act` for ANY interaction that involves transient UI.** The `act` command executes all steps within a single process, keeping focus intact — just like `agent.aiAct()` in JavaScript.
+
 - Persistent UI (app windows, Finder, Dock) is fine to interact with across separate commands with screenshots in between
 
-**Example — Spotlight using `act` (recommended for transient UI):**
+**Example — Open an app via Spotlight:**
 
 ```bash
 npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
 npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
 ```
 
-**Example — Spotlight using individual commands (alternative):**
+**Example — Context menu interaction:**
 
 ```bash
-# These 3 commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+Space'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 Input --locate '{"prompt":"Spotlight search field"}' --content 'Safari'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value Enter
-# NOW take a screenshot to verify the result
+npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "right-click the file icon, then click Delete in the context menu"
 npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
 ```
 
-**Example — Context menu (transient):**
+**Example — Dropdown menu:**
 
 ```bash
-# Right-click and interact with menu back-to-back
-npx @midscene/computer@1.3.12-beta-20260211155735.0 RightClick --locate '{"prompt":"the file icon"}'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 Tap --locate '{"prompt":"Delete option in the context menu"}'
+npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "click the File menu, then click New Window"
+npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
 ```
 
 ## Common Patterns
 
 ### Open an Application via Spotlight
 
-**IMPORTANT:** Spotlight closes when it loses focus. Execute the Spotlight → type → Enter sequence **rapidly without screenshots in between**:
+**MUST use `act`** — Spotlight dismisses when the CLI process exits, so individual commands will always fail.
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value 'Command+Space'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 Input --locate '{"prompt":"Spotlight search field"}' --content 'Visual Studio Code'
-npx @midscene/computer@1.3.12-beta-20260211155735.0 KeyboardPress --value Enter
+npx @midscene/computer@1.3.12-beta-20260211155735.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
+npx @midscene/computer@1.3.12-beta-20260211155735.0 take_screenshot
 ```
-
-Do NOT take screenshots between these commands — Spotlight will close when the terminal regains focus.
 
 ### Keyboard Shortcuts
 

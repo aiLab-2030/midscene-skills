@@ -23,6 +23,12 @@ allowed-tools:
 
 # Chrome Bridge Automation
 
+> **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
+>
+> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/web` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
+> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
+> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+
 Automate the user's real Chrome browser via the Midscene Chrome Extension (Bridge mode), preserving cookies, sessions, and login state. You (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Command Format
@@ -30,7 +36,7 @@ Automate the user's real Chrome browser via the Midscene Chrome Extension (Bridg
 **CRITICAL — Every command MUST follow this EXACT format. Do NOT modify the command prefix.**
 
 ```
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge <subcommand> [args]
+npx @midscene/web --bridge <subcommand> [args]
 ```
 
 - `--bridge` flag is **MANDATORY** — it activates Bridge mode to connect to the user's real Chrome
@@ -56,13 +62,13 @@ If no `.env` file or no API key, ask the user to create one. See [Model Configur
 ### Connect to a Web Page
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge connect --url https://example.com
+npx @midscene/web --bridge connect --url https://example.com
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
+npx @midscene/web --bridge take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current page state before deciding the next action.
@@ -70,12 +76,12 @@ After taking a screenshot, read the saved image file to understand the current p
 ### Perform Actions
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Tap --locate '{"prompt":"the Login button"}'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Scroll --direction down
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Hover --locate '{"prompt":"the navigation menu"}'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge KeyboardPress --value Enter
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
+npx @midscene/web --bridge Tap --locate '{"prompt":"the Login button"}'
+npx @midscene/web --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web --bridge Scroll --direction down
+npx @midscene/web --bridge Hover --locate '{"prompt":"the navigation menu"}'
+npx @midscene/web --bridge KeyboardPress --value Enter
+npx @midscene/web --bridge DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
 ### Natural Language Action
@@ -83,13 +89,13 @@ npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge DragAndDrop --locate '{"
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge act --prompt "click the country dropdown and select Japan"
+npx @midscene/web --bridge act --prompt "click the country dropdown and select Japan"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge disconnect
+npx @midscene/web --bridge disconnect
 ```
 
 ## Workflow Pattern
@@ -112,6 +118,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 4. **Use natural language**: Describe what you see on the page, not CSS selectors. Say `"the red Buy Now button"` instead of `"#buy-btn"`.
 5. **Handle loading states**: After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
 6. **Disconnect when done**: Always disconnect to free resources.
+7. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
 
 ### Handle Transient UI
 
@@ -125,18 +132,18 @@ Dropdowns, autocomplete popups, tooltips, and confirm dialogs **disappear** betw
 **Example — Dropdown selection using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge act --prompt "click the country dropdown and select Japan"
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
+npx @midscene/web --bridge act --prompt "click the country dropdown and select Japan"
+npx @midscene/web --bridge take_screenshot
 ```
 
 **Example — Dropdown selection using individual commands (alternative):**
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Tap --locate '{"prompt":"the country dropdown"}'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Tap --locate '{"prompt":"Japan option in the dropdown list"}'
+npx @midscene/web --bridge Tap --locate '{"prompt":"the country dropdown"}'
+npx @midscene/web --bridge Tap --locate '{"prompt":"Japan option in the dropdown list"}'
 # NOW take a screenshot to verify the result
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
+npx @midscene/web --bridge take_screenshot
 ```
 
 ## Common Patterns
@@ -144,23 +151,23 @@ npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
 ### Simple Browsing
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge connect --url 'https://news.ycombinator.com'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
+npx @midscene/web --bridge connect --url 'https://news.ycombinator.com'
+npx @midscene/web --bridge take_screenshot
 # Read the screenshot, then decide next action
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge disconnect
+npx @midscene/web --bridge disconnect
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge connect --url 'https://example.com'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Tap --locate '{"prompt":"the Sign In link"}'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Input --locate '{"prompt":"the password field"}' --value 'password123'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge Tap --locate '{"prompt":"the Log In button"}'
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge take_screenshot
-npx @midscene/web@1.3.12-beta-20260212033510.0 --bridge disconnect
+npx @midscene/web --bridge connect --url 'https://example.com'
+npx @midscene/web --bridge Tap --locate '{"prompt":"the Sign In link"}'
+npx @midscene/web --bridge take_screenshot
+npx @midscene/web --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web --bridge Input --locate '{"prompt":"the password field"}' --value 'password123'
+npx @midscene/web --bridge Tap --locate '{"prompt":"the Log In button"}'
+npx @midscene/web --bridge take_screenshot
+npx @midscene/web --bridge disconnect
 ```
 
 ## Troubleshooting

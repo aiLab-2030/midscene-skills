@@ -58,24 +58,24 @@ Claude will automatically pick the right skill and execute the commands via `@mi
 
 ## How It Works
 
-All commands run through `npx @midscene/cli@1.3.12-beta-20260211155735.0 <platform> <command>`, which auto-downloads on first use — no pre-installation needed.
+All commands run through `npx @midscene/cli <platform> <command>`, which auto-downloads on first use — no pre-installation needed.
 
 ```bash
 # Web
-npx @midscene/cli@1.3.12-beta-20260211155735.0 web navigate "https://example.com" --bridge
-npx @midscene/cli@1.3.12-beta-20260211155735.0 web query "what is the page title?" --bridge
+npx @midscene/cli web navigate "https://example.com" --bridge
+npx @midscene/cli web query "what is the page title?" --bridge
 
 # Computer
-npx @midscene/cli@1.3.12-beta-20260211155735.0 computer act "press Command+Space to open Spotlight"
-npx @midscene/cli@1.3.12-beta-20260211155735.0 computer screenshot
+npx @midscene/cli computer act "press Command+Space to open Spotlight"
+npx @midscene/cli computer screenshot
 
 # Android
-npx @midscene/cli@1.3.12-beta-20260211155735.0 android act "tap the Settings icon"
-npx @midscene/cli@1.3.12-beta-20260211155735.0 android query "what is the battery percentage?"
+npx @midscene/cli android act "tap the Settings icon"
+npx @midscene/cli android query "what is the battery percentage?"
 
 # iOS
-npx @midscene/cli@1.3.12-beta-20260211155735.0 ios act "tap the Safari icon"
-npx @midscene/cli@1.3.12-beta-20260211155735.0 ios assert "Safari is open"
+npx @midscene/cli ios act "tap the Safari icon"
+npx @midscene/cli ios assert "Safari is open"
 ```
 
 ## Local Development

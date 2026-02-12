@@ -11,7 +11,13 @@ allowed-tools:
 
 # Desktop Computer Automation
 
-Control your entire macOS desktop using `npx @midscene/computer@1.3.12-beta-20260212033510.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+> **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
+>
+> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/computer` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
+> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
+> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+
+Control your entire macOS desktop using `npx @midscene/computer`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Prerequisites
 
@@ -30,20 +36,20 @@ If no `.env` file or no API key, ask the user to create one. See [Model Configur
 ### Connect to Desktop
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 connect
-npx @midscene/computer@1.3.12-beta-20260212033510.0 connect --displayId <id>
+npx @midscene/computer connect
+npx @midscene/computer connect --displayId <id>
 ```
 
 ### List Displays
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 list_displays
+npx @midscene/computer list_displays
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/computer take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -53,13 +59,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the desktop:
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Safari icon in the Dock"}'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 DoubleClick --locate '{"prompt":"the Documents folder"}'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 RightClick --locate '{"prompt":"the desktop background"}'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"the search field"}' --content 'hello world'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 Scroll --direction down
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Space'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
+npx @midscene/computer Tap --locate '{"prompt":"the Safari icon in the Dock"}'
+npx @midscene/computer DoubleClick --locate '{"prompt":"the Documents folder"}'
+npx @midscene/computer RightClick --locate '{"prompt":"the desktop background"}'
+npx @midscene/computer Input --locate '{"prompt":"the search field"}' --content 'hello world'
+npx @midscene/computer Scroll --direction down
+npx @midscene/computer KeyboardPress --value 'Command+Space'
+npx @midscene/computer DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
 ```
 
 ### Natural Language Action
@@ -67,13 +73,13 @@ npx @midscene/computer@1.3.12-beta-20260212033510.0 DragAndDrop --locate '{"prom
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions like Spotlight:
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "press Command+Space, type Safari, press Enter"
+npx @midscene/computer act --prompt "press Command+Space, type Safari, press Enter"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 disconnect
+npx @midscene/computer disconnect
 ```
 
 ## Workflow Pattern
@@ -94,6 +100,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 2. **Use keyboard shortcuts for reliability**: `KeyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
 3. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
 4. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
+5. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
 
 ### Handle Transient UI — MUST Use `act`
 
@@ -106,22 +113,22 @@ Each CLI command runs as a **separate process**. When a process exits, macOS ret
 **Example — Open an app via Spotlight:**
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
-npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/computer act --prompt "press Command+Space, type Visual Studio Code, press Enter"
+npx @midscene/computer take_screenshot
 ```
 
 **Example — Context menu interaction:**
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "right-click the file icon, then click Delete in the context menu"
-npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/computer act --prompt "right-click the file icon, then click Delete in the context menu"
+npx @midscene/computer take_screenshot
 ```
 
 **Example — Dropdown menu:**
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "click the File menu, then click New Window"
-npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/computer act --prompt "click the File menu, then click New Window"
+npx @midscene/computer take_screenshot
 ```
 
 ## Common Patterns
@@ -131,26 +138,26 @@ npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
 **MUST use `act`** — Spotlight dismisses when the CLI process exits, so individual commands will always fail.
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
-npx @midscene/computer@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/computer act --prompt "press Command+Space, type Visual Studio Code, press Enter"
+npx @midscene/computer take_screenshot
 ```
 
 ### Keyboard Shortcuts
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+C'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+V'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Z'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+A'
+npx @midscene/computer KeyboardPress --value 'Command+C'
+npx @midscene/computer KeyboardPress --value 'Command+V'
+npx @midscene/computer KeyboardPress --value 'Command+Z'
+npx @midscene/computer KeyboardPress --value 'Command+A'
 ```
 
 ### Window Management
 
 ```bash
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+M'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+W'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Q'
-npx @midscene/computer@1.3.12-beta-20260212033510.0 KeyboardPress --value 'Command+Tab'
+npx @midscene/computer KeyboardPress --value 'Command+M'
+npx @midscene/computer KeyboardPress --value 'Command+W'
+npx @midscene/computer KeyboardPress --value 'Command+Q'
+npx @midscene/computer KeyboardPress --value 'Command+Tab'
 ```
 
 ## Troubleshooting

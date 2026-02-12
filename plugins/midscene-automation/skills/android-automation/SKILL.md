@@ -23,7 +23,13 @@ allowed-tools:
 
 # Android Device Automation
 
-Automate Android devices using `npx @midscene/android@1.3.12-beta-20260212033510.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+> **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
+>
+> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/android` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
+> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
+> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+
+Automate Android devices using `npx @midscene/android`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Prerequisites
 
@@ -42,14 +48,14 @@ If no `.env` file or no API key, ask the user to create one. See [Model Configur
 ### Connect to Device
 
 ```bash
-npx @midscene/android@1.3.12-beta-20260212033510.0 connect
-npx @midscene/android@1.3.12-beta-20260212033510.0 connect --deviceId emulator-5554
+npx @midscene/android connect
+npx @midscene/android connect --deviceId emulator-5554
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/android@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/android take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -59,13 +65,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device. Each action uses `--locate` to describe which element to target:
 
 ```bash
-npx @midscene/android@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/android@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/android@1.3.12-beta-20260212033510.0 Scroll --direction down
-npx @midscene/android@1.3.12-beta-20260212033510.0 Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/android@1.3.12-beta-20260212033510.0 KeyboardPress --value Enter
-npx @midscene/android@1.3.12-beta-20260212033510.0 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/android@1.3.12-beta-20260212033510.0 Launch --uri 'com.android.settings'
+npx @midscene/android Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/android Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/android Scroll --direction down
+npx @midscene/android Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/android KeyboardPress --value Enter
+npx @midscene/android LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android Launch --uri 'com.android.settings'
 ```
 
 ### Natural Language Action
@@ -73,13 +79,13 @@ npx @midscene/android@1.3.12-beta-20260212033510.0 Launch --uri 'com.android.set
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/android@1.3.12-beta-20260212033510.0 act --prompt "long press the message, then tap Delete in the popup menu"
+npx @midscene/android act --prompt "long press the message, then tap Delete in the popup menu"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/android@1.3.12-beta-20260212033510.0 disconnect
+npx @midscene/android disconnect
 ```
 
 ## Workflow Pattern
@@ -100,6 +106,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the search icon at the top right"` rather than vague references).
 3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
 4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+5. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
 
 ### Handle Transient UI
 
@@ -113,18 +120,18 @@ Popup menus, toasts, bottom sheets, and snackbars **disappear** between commands
 **Example — Long press popup menu using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/android@1.3.12-beta-20260212033510.0 act --prompt "long press the message bubble, then tap Delete in the popup menu"
-npx @midscene/android@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/android act --prompt "long press the message bubble, then tap Delete in the popup menu"
+npx @midscene/android take_screenshot
 ```
 
 **Example — Long press popup menu using individual commands (alternative):**
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/android@1.3.12-beta-20260212033510.0 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/android@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"Delete option in the popup menu"}'
+npx @midscene/android LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android Tap --locate '{"prompt":"Delete option in the popup menu"}'
 # NOW take a screenshot to verify the result
-npx @midscene/android@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/android take_screenshot
 ```
 
 ## Troubleshooting

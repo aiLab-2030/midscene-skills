@@ -11,7 +11,13 @@ allowed-tools:
 
 # iOS Device Automation
 
-Automate iOS devices and simulators using `npx @midscene/ios@1.3.12-beta-20260212033510.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+> **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
+>
+> 1. **NEVER set `run_in_background: true`** on any Bash tool call for midscene commands. Every `npx @midscene/ios` command MUST use `run_in_background: false` (or omit the parameter entirely). Background execution causes notification spam after the task ends and breaks the screenshot-analyze-act loop.
+> 2. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
+> 3. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+
+Automate iOS devices and simulators using `npx @midscene/ios`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Prerequisites
 
@@ -30,13 +36,13 @@ If no `.env` file or no API key, ask the user to create one. See [Model Configur
 ### Connect to Device
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260212033510.0 connect
+npx @midscene/ios connect
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/ios take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -46,13 +52,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device:
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Scroll --direction down
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/ios@1.3.12-beta-20260212033510.0 KeyboardPress --value Enter
-npx @midscene/ios@1.3.12-beta-20260212033510.0 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Launch --uri 'com.apple.Preferences'
+npx @midscene/ios Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/ios Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/ios Scroll --direction down
+npx @midscene/ios Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/ios KeyboardPress --value Enter
+npx @midscene/ios LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/ios Launch --uri 'com.apple.Preferences'
 ```
 
 ### Natural Language Action
@@ -60,13 +66,13 @@ npx @midscene/ios@1.3.12-beta-20260212033510.0 Launch --uri 'com.apple.Preferenc
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260212033510.0 act --prompt "tap Delete, then confirm in the alert dialog"
+npx @midscene/ios act --prompt "tap Delete, then confirm in the alert dialog"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260212033510.0 disconnect
+npx @midscene/ios disconnect
 ```
 
 ## Workflow Pattern
@@ -87,6 +93,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the Settings icon in the top-right corner"` rather than vague references).
 3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
 4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+5. **Never run in background**: On every Bash tool call, either omit `run_in_background` or explicitly set it to `false`. Never set `run_in_background: true`.
 
 ### Handle Transient UI
 
@@ -100,18 +107,18 @@ Action sheets, alerts, popup menus, and share sheets **disappear** between comma
 **Example — Alert dialog using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260212033510.0 act --prompt "tap the Delete button, then confirm in the alert dialog"
-npx @midscene/ios@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/ios act --prompt "tap the Delete button, then confirm in the alert dialog"
+npx @midscene/ios take_screenshot
 ```
 
 **Example — Alert dialog using individual commands (alternative):**
 
 ```bash
 # Tap the button that triggers the alert, then interact with the alert back-to-back
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"the Delete button"}'
-npx @midscene/ios@1.3.12-beta-20260212033510.0 Tap --locate '{"prompt":"Confirm in the alert dialog"}'
+npx @midscene/ios Tap --locate '{"prompt":"the Delete button"}'
+npx @midscene/ios Tap --locate '{"prompt":"Confirm in the alert dialog"}'
 # NOW take a screenshot to verify the result
-npx @midscene/ios@1.3.12-beta-20260212033510.0 take_screenshot
+npx @midscene/ios take_screenshot
 ```
 
 ## Troubleshooting

@@ -126,11 +126,12 @@ Since CLI commands are stateless between invocations, follow this pattern:
 
 ## Best Practices
 
-1. **Take screenshots frequently**: Before and after each action to verify state changes.
-2. **Use keyboard shortcuts for reliability**: `KeyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
-3. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
-4. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
-5. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
+1. **Prefer shell commands to launch apps**: Use `open -a <AppName>` (macOS), `start <AppName>` (Windows), or `xdg-open` (Linux) to launch applications instead of midscene, as shell commands are significantly faster.
+2. **Take screenshots frequently**: Before and after each action to verify state changes.
+3. **Use keyboard shortcuts for reliability**: `KeyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
+4. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
+5. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
+6. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
 
 ### Handle Transient UI — MUST Use `act`
 

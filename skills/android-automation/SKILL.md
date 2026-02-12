@@ -132,11 +132,12 @@ Since CLI commands are stateless between invocations, follow this pattern:
 
 ## Best Practices
 
-1. **Take screenshots frequently**: Before and after each action to verify state changes.
-2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the search icon at the top right"` rather than vague references).
-3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
-4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
-5. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
+1. **Prefer ADB to launch apps**: Use `adb shell am start` to launch applications instead of midscene, as ADB commands are significantly faster.
+2. **Take screenshots frequently**: Before and after each action to verify state changes.
+3. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the search icon at the top right"` rather than vague references).
+4. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
+5. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
+6. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
 
 ### Handle Transient UI
 

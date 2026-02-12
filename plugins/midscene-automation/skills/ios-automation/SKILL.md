@@ -11,7 +11,7 @@ allowed-tools:
 
 # iOS Device Automation
 
-Automate iOS devices and simulators using `npx @midscene/ios@1.3.12-beta-20260211123127.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate iOS devices and simulators using `npx @midscene/ios@1.3.12-beta-20260211155735.0`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Setup Verification
 
@@ -40,7 +40,7 @@ Before running any commands, verify the following prerequisites:
 First, run help to see all available commands:
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 --help
+npx @midscene/ios@1.3.12-beta-20260211155735.0 --help
 ```
 
 ## Common Commands
@@ -48,13 +48,13 @@ npx @midscene/ios@1.3.12-beta-20260211123127.0 --help
 ### Connect to Device
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 connect
+npx @midscene/ios@1.3.12-beta-20260211155735.0 connect
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 take_screenshot
+npx @midscene/ios@1.3.12-beta-20260211155735.0 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -64,13 +64,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device:
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Scroll --direction down
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/ios@1.3.12-beta-20260211123127.0 KeyboardPress --value Enter
-npx @midscene/ios@1.3.12-beta-20260211123127.0 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Launch --uri 'com.apple.Preferences'
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Scroll --direction down
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/ios@1.3.12-beta-20260211155735.0 KeyboardPress --value Enter
+npx @midscene/ios@1.3.12-beta-20260211155735.0 LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Launch --uri 'com.apple.Preferences'
 ```
 
 ### Natural Language Action
@@ -78,13 +78,13 @@ npx @midscene/ios@1.3.12-beta-20260211123127.0 Launch --uri 'com.apple.Preferenc
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 act --prompt "tap Delete, then confirm in the alert dialog"
+npx @midscene/ios@1.3.12-beta-20260211155735.0 act --prompt "tap Delete, then confirm in the alert dialog"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 disconnect
+npx @midscene/ios@1.3.12-beta-20260211155735.0 disconnect
 ```
 
 ## Workflow Pattern
@@ -118,18 +118,18 @@ Action sheets, alerts, popup menus, and share sheets **disappear** between comma
 **Example — Alert dialog using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/ios@1.3.12-beta-20260211123127.0 act --prompt "tap the Delete button, then confirm in the alert dialog"
-npx @midscene/ios@1.3.12-beta-20260211123127.0 take_screenshot
+npx @midscene/ios@1.3.12-beta-20260211155735.0 act --prompt "tap the Delete button, then confirm in the alert dialog"
+npx @midscene/ios@1.3.12-beta-20260211155735.0 take_screenshot
 ```
 
 **Example — Alert dialog using individual commands (alternative):**
 
 ```bash
 # Tap the button that triggers the alert, then interact with the alert back-to-back
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"the Delete button"}'
-npx @midscene/ios@1.3.12-beta-20260211123127.0 Tap --locate '{"prompt":"Confirm in the alert dialog"}'
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Tap --locate '{"prompt":"the Delete button"}'
+npx @midscene/ios@1.3.12-beta-20260211155735.0 Tap --locate '{"prompt":"Confirm in the alert dialog"}'
 # NOW take a screenshot to verify the result
-npx @midscene/ios@1.3.12-beta-20260211123127.0 take_screenshot
+npx @midscene/ios@1.3.12-beta-20260211155735.0 take_screenshot
 ```
 
 ## Troubleshooting

@@ -13,22 +13,53 @@ allowed-tools:
 
 > **CRITICAL RULES — VIOLATIONS WILL BREAK THE WORKFLOW:**
 >
-> 1. **Send only ONE midscene CLI command per Bash tool call.** Wait for its result, read the screenshot, then decide the next action. Do NOT chain commands with `&&`, `;`, or `sleep`.
-> 2. **Set `timeout: 60000`** (60 seconds) on each Bash tool call to allow sufficient time for midscene commands to complete synchronously.
+> 1. **Never run midscene commands in the background.** Each command must run synchronously so you can read its output (especially screenshots) before deciding the next action. Background execution breaks the screenshot-analyze-act loop.
+> 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
+> 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; `act` commands with multi-step operations may need even longer.
 
 Control your desktop (macOS, Windows, Linux) using `npx @midscene/computer`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Prerequisites
 
-The CLI automatically loads `.env` from the current working directory. Before first use, verify the `.env` file exists and contains the API key:
+Midscene requires models with strong visual grounding capabilities. The following environment variables must be configured — either as system environment variables or in a `.env` file in the current working directory (Midscene loads `.env` automatically):
 
 ```bash
-cat .env | grep MIDSCENE_MODEL_API_KEY | head -c 30
+MIDSCENE_MODEL_API_KEY="your-api-key"
+MIDSCENE_MODEL_NAME="model-name"
+MIDSCENE_MODEL_BASE_URL="https://..."
+MIDSCENE_MODEL_FAMILY="family-identifier"
 ```
 
-If no `.env` file or no API key, ask the user to create one. See [Model Configuration](https://midscenejs.com/zh/model-common-config.html) for supported providers.
+Example: Gemini (Gemini-3-Flash)
 
-**Do NOT run `echo $MIDSCENE_MODEL_API_KEY`** — the key is loaded from `.env` at runtime, not from shell environment.
+```bash
+MIDSCENE_MODEL_API_KEY="your-google-api-key"
+MIDSCENE_MODEL_NAME="gemini-3-flash"
+MIDSCENE_MODEL_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+MIDSCENE_MODEL_FAMILY="gemini"
+```
+
+Example: Qwen3-VL
+
+```bash
+MIDSCENE_MODEL_API_KEY="your-openrouter-api-key"
+MIDSCENE_MODEL_NAME="qwen/qwen3-vl-235b-a22b-instruct"
+MIDSCENE_MODEL_BASE_URL="https://openrouter.ai/api/v1"
+MIDSCENE_MODEL_FAMILY="qwen3-vl"
+```
+
+Example: Doubao Seed 1.6
+
+```bash
+MIDSCENE_MODEL_API_KEY="your-doubao-api-key"
+MIDSCENE_MODEL_NAME="doubao-seed-1-6-250615"
+MIDSCENE_MODEL_BASE_URL="https://ark.cn-beijing.volces.com/api/v3"
+MIDSCENE_MODEL_FAMILY="doubao-vision"
+```
+
+Commonly used models: Doubao Seed 1.6, Qwen3-VL, Zhipu GLM-4.6V, Gemini-3-Pro, Gemini-3-Flash.
+
+If the model is not configured, ask the user to set it up. See [Model Configuration](https://midscenejs.com/model-common-config) for supported providers.
 
 ## Commands
 
@@ -99,6 +130,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 2. **Use keyboard shortcuts for reliability**: `KeyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
 3. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
 4. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
+5. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
 
 ### Handle Transient UI — MUST Use `act`
 
@@ -184,3 +216,7 @@ Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 1. Take a screenshot to verify the element is actually visible
 2. Use more specific descriptions (include color, position, surrounding text)
 3. Ensure the element is not hidden behind another window
+
+## Safety Warning
+
+AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

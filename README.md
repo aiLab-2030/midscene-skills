@@ -24,9 +24,12 @@ Then install the skills:
 npx skills add midscene/skills
 ```
 
-## Setup
+## Model Setup
 
-Create a `.env` file in your project directory with the model configuration:
+Midscene requires models with strong **visual grounding** capabilities (accurate UI element localization from screenshots).  
+Because of this, you need to prepare model access and configuration separately from skill installation.
+
+Make sure these environment variables are available in your system. You can also define them in a `.env` file in the current directory, and Midscene will load them automatically:
 
 ```bash
 MIDSCENE_MODEL_API_KEY="your-api-key"
@@ -35,44 +38,44 @@ MIDSCENE_MODEL_BASE_URL="https://..."
 MIDSCENE_MODEL_FAMILY="family-identifier"
 ```
 
-### Recommended models
+Example: Gemini (Gemini-3-Flash)
 
-| Model | Provider | Rating | Notes |
-|-------|----------|--------|-------|
-| **Doubao Seed 1.6** | VolcEngine | ⭐⭐⭐⭐ | Strong UI planning; slightly slower |
-| **Qwen3-VL** | Alibaba Cloud / OpenRouter / Ollama | ⭐⭐⭐⭐ | Excellent performance; open-source builds available |
-| **Zhipu GLM-4.6V** | Z.AI / BigModel | New | Newly integrated; weights on HuggingFace |
-| **Gemini-3-Pro / Flash** | Google Cloud | ⭐⭐⭐ | Higher pricing than alternatives |
-
-
-## Usage
-
-Skills are automatically available once installed. The agent will use them when relevant tasks are detected.
-
-**Examples:**
-```
-Open Hacker News and tell me the top 3 stories
-```
-```
-Take a screenshot of my computer
-```
-```
-Open the Settings app on my Android phone
-```
-```
-Check what Wi-Fi network my iPhone is connected to
+```bash
+MIDSCENE_MODEL_API_KEY="your-google-api-key"
+MIDSCENE_MODEL_NAME="gemini-3-flash"
+MIDSCENE_MODEL_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+MIDSCENE_MODEL_FAMILY="openai"
 ```
 
-## How It Works
+Example: Qwen3-VL
 
-Each platform has its own CLI package. The AI agent calls `npx @midscene/<platform> <command>` - npx auto-downloads on first use, no pre-installation needed.
+```bash
+MIDSCENE_MODEL_API_KEY="your-api-key"
+MIDSCENE_MODEL_NAME="qwen3-vl"
+MIDSCENE_MODEL_BASE_URL="https://your-qwen-compatible-endpoint/v1"
+MIDSCENE_MODEL_FAMILY="openai"
+```
 
-The agent follows a **screenshot -> analyze -> act** loop: take a screenshot, decide what to do, execute one action, repeat.
+Example: Doubao Seed 1.6
 
-## Skill Structure
+```bash
+MIDSCENE_MODEL_API_KEY="your-doubao-api-key"
+MIDSCENE_MODEL_NAME="doubao-seed-1-6-250615"
+MIDSCENE_MODEL_BASE_URL="https://ark.cn-beijing.volces.com/api/v3"
+MIDSCENE_MODEL_FAMILY="openai"
+```
 
-Each skill contains:
-- `SKILL.md` - Instructions for the agent (commands, workflow, best practices)
+Commonly used models: Doubao Seed 1.6, Qwen3-VL, Zhipu GLM-4.6V, Gemini-3-Pro, Gemini-3-Flash.
+
+Model setup docs:
+
+- Midscene model strategy: https://midscenejs.com/model-strategy
+- Qwen3-VL: https://midscenejs.com/model-common-config#qwen3-vl
+- Gemini-3-Flash: https://midscenejs.com/model-common-config#gemini-3-pro-and-gemini-3-flash
+- Doubao Seed 1.6: https://midscenejs.com/model-common-config
+
+
+
 
 ## License
 

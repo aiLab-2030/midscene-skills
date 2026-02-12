@@ -45,16 +45,16 @@ Example: Gemini (Gemini-3-Flash)
 MIDSCENE_MODEL_API_KEY="your-google-api-key"
 MIDSCENE_MODEL_NAME="gemini-3-flash"
 MIDSCENE_MODEL_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
-MIDSCENE_MODEL_FAMILY="openai"
+MIDSCENE_MODEL_FAMILY="gemini"
 ```
 
 Example: Qwen3-VL
 
 ```bash
-MIDSCENE_MODEL_API_KEY="your-api-key"
-MIDSCENE_MODEL_NAME="qwen3-vl"
-MIDSCENE_MODEL_BASE_URL="https://your-qwen-compatible-endpoint/v1"
-MIDSCENE_MODEL_FAMILY="openai"
+MIDSCENE_MODEL_API_KEY="your-openrouter-api-key"
+MIDSCENE_MODEL_NAME="qwen/qwen3-vl-235b-a22b-instruct"
+MIDSCENE_MODEL_BASE_URL="https://openrouter.ai/api/v1"
+MIDSCENE_MODEL_FAMILY="qwen3-vl"
 ```
 
 Example: Doubao Seed 1.6
@@ -63,7 +63,7 @@ Example: Doubao Seed 1.6
 MIDSCENE_MODEL_API_KEY="your-doubao-api-key"
 MIDSCENE_MODEL_NAME="doubao-seed-1-6-250615"
 MIDSCENE_MODEL_BASE_URL="https://ark.cn-beijing.volces.com/api/v3"
-MIDSCENE_MODEL_FAMILY="openai"
+MIDSCENE_MODEL_FAMILY="doubao-vision"
 ```
 
 Commonly used models: Doubao Seed 1.6, Qwen3-VL, Zhipu GLM-4.6V, Gemini-3-Pro, Gemini-3-Flash.

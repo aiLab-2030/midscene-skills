@@ -92,13 +92,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the desktop:
 
 ```bash
-npx @midscene/computer@1 Tap --locate '{"prompt":"the Safari icon in the Dock"}'
-npx @midscene/computer@1 DoubleClick --locate '{"prompt":"the Documents folder"}'
-npx @midscene/computer@1 RightClick --locate '{"prompt":"the desktop background"}'
-npx @midscene/computer@1 Input --locate '{"prompt":"the search field"}' --content 'hello world'
-npx @midscene/computer@1 Scroll --direction down
-npx @midscene/computer@1 KeyboardPress --value 'Command+Space'
-npx @midscene/computer@1 DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
+npx @midscene/computer@1 tap --locate '{"prompt":"the Safari icon in the Dock"}'
+npx @midscene/computer@1 doubleClick --locate '{"prompt":"the Documents folder"}'
+npx @midscene/computer@1 rightClick --locate '{"prompt":"the desktop background"}'
+npx @midscene/computer@1 input --locate '{"prompt":"the search field"}' --content 'hello world'
+npx @midscene/computer@1 scroll --direction down
+npx @midscene/computer@1 keyboardPress --value 'Command+Space'
+npx @midscene/computer@1 dragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
 ```
 
 ### Natural Language Action
@@ -122,7 +122,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 1. **Connect** to establish a session
 2. **Take screenshot** to see the current state
 3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, KeyboardPress, etc.)
+4. **Execute action** (tap, input, keyboardPress, etc.)
 5. **Take screenshot** again to verify the result
 6. **Repeat** steps 3-5 until the task is complete
 7. **Disconnect** when done
@@ -131,14 +131,15 @@ Since CLI commands are stateless between invocations, follow this pattern:
 
 1. **Prefer shell commands to launch apps**: Use `open -a <AppName>` (macOS), `start <AppName>` (Windows), or `xdg-open` (Linux) to launch applications instead of midscene, as shell commands are significantly faster.
 2. **Take screenshots frequently**: Before and after each action to verify state changes.
-3. **Use keyboard shortcuts for reliability**: `KeyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
+3. **Use keyboard shortcuts for reliability**: `keyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
 4. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
 5. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
 6. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
+7. **Check for multiple displays**: If you launched an app but cannot see it on the screenshot, the app window may have opened on a different display. Use `list_displays` to check available displays and `connect --displayId <id>` to switch to the correct one.
 
 ### Handle Transient UI — MUST Use `act`
 
-Each CLI command runs as a **separate process**. When a process exits, the OS may return focus to the terminal, which can dismiss transient UI (app launchers, context menus, dropdown menus, notification popups, etc.). This means **individual commands like `KeyboardPress` → `Input` will NEVER work for transient UI** — the UI disappears between commands.
+Each CLI command runs as a **separate process**. When a process exits, the OS may return focus to the terminal, which can dismiss transient UI (app launchers, context menus, dropdown menus, notification popups, etc.). This means **individual commands like `keyboardPress` → `input` will NEVER work for transient UI** — the UI disappears between commands.
 
 **You MUST use `act` for ANY interaction that involves transient UI.** The `act` command executes all steps within a single process, keeping focus intact — just like `agent.aiAct()` in JavaScript.
 
@@ -185,19 +186,19 @@ npx @midscene/computer@1 take_screenshot
 
 ```bash
 # macOS uses Command, Windows/Linux use Ctrl
-npx @midscene/computer@1 KeyboardPress --value 'Command+C'
-npx @midscene/computer@1 KeyboardPress --value 'Ctrl+C'
+npx @midscene/computer@1 keyboardPress --value 'Command+C'
+npx @midscene/computer@1 keyboardPress --value 'Ctrl+C'
 ```
 
 ### Window Management
 
 ```bash
 # macOS
-npx @midscene/computer@1 KeyboardPress --value 'Command+W'
-npx @midscene/computer@1 KeyboardPress --value 'Command+Tab'
+npx @midscene/computer@1 keyboardPress --value 'Command+W'
+npx @midscene/computer@1 keyboardPress --value 'Command+Tab'
 # Windows/Linux
-npx @midscene/computer@1 KeyboardPress --value 'Alt+F4'
-npx @midscene/computer@1 KeyboardPress --value 'Alt+Tab'
+npx @midscene/computer@1 keyboardPress --value 'Alt+F4'
+npx @midscene/computer@1 keyboardPress --value 'Alt+Tab'
 ```
 
 ## Troubleshooting

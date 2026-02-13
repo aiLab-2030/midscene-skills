@@ -103,12 +103,12 @@ After taking a screenshot, read the saved image file to understand the current p
 Use actionSpace tools to interact with the page:
 
 ```bash
-npx @midscene/web@1 Tap --locate '{"prompt":"the Login button"}'
-npx @midscene/web@1 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1 Scroll --direction down
-npx @midscene/web@1 Hover --locate '{"prompt":"the navigation menu"}'
-npx @midscene/web@1 KeyboardPress --value Enter
-npx @midscene/web@1 DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
+npx @midscene/web@1 tap --locate '{"prompt":"the Login button"}'
+npx @midscene/web@1 input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1 scroll --direction down
+npx @midscene/web@1 hover --locate '{"prompt":"the navigation menu"}'
+npx @midscene/web@1 keyboardPress --value Enter
+npx @midscene/web@1 dragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
 ### Natural Language Action
@@ -142,7 +142,7 @@ The browser **persists across CLI calls** via a background Chrome process. Follo
 1. **Connect** to a URL to open a new tab
 2. **Take screenshot** to see the current state
 3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, Scroll, etc.)
+4. **Execute action** (tap, input, scroll, etc.)
 5. **Take screenshot** again to verify the result
 6. **Repeat** steps 3-5 until the task is complete
 7. **Close** the browser when done (or **disconnect** to keep it for later)
@@ -177,8 +177,8 @@ npx @midscene/web@1 take_screenshot
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/web@1 Tap --locate '{"prompt":"the country dropdown"}'
-npx @midscene/web@1 Tap --locate '{"prompt":"Japan option in the dropdown list"}'
+npx @midscene/web@1 tap --locate '{"prompt":"the country dropdown"}'
+npx @midscene/web@1 tap --locate '{"prompt":"Japan option in the dropdown list"}'
 # NOW take a screenshot to verify the result
 npx @midscene/web@1 take_screenshot
 ```
@@ -198,11 +198,11 @@ npx @midscene/web@1 close
 
 ```bash
 npx @midscene/web@1 connect --url 'https://example.com'
-npx @midscene/web@1 Tap --locate '{"prompt":"the Sign In link"}'
+npx @midscene/web@1 tap --locate '{"prompt":"the Sign In link"}'
 npx @midscene/web@1 take_screenshot
-npx @midscene/web@1 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1 Input --locate '{"prompt":"the password field"}' --value 'password123'
-npx @midscene/web@1 Tap --locate '{"prompt":"the Log In button"}'
+npx @midscene/web@1 input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1 input --locate '{"prompt":"the password field"}' --value 'password123'
+npx @midscene/web@1 tap --locate '{"prompt":"the Log In button"}'
 npx @midscene/web@1 take_screenshot
 npx @midscene/web@1 close
 ```
@@ -213,9 +213,9 @@ npx @midscene/web@1 close
 npx @midscene/web@1 connect --url 'http://localhost:3000'
 npx @midscene/web@1 take_screenshot
 # Analyze: verify login form is visible
-npx @midscene/web@1 Input --locate '{"prompt":"the email field"}' --value 'test@example.com'
-npx @midscene/web@1 Input --locate '{"prompt":"the password field"}' --value 'password'
-npx @midscene/web@1 Tap --locate '{"prompt":"the Submit button"}'
+npx @midscene/web@1 input --locate '{"prompt":"the email field"}' --value 'test@example.com'
+npx @midscene/web@1 input --locate '{"prompt":"the password field"}' --value 'password'
+npx @midscene/web@1 tap --locate '{"prompt":"the Submit button"}'
 npx @midscene/web@1 take_screenshot
 # Analyze: verify the welcome message is displayed
 npx @midscene/web@1 close
@@ -238,7 +238,7 @@ When asked to verify or test a frontend application:
 2. **Connect** to the local URL (e.g., `http://localhost:3000`).
 3. **Take a screenshot** to see the initial state.
 4. **Analyze the screenshot** to verify expected UI elements are present.
-5. **Perform interactions** (Tap, Input, Scroll) to test user flows.
+5. **Perform interactions** (tap, input, scroll) to test user flows.
 6. **Take screenshots** after each step to verify outcomes.
 7. **Close** the browser when finished.
 

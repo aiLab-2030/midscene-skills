@@ -109,12 +109,12 @@ After taking a screenshot, read the saved image file to understand the current p
 ### Perform Actions
 
 ```bash
-npx @midscene/web@1 --bridge Tap --locate '{"prompt":"the Login button"}'
-npx @midscene/web@1 --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1 --bridge Scroll --direction down
-npx @midscene/web@1 --bridge Hover --locate '{"prompt":"the navigation menu"}'
-npx @midscene/web@1 --bridge KeyboardPress --value Enter
-npx @midscene/web@1 --bridge DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
+npx @midscene/web@1 --bridge tap --locate '{"prompt":"the Login button"}'
+npx @midscene/web@1 --bridge input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1 --bridge scroll --direction down
+npx @midscene/web@1 --bridge hover --locate '{"prompt":"the navigation menu"}'
+npx @midscene/web@1 --bridge keyboardPress --value Enter
+npx @midscene/web@1 --bridge dragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
 ### Natural Language Action
@@ -138,7 +138,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 1. **Connect** to a URL to establish a session
 2. **Take screenshot** to see the current state
 3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, Scroll, etc.)
+4. **Execute action** (tap, input, scroll, etc.)
 5. **Take screenshot** again to verify the result
 6. **Repeat** steps 3-5 until the task is complete
 7. **Disconnect** when done
@@ -173,8 +173,8 @@ npx @midscene/web@1 --bridge take_screenshot
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/web@1 --bridge Tap --locate '{"prompt":"the country dropdown"}'
-npx @midscene/web@1 --bridge Tap --locate '{"prompt":"Japan option in the dropdown list"}'
+npx @midscene/web@1 --bridge tap --locate '{"prompt":"the country dropdown"}'
+npx @midscene/web@1 --bridge tap --locate '{"prompt":"Japan option in the dropdown list"}'
 # NOW take a screenshot to verify the result
 npx @midscene/web@1 --bridge take_screenshot
 ```
@@ -194,11 +194,11 @@ npx @midscene/web@1 --bridge disconnect
 
 ```bash
 npx @midscene/web@1 --bridge connect --url 'https://example.com'
-npx @midscene/web@1 --bridge Tap --locate '{"prompt":"the Sign In link"}'
+npx @midscene/web@1 --bridge tap --locate '{"prompt":"the Sign In link"}'
 npx @midscene/web@1 --bridge take_screenshot
-npx @midscene/web@1 --bridge Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web@1 --bridge Input --locate '{"prompt":"the password field"}' --value 'password123'
-npx @midscene/web@1 --bridge Tap --locate '{"prompt":"the Log In button"}'
+npx @midscene/web@1 --bridge input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1 --bridge input --locate '{"prompt":"the password field"}' --value 'password123'
+npx @midscene/web@1 --bridge tap --locate '{"prompt":"the Log In button"}'
 npx @midscene/web@1 --bridge take_screenshot
 npx @midscene/web@1 --bridge disconnect
 ```

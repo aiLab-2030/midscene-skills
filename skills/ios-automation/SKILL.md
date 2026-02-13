@@ -84,13 +84,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device:
 
 ```bash
-npx @midscene/ios@1 Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/ios@1 Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/ios@1 Scroll --direction down
-npx @midscene/ios@1 Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/ios@1 KeyboardPress --value Enter
-npx @midscene/ios@1 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/ios@1 Launch --uri 'com.apple.Preferences'
+npx @midscene/ios@1 tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/ios@1 input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/ios@1 scroll --direction down
+npx @midscene/ios@1 swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/ios@1 keyboardPress --value Enter
+npx @midscene/ios@1 longPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/ios@1 launch --uri 'com.apple.Preferences'
 ```
 
 ### Natural Language Action
@@ -114,7 +114,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 1. **Connect** to establish a session
 2. **Take screenshot** to see the current state
 3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, Scroll, etc.)
+4. **Execute action** (tap, input, scroll, etc.)
 5. **Take screenshot** again to verify the result
 6. **Repeat** steps 3-5 until the task is complete
 7. **Disconnect** when done
@@ -146,9 +146,9 @@ npx @midscene/ios@1 take_screenshot
 **Example — Alert dialog using individual commands (alternative):**
 
 ```bash
-# Tap the button that triggers the alert, then interact with the alert back-to-back
-npx @midscene/ios@1 Tap --locate '{"prompt":"the Delete button"}'
-npx @midscene/ios@1 Tap --locate '{"prompt":"Confirm in the alert dialog"}'
+# tap the button that triggers the alert, then interact with the alert back-to-back
+npx @midscene/ios@1 tap --locate '{"prompt":"the Delete button"}'
+npx @midscene/ios@1 tap --locate '{"prompt":"Confirm in the alert dialog"}'
 # NOW take a screenshot to verify the result
 npx @midscene/ios@1 take_screenshot
 ```

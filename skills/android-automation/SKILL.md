@@ -87,13 +87,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device. Each action uses `--locate` to describe which element to target:
 
 ```bash
-npx @midscene/android@1 Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/android@1 Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/android@1 Scroll --direction down
-npx @midscene/android@1 Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/android@1 KeyboardPress --value Enter
-npx @midscene/android@1 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/android@1 Launch --uri 'com.android.settings'
+npx @midscene/android@1 tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/android@1 input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/android@1 scroll --direction down
+npx @midscene/android@1 swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/android@1 keyboardPress --value Enter
+npx @midscene/android@1 longPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android@1 launch --uri 'com.android.settings'
 ```
 
 ### Natural Language Action
@@ -117,7 +117,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 1. **Connect** to establish a session
 2. **Take screenshot** to see the current state
 3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (Tap, Input, Scroll, etc.)
+4. **Execute action** (tap, input, scroll, etc.)
 5. **Take screenshot** again to verify the result
 6. **Repeat** steps 3-5 until the task is complete
 7. **Disconnect** when done
@@ -151,8 +151,8 @@ npx @midscene/android@1 take_screenshot
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/android@1 LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/android@1 Tap --locate '{"prompt":"Delete option in the popup menu"}'
+npx @midscene/android@1 longPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/android@1 tap --locate '{"prompt":"Delete option in the popup menu"}'
 # NOW take a screenshot to verify the result
 npx @midscene/android@1 take_screenshot
 ```

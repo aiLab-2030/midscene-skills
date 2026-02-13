@@ -135,7 +135,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 4. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
 5. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
 6. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
-7. **Check for multiple displays**: If you launched an app but cannot see it on the screenshot, the app window may have opened on a different display. Use `list_displays` to check available displays and `connect --displayId <id>` to switch to the correct one.
+7. **Check for multiple displays**: If you launched an app but cannot see it on the screenshot, the app window may have opened on a different display. Use `list_displays` to check available displays. You have two options: either move the app window to the current display, or use `connect --displayId <id>` to switch to the display where the app is.
 
 ### Handle Transient UI — MUST Use `act`
 

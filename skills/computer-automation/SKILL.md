@@ -19,7 +19,7 @@ allowed-tools:
 >
 > 1. **Never run midscene commands in the background.** Each command must run synchronously so you can read its output (especially screenshots) before deciding the next action. Background execution breaks the screenshot-analyze-act loop.
 > 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
-> 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; `act` commands with multi-step operations may need even longer.
+> 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; complex `act` commands may need even longer.
 
 Control your desktop (macOS, Windows, Linux) using `npx @midscene/computer@1`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
@@ -88,26 +88,17 @@ npx @midscene/computer@1 take_screenshot
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
 
-### Perform Actions
+### Perform Action
 
-Use actionSpace tools to interact with the desktop:
-
-```bash
-npx @midscene/computer@1 tap --locate '{"prompt":"the Safari icon in the Dock"}'
-npx @midscene/computer@1 doubleClick --locate '{"prompt":"the Documents folder"}'
-npx @midscene/computer@1 rightClick --locate '{"prompt":"the desktop background"}'
-npx @midscene/computer@1 input --locate '{"prompt":"the search field"}' --content 'hello world'
-npx @midscene/computer@1 scroll --direction down
-npx @midscene/computer@1 keyboardPress --value 'Command+Space'
-npx @midscene/computer@1 dragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
-```
-
-### Natural Language Action
-
-Use `act` to execute multi-step operations in a single command — useful for transient UI interactions like Spotlight:
+Use `act` to interact with the computer and get the result. It autonomously handles all UI interactions internally — clicking, typing, scrolling, waiting, and navigating — so you should give it complex, high-level tasks as a whole rather than breaking them into small steps. Describe **what you want to do and the desired effect** in natural language:
 
 ```bash
-npx @midscene/computer@1 act --prompt "press Command+Space, type Safari, press Enter"
+# specific instructions
+npx @midscene/computer@1 act --prompt "type hello world in the search field and press Enter"
+npx @midscene/computer@1 act --prompt "drag the file icon to the Trash"
+
+# or target-driven instructions
+npx @midscene/computer@1 act --prompt "search for the weather in Shanghai using the Chrome browser, tell me the result"
 ```
 
 ### Disconnect
@@ -121,88 +112,36 @@ npx @midscene/computer@1 disconnect
 Since CLI commands are stateless between invocations, follow this pattern:
 
 1. **Connect** to establish a session
-2. **Health check** — take a screenshot and verify it succeeds, then move the mouse to a random position (`tap` on an empty area or `act --prompt "move the mouse to a random position"`) and verify it succeeds. If either step fails, stop and troubleshoot before continuing. Only proceed to the next steps after both checks pass without errors.
-3. **Take screenshot** to see the current state
-4. **Analyze** the screenshot to decide the next action
-5. **Execute action** (tap, input, keyboardPress, etc.)
-6. **Take screenshot** again to verify the result
-7. **Repeat** steps 4-6 until the task is complete
-8. **Disconnect** when done
+2. **Health check** — take a screenshot and verify it succeeds, then move the mouse to a random position (`act --prompt "move the mouse to a random position"`) and verify it succeeds. If either step fails, stop and troubleshoot before continuing. Only proceed to the next steps after both checks pass without errors.
+3. **Launch the target app and take screenshot** to see the current state, make sure the app is launched and visible on the screen.
+4. **Execute action** using `act` to perform the desired action or target-driven instructions.
+5. **Disconnect** when done
 
 ## Best Practices
 
 1. **Always run a health check first**: After connecting, take a screenshot and move the mouse to a random position. Both must succeed (no errors) before proceeding with any further operations. This catches environment issues early.
-2. **Prefer shell commands to launch apps**: Use `open -a <AppName>` (macOS), `start <AppName>` (Windows), or `xdg-open` (Linux) to launch applications instead of midscene, as shell commands are significantly faster.
-3. **Take screenshots frequently**: Before and after each action to verify state changes.
-4. **Use keyboard shortcuts for reliability**: `keyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
-5. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
-6. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
-7. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
-8. **Check for multiple displays**: If you launched an app but cannot see it on the screenshot, the app window may have opened on a different display. Use `list_displays` to check available displays. You have two options: either move the app window to the current display, or use `connect --displayId <id>` to switch to the display where the app is.
-
-### Handle Transient UI — MUST Use `act`
-
-Each CLI command runs as a **separate process**. When a process exits, the OS may return focus to the terminal, which can dismiss transient UI (app launchers, context menus, dropdown menus, notification popups, etc.). This means **individual commands like `keyboardPress` → `input` will NEVER work for transient UI** — the UI disappears between commands.
-
-**You MUST use `act` for ANY interaction that involves transient UI.** The `act` command executes all steps within a single process, keeping focus intact — just like `agent.aiAct()` in JavaScript.
-
-- Persistent UI (app windows, file managers, taskbars/docks) is fine to interact with across separate commands with screenshots in between
-
-**Example — Open an app via launcher (macOS Spotlight / Windows Start / Linux app menu):**
-
-```bash
-npx @midscene/computer@1 act --prompt "open the app launcher, type Visual Studio Code, press Enter"
-npx @midscene/computer@1 take_screenshot
-```
+2. **Bring the target app to the foreground before using this skill**: For best efficiency, bring the app to the foreground using other means (e.g., `open -a <AppName>` on macOS, `start <AppName>` on Windows) **before** invoking any midscene commands. Then take a screenshot to confirm the app is actually in the foreground. Only after visual confirmation should you proceed with UI automation using this skill. Avoid using Spotlight, Start menu search, or other launcher-based approaches through midscene — they involve transient UI, multiple AI inference steps, and are significantly slower.
+3. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
+4. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
+5. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
+6. **Check for multiple displays**: If you launched an app but cannot see it on the screenshot, the app window may have opened on a different display. Use `list_displays` to check available displays. You have two options: either move the app window to the current display, or use `connect --displayId <id>` to switch to the display where the app is.
+7. **Batch related operations into a single `act` command**: When performing consecutive operations within the same app, combine them into one `act` prompt instead of splitting them into separate commands. For example, "search for X, click the first result, and scroll down to see more details" should be a single `act` call, not three. This reduces round-trips, avoids unnecessary screenshot-analyze cycles, and is significantly faster.
+8. **Summarize report files after completion**: After finishing the automation task, collect and summarize all report files (screenshots, logs, output files, etc.) for the user. Present a clear summary of what was accomplished, what files were generated, and where they are located, making it easy for the user to review the results.
 
 **Example — Context menu interaction:**
 
 ```bash
-npx @midscene/computer@1 act --prompt "right-click the file icon, then click Delete in the context menu"
+npx @midscene/computer@1 act --prompt "right-click the file icon and select Delete from the context menu"
 npx @midscene/computer@1 take_screenshot
 ```
 
 **Example — Dropdown menu:**
 
 ```bash
-npx @midscene/computer@1 act --prompt "click the File menu, then click New Window"
+npx @midscene/computer@1 act --prompt "open the File menu and click New Window"
 npx @midscene/computer@1 take_screenshot
 ```
 
-## Common Patterns
-
-### Open an Application via Launcher
-
-**MUST use `act`** — the launcher dismisses when the CLI process exits, so individual commands will always fail.
-
-```bash
-# macOS
-npx @midscene/computer@1 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
-# Windows
-npx @midscene/computer@1 act --prompt "press the Windows key, type Visual Studio Code, press Enter"
-# Linux (varies by DE)
-npx @midscene/computer@1 act --prompt "open the application menu, type Visual Studio Code, press Enter"
-npx @midscene/computer@1 take_screenshot
-```
-
-### Keyboard Shortcuts
-
-```bash
-# macOS uses Command, Windows/Linux use Ctrl
-npx @midscene/computer@1 keyboardPress --value 'Command+C'
-npx @midscene/computer@1 keyboardPress --value 'Ctrl+C'
-```
-
-### Window Management
-
-```bash
-# macOS
-npx @midscene/computer@1 keyboardPress --value 'Command+W'
-npx @midscene/computer@1 keyboardPress --value 'Command+Tab'
-# Windows/Linux
-npx @midscene/computer@1 keyboardPress --value 'Alt+F4'
-npx @midscene/computer@1 keyboardPress --value 'Alt+Tab'
-```
 
 ## Troubleshooting
 

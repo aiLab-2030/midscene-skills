@@ -1,22 +1,14 @@
 ---
 name: Android Device Automation
 description: >
-  AI-powered Android device automation using Midscene.
+  Vision-driven Android device automation using Midscene.
+  Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
   Control Android devices with natural language commands via ADB.
   Perform taps, swipes, text input, app launches, screenshots, and more.
-triggers:
-  - android
-  - phone
-  - mobile app
-  - tap
-  - swipe
-  - install app
-  - open app on phone
-  - android device
-  - mobile automation
-  - adb
-  - launch app
-  - mobile screen
+  
+  Trigger keywords: android, phone, mobile app, tap, swipe, install app, open app on phone, android device, mobile automation, adb, launch app, mobile screen
+
+  Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:
   - Bash
 ---

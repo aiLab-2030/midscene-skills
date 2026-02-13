@@ -1,7 +1,8 @@
 ---
 name: Chrome Bridge Automation
 description: |
-  AI-powered browser automation using Midscene Bridge mode. Use this skill when the user wants to:
+  Vision-driven browser automation using Midscene Bridge mode. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
+  Use this skill when the user wants to:
   - Browse, navigate, or open web pages in the user's own Chrome browser
   - Interact with pages that require login sessions, cookies, or existing browser state
   - Scrape, extract, or collect data from websites using the user's real browser
@@ -17,6 +18,8 @@ description: |
   Trigger keywords: browse, navigate, open url, web page, website, scrape, extract, crawl,
   fill form, click, interact, verify, validate, test, assert, screenshot, frontend, UI test,
   web automation, search web, check page, login, submit, chrome, bridge
+
+  Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:
   - Bash
 ---

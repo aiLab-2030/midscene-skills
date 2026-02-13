@@ -1,10 +1,12 @@
 ---
 name: iOS Device Automation
 description: |
-  AI-powered iOS device automation using Midscene CLI. Control iOS devices and simulators
-  with natural language commands via WebDriverAgent.
+  Vision-driven iOS device automation using Midscene CLI. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
+  Control iOS devices and simulators with natural language commands via WebDriverAgent.
   Triggers: ios, iphone, ipad, ios app, tap on iphone, swipe, ios simulator, mobile app ios,
   ios device, ios testing, iphone automation, ipad automation, ios screen, ios navigate
+
+  Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:
   - Bash
 ---

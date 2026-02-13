@@ -2,6 +2,9 @@
 name: Chrome Bridge Automation
 description: |
   Vision-driven browser automation using Midscene Bridge mode. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
+
+  This mode connects to the user's desktop Chrome browser via the Midscene Chrome Extension, preserving cookies, sessions, and login state.
+
   Use this skill when the user wants to:
   - Browse, navigate, or open web pages in the user's own Chrome browser
   - Interact with pages that require login sessions, cookies, or existing browser state
@@ -11,13 +14,6 @@ description: |
   - Take screenshots of web pages
   - Automate multi-step web workflows
   - Check website content or appearance
-
-  This mode connects to the user's real Chrome browser via the Midscene Chrome Extension,
-  preserving cookies, sessions, and login state.
-
-  Trigger keywords: browse, navigate, open url, web page, website, scrape, extract, crawl,
-  fill form, click, interact, verify, validate, test, assert, screenshot, frontend, UI test,
-  web automation, search web, check page, login, submit, chrome, bridge
 
   Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:
@@ -42,13 +38,11 @@ Automate the user's real Chrome browser via the Midscene Chrome Extension (Bridg
 npx @midscene/web@1 --bridge <subcommand> [args]
 ```
 
-- `--bridge` flag is **MANDATORY** — it activates Bridge mode to connect to the user's real Chrome
-- Without `--bridge`, the CLI launches a separate headless browser (wrong behavior for this skill)
-- Do NOT use `-p` flag, do NOT use environment variables as substitutes — use `--bridge` exactly as shown
+- `--bridge` flag is **MANDATORY** here — it activates Bridge mode to connect to the user's desktop Chrome browser
 
 ## Prerequisites
 
-The user has already prepared Chrome and the Midscene Extension. Do NOT check browser or extension status — just connect directly.
+The user has already prepared Chrome and the Midscene Extension. Do NOT check browser or extension status before connecting — just connect directly.
 
 Midscene requires models with strong visual grounding capabilities. The following environment variables must be configured — either as system environment variables or in a `.env` file in the current working directory (Midscene loads `.env` automatically):
 
@@ -206,13 +200,10 @@ npx @midscene/web@1 --bridge disconnect
 ## Troubleshooting
 
 ### Bridge Mode Connection Failures
-- Ensure Chrome is open with the Midscene Extension installed and enabled.
-- Check that the extension shows "Connected" status.
+- Ask user to check if Chrome is open with the Midscene Extension installed and enabled.
+- The Midscene Extension can be installed from the Chrome Web Store: https://chromewebstore.google.com/detail/midscenejs/gbldofcpkknbggpkmbdaefngejllnief
+- Check that the 'bridge mode' indicator in the extension shows "Listening" status.
 - See the [Bridge Mode documentation](https://midscenejs.com/bridge-mode-by-chrome-extension.html).
-
-### API Key Errors
-- Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
-- Verify the key is valid for the configured model provider.
 
 ### Timeouts
 - Web pages may take time to load. After connecting, take a screenshot to verify readiness before interacting.
@@ -220,7 +211,3 @@ npx @midscene/web@1 --bridge disconnect
 
 ### Screenshots Not Displaying
 - The screenshot path is an absolute path to a local file. Use the Read tool to view it.
-
-## Safety Warning
-
-AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

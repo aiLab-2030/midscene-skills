@@ -3,6 +3,7 @@ name: iOS Device Automation
 description: |
   Vision-driven iOS device automation using Midscene CLI. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
   Control iOS devices with natural language commands via WebDriverAgent.
+  
   Triggers: ios, iphone, ipad, ios app, tap on iphone, swipe, mobile app ios,
   ios device, ios testing, iphone automation, ipad automation, ios screen, ios navigate
 
@@ -171,7 +172,3 @@ npx @midscene/ios@1 take_screenshot
 **Solution:**
 - Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 - See https://midscenejs.com/zh/model-common-config.html for details.
-
-## Safety Warning
-
-AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

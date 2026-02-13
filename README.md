@@ -15,6 +15,11 @@
   - Android (controlled via ADB): [`skills/android-automation`](skills/android-automation)
   - iOS (controlled via WebDriverAgent): [`skills/ios-automation`](skills/ios-automation)
 
+
+## Safety Warning
+
+⚠️ AI-driven UI automation may produce unpredictable results since it can control EVERYTHING on the screen. Please evaluate the risks carefully before use.
+
 ## Installation
 
 Make sure you have [Node.js](https://nodejs.org) installed.
@@ -86,10 +91,6 @@ Model setup docs:
 ## Issues
 
 For bug reports, feature requests, and discussions, please visit the main Midscene repository: https://github.com/web-infra-dev/midscene/issues
-
-## Safety Warning
-
-AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.
 
 ## License
 

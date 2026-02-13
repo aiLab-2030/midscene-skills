@@ -3,6 +3,7 @@ name: Desktop Computer Automation
 description: |
   Vision-driven desktop automation using Midscene. Control your desktop (macOS, Windows, Linux) with natural language commands.
   Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
+
   Triggers: open app, press key, desktop, computer, click on screen, type text, screenshot desktop,
   launch application, switch window, desktop automation, control computer, mouse click, keyboard shortcut,
   screen capture, find on screen, read screen, verify window, close app, minimize window, maximize window
@@ -221,7 +222,3 @@ Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
 1. Take a screenshot to verify the element is actually visible
 2. Use more specific descriptions (include color, position, surrounding text)
 3. Ensure the element is not hidden behind another window
-
-## Safety Warning
-
-AI-driven UI automation may produce unpredictable results. Please evaluate the risks carefully before use.

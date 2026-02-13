@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Midscene.js" width="260" src="https://github.com/user-attachments/assets/f60de3c1-dd6f-4213-97a1-85bf7c6e79e4">
+  <img alt="Midscene.js" width="260" src="https://github.com/user-attachments/assets/2e0b2957-2ab7-46ec-a4a1-21459e0a7e48">
 </p>
 
 # Midscene Skills
@@ -87,6 +87,18 @@ Model setup docs:
 - Gemini-3-Flash: https://midscenejs.com/model-common-config#gemini-3-pro-and-gemini-3-flash
 - Doubao Seed 1.6: https://midscenejs.com/model-common-config
 
+
+## Use
+
+In your chatbot or coding agent, you can say:
+
+```
+Use Midscene computer skill to open the Keynote app and create a new presentation.
+```
+
+```
+Use Midscene browser skill to open the Google search page and search for "Midscene".
+```
 
 ## Issues
 

@@ -121,16 +121,18 @@ npx @midscene/computer@1 disconnect
 Since CLI commands are stateless between invocations, follow this pattern:
 
 1. **Connect** to establish a session
-2. **Take screenshot** to see the current state
-3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (tap, input, keyboardPress, etc.)
-5. **Take screenshot** again to verify the result
-6. **Repeat** steps 3-5 until the task is complete
-7. **Disconnect** when done
+2. **Health check** — take a screenshot and verify it succeeds, then move the mouse to a random position (`tap` on an empty area or `act --prompt "move the mouse to a random position"`) and verify it succeeds. If either step fails, stop and troubleshoot before continuing. Only proceed to the next steps after both checks pass without errors.
+3. **Take screenshot** to see the current state
+4. **Analyze** the screenshot to decide the next action
+5. **Execute action** (tap, input, keyboardPress, etc.)
+6. **Take screenshot** again to verify the result
+7. **Repeat** steps 4-6 until the task is complete
+8. **Disconnect** when done
 
 ## Best Practices
 
-1. **Prefer shell commands to launch apps**: Use `open -a <AppName>` (macOS), `start <AppName>` (Windows), or `xdg-open` (Linux) to launch applications instead of midscene, as shell commands are significantly faster.
+1. **Always run a health check first**: After connecting, take a screenshot and move the mouse to a random position. Both must succeed (no errors) before proceeding with any further operations. This catches environment issues early.
+2. **Prefer shell commands to launch apps**: Use `open -a <AppName>` (macOS), `start <AppName>` (Windows), or `xdg-open` (Linux) to launch applications instead of midscene, as shell commands are significantly faster.
 2. **Take screenshots frequently**: Before and after each action to verify state changes.
 3. **Use keyboard shortcuts for reliability**: `keyboardPress --value 'Command+C'` is often more reliable than clicking UI elements.
 4. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
@@ -217,6 +219,13 @@ xcode-select --install
 
 ### API Key Not Set
 Check `.env` file contains `MIDSCENE_MODEL_API_KEY=<your-key>`.
+
+### macOS: Screenshot Fails with `system_profiler` Not Found
+If `take_screenshot` fails with an error like `system_profiler: command not found`, the `PATH` environment variable is likely incomplete. Fix it by running:
+```bash
+export PATH="/usr/sbin:/usr/bin:/bin:/sbin:$PATH"
+```
+Then retry the screenshot command.
 
 ### AI Cannot Find the Element
 1. Take a screenshot to verify the element is actually visible

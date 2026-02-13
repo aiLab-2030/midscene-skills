@@ -18,7 +18,7 @@ allowed-tools:
 >
 > 1. **Never run midscene commands in the background.** Each command must run synchronously so you can read its output (especially screenshots) before deciding the next action. Background execution breaks the screenshot-analyze-act loop.
 > 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
-> 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; `act` commands with multi-step operations may need even longer.
+> 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; complex `act` commands may need even longer.
 
 Automate iOS devices using `npx @midscene/ios@1`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
@@ -80,26 +80,17 @@ npx @midscene/ios@1 take_screenshot
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
 
-### Perform Actions
+### Perform Action
 
-Use actionSpace tools to interact with the device:
-
-```bash
-npx @midscene/ios@1 tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/ios@1 input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/ios@1 scroll --direction down
-npx @midscene/ios@1 swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/ios@1 keyboardPress --value Enter
-npx @midscene/ios@1 longPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/ios@1 launch --uri 'com.apple.Preferences'
-```
-
-### Natural Language Action
-
-Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
+Use `act` to interact with the device and get the result. It autonomously handles all UI interactions internally — tapping, typing, scrolling, swiping, waiting, and navigating — so you should give it complex, high-level tasks as a whole rather than breaking them into small steps. Describe **what you want to do and the desired effect** in natural language:
 
 ```bash
+# specific instructions
+npx @midscene/ios@1 act --prompt "type hello world in the search field and press Enter"
 npx @midscene/ios@1 act --prompt "tap Delete, then confirm in the alert dialog"
+
+# or target-driven instructions
+npx @midscene/ios@1 act --prompt "open Settings and navigate to Wi-Fi, tell me the connected network name"
 ```
 
 ### Disconnect
@@ -113,44 +104,29 @@ npx @midscene/ios@1 disconnect
 Since CLI commands are stateless between invocations, follow this pattern:
 
 1. **Connect** to establish a session
-2. **Take screenshot** to see the current state
-3. **Analyze** the screenshot to decide the next action
-4. **Execute action** (tap, input, scroll, etc.)
-5. **Take screenshot** again to verify the result
-6. **Repeat** steps 3-5 until the task is complete
-7. **Disconnect** when done
+2. **Launch the target app and take screenshot** to see the current state, make sure the app is launched and visible on the screen.
+3. **Execute action** using `act` to perform the desired action or target-driven instructions.
+4. **Disconnect** when done
 
 ## Best Practices
 
-1. **Take screenshots frequently**: Before and after each action to verify state changes.
-2. **Describe UI elements clearly**: Use visible text labels, icons, or positional descriptions (e.g., `"the Settings icon in the top-right corner"` rather than vague references).
-3. **Use JSON for locate parameter**: Always pass `--locate` as a JSON string with a `prompt` field describing the target element visually.
-4. **Chain actions sequentially**: Execute one action at a time and verify the result before moving to the next step.
-5. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
+1. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the Settings icon in the top-right corner"` instead of `"the icon"`.
+2. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the search icon at the top right"`, `"the third item in the list"`).
+3. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
+4. **Batch related operations into a single `act` command**: When performing consecutive operations within the same app, combine them into one `act` prompt instead of splitting them into separate commands. For example, "open Settings, tap Wi-Fi, and check the connected network" should be a single `act` call, not three. This reduces round-trips, avoids unnecessary screenshot-analyze cycles, and is significantly faster.
+5. **Summarize report files after completion**: After finishing the automation task, collect and summarize all report files (screenshots, logs, output files, etc.) for the user. Present a clear summary of what was accomplished, what files were generated, and where they are located, making it easy for the user to review the results.
 
-### Handle Transient UI
-
-Action sheets, alerts, popup menus, and share sheets **disappear** between commands. When interacting with transient UI:
-
-- **Use `act` for multi-step transient interactions** — it executes everything in a single process
-- **Or execute commands rapidly in sequence** — do NOT take screenshots between steps
-- **Do NOT pause to analyze** — run all commands for the transient interaction back-to-back
-- Persistent UI (app screens, tab bars, navigation bars) is fine to interact with across separate commands
-
-**Example — Alert dialog using `act` (recommended for transient UI):**
+**Example — Alert dialog interaction:**
 
 ```bash
-npx @midscene/ios@1 act --prompt "tap the Delete button, then confirm in the alert dialog"
+npx @midscene/ios@1 act --prompt "tap the Delete button and confirm in the alert dialog"
 npx @midscene/ios@1 take_screenshot
 ```
 
-**Example — Alert dialog using individual commands (alternative):**
+**Example — Form interaction:**
 
 ```bash
-# tap the button that triggers the alert, then interact with the alert back-to-back
-npx @midscene/ios@1 tap --locate '{"prompt":"the Delete button"}'
-npx @midscene/ios@1 tap --locate '{"prompt":"Confirm in the alert dialog"}'
-# NOW take a screenshot to verify the result
+npx @midscene/ios@1 act --prompt "fill in the username field with 'testuser' and the password field with 'pass123', then tap the Login button"
 npx @midscene/ios@1 take_screenshot
 ```
 

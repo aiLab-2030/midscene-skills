@@ -28,7 +28,7 @@ allowed-tools:
 > 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
 > 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; `act` commands with multi-step operations may need even longer.
 
-Automate web browsing using `npx @midscene/web`. Launches a headless Chrome via Puppeteer that **persists across CLI calls** — no session loss between commands. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate web browsing using `npx @midscene/web@1`. Launches a headless Chrome via Puppeteer that **persists across CLI calls** — no session loss between commands. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## When to Use
 
@@ -87,13 +87,13 @@ If the model is not configured, ask the user to set it up. See [Model Configurat
 ### Connect to a Web Page
 
 ```bash
-npx @midscene/web connect --url https://example.com
+npx @midscene/web@1 connect --url https://example.com
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/web take_screenshot
+npx @midscene/web@1 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current page state before deciding the next action.
@@ -103,12 +103,12 @@ After taking a screenshot, read the saved image file to understand the current p
 Use actionSpace tools to interact with the page:
 
 ```bash
-npx @midscene/web Tap --locate '{"prompt":"the Login button"}'
-npx @midscene/web Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web Scroll --direction down
-npx @midscene/web Hover --locate '{"prompt":"the navigation menu"}'
-npx @midscene/web KeyboardPress --value Enter
-npx @midscene/web DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
+npx @midscene/web@1 Tap --locate '{"prompt":"the Login button"}'
+npx @midscene/web@1 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1 Scroll --direction down
+npx @midscene/web@1 Hover --locate '{"prompt":"the navigation menu"}'
+npx @midscene/web@1 KeyboardPress --value Enter
+npx @midscene/web@1 DragAndDrop --locate '{"prompt":"the draggable item"}' --target '{"prompt":"the drop zone"}'
 ```
 
 ### Natural Language Action
@@ -116,7 +116,7 @@ npx @midscene/web DragAndDrop --locate '{"prompt":"the draggable item"}' --targe
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/web act --prompt "click the country dropdown and select Japan"
+npx @midscene/web@1 act --prompt "click the country dropdown and select Japan"
 ```
 
 ### Disconnect
@@ -124,7 +124,7 @@ npx @midscene/web act --prompt "click the country dropdown and select Japan"
 Disconnect from the page but keep the browser running:
 
 ```bash
-npx @midscene/web disconnect
+npx @midscene/web@1 disconnect
 ```
 
 ### Close Browser
@@ -132,7 +132,7 @@ npx @midscene/web disconnect
 Close the browser completely when finished:
 
 ```bash
-npx @midscene/web close
+npx @midscene/web@1 close
 ```
 
 ## Workflow Pattern
@@ -169,18 +169,18 @@ Dropdowns, autocomplete popups, tooltips, and confirm dialogs **disappear** betw
 **Example — Dropdown selection using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/web act --prompt "click the country dropdown and select Japan"
-npx @midscene/web take_screenshot
+npx @midscene/web@1 act --prompt "click the country dropdown and select Japan"
+npx @midscene/web@1 take_screenshot
 ```
 
 **Example — Dropdown selection using individual commands (alternative):**
 
 ```bash
 # These commands must be run back-to-back WITHOUT screenshots in between
-npx @midscene/web Tap --locate '{"prompt":"the country dropdown"}'
-npx @midscene/web Tap --locate '{"prompt":"Japan option in the dropdown list"}'
+npx @midscene/web@1 Tap --locate '{"prompt":"the country dropdown"}'
+npx @midscene/web@1 Tap --locate '{"prompt":"Japan option in the dropdown list"}'
 # NOW take a screenshot to verify the result
-npx @midscene/web take_screenshot
+npx @midscene/web@1 take_screenshot
 ```
 
 ## Common Patterns
@@ -188,46 +188,46 @@ npx @midscene/web take_screenshot
 ### Simple Browsing
 
 ```bash
-npx @midscene/web connect --url 'https://news.ycombinator.com'
-npx @midscene/web take_screenshot
+npx @midscene/web@1 connect --url 'https://news.ycombinator.com'
+npx @midscene/web@1 take_screenshot
 # Read the screenshot, then decide next action
-npx @midscene/web close
+npx @midscene/web@1 close
 ```
 
 ### Multi-Step Interaction
 
 ```bash
-npx @midscene/web connect --url 'https://example.com'
-npx @midscene/web Tap --locate '{"prompt":"the Sign In link"}'
-npx @midscene/web take_screenshot
-npx @midscene/web Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
-npx @midscene/web Input --locate '{"prompt":"the password field"}' --value 'password123'
-npx @midscene/web Tap --locate '{"prompt":"the Log In button"}'
-npx @midscene/web take_screenshot
-npx @midscene/web close
+npx @midscene/web@1 connect --url 'https://example.com'
+npx @midscene/web@1 Tap --locate '{"prompt":"the Sign In link"}'
+npx @midscene/web@1 take_screenshot
+npx @midscene/web@1 Input --locate '{"prompt":"the email field"}' --value 'user@example.com'
+npx @midscene/web@1 Input --locate '{"prompt":"the password field"}' --value 'password123'
+npx @midscene/web@1 Tap --locate '{"prompt":"the Log In button"}'
+npx @midscene/web@1 take_screenshot
+npx @midscene/web@1 close
 ```
 
 ### Frontend Verification
 
 ```bash
-npx @midscene/web connect --url 'http://localhost:3000'
-npx @midscene/web take_screenshot
+npx @midscene/web@1 connect --url 'http://localhost:3000'
+npx @midscene/web@1 take_screenshot
 # Analyze: verify login form is visible
-npx @midscene/web Input --locate '{"prompt":"the email field"}' --value 'test@example.com'
-npx @midscene/web Input --locate '{"prompt":"the password field"}' --value 'password'
-npx @midscene/web Tap --locate '{"prompt":"the Submit button"}'
-npx @midscene/web take_screenshot
+npx @midscene/web@1 Input --locate '{"prompt":"the email field"}' --value 'test@example.com'
+npx @midscene/web@1 Input --locate '{"prompt":"the password field"}' --value 'password'
+npx @midscene/web@1 Tap --locate '{"prompt":"the Submit button"}'
+npx @midscene/web@1 take_screenshot
 # Analyze: verify the welcome message is displayed
-npx @midscene/web close
+npx @midscene/web@1 close
 ```
 
 ### Data Extraction
 
 ```bash
-npx @midscene/web connect --url 'https://example.com/products'
-npx @midscene/web take_screenshot
+npx @midscene/web@1 connect --url 'https://example.com/products'
+npx @midscene/web@1 take_screenshot
 # Read the screenshot to extract product names, prices, and ratings
-npx @midscene/web close
+npx @midscene/web@1 close
 ```
 
 ## Frontend Verification Workflow

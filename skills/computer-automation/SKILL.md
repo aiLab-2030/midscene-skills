@@ -20,7 +20,7 @@ allowed-tools:
 > 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
 > 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; `act` commands with multi-step operations may need even longer.
 
-Control your desktop (macOS, Windows, Linux) using `npx @midscene/computer`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Control your desktop (macOS, Windows, Linux) using `npx @midscene/computer@1`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Prerequisites
 
@@ -69,20 +69,20 @@ If the model is not configured, ask the user to set it up. See [Model Configurat
 ### Connect to Desktop
 
 ```bash
-npx @midscene/computer connect
-npx @midscene/computer connect --displayId <id>
+npx @midscene/computer@1 connect
+npx @midscene/computer@1 connect --displayId <id>
 ```
 
 ### List Displays
 
 ```bash
-npx @midscene/computer list_displays
+npx @midscene/computer@1 list_displays
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/computer take_screenshot
+npx @midscene/computer@1 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -92,13 +92,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the desktop:
 
 ```bash
-npx @midscene/computer Tap --locate '{"prompt":"the Safari icon in the Dock"}'
-npx @midscene/computer DoubleClick --locate '{"prompt":"the Documents folder"}'
-npx @midscene/computer RightClick --locate '{"prompt":"the desktop background"}'
-npx @midscene/computer Input --locate '{"prompt":"the search field"}' --content 'hello world'
-npx @midscene/computer Scroll --direction down
-npx @midscene/computer KeyboardPress --value 'Command+Space'
-npx @midscene/computer DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
+npx @midscene/computer@1 Tap --locate '{"prompt":"the Safari icon in the Dock"}'
+npx @midscene/computer@1 DoubleClick --locate '{"prompt":"the Documents folder"}'
+npx @midscene/computer@1 RightClick --locate '{"prompt":"the desktop background"}'
+npx @midscene/computer@1 Input --locate '{"prompt":"the search field"}' --content 'hello world'
+npx @midscene/computer@1 Scroll --direction down
+npx @midscene/computer@1 KeyboardPress --value 'Command+Space'
+npx @midscene/computer@1 DragAndDrop --locate '{"prompt":"the file icon"}' --target '{"prompt":"the Trash icon"}'
 ```
 
 ### Natural Language Action
@@ -106,13 +106,13 @@ npx @midscene/computer DragAndDrop --locate '{"prompt":"the file icon"}' --targe
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions like Spotlight:
 
 ```bash
-npx @midscene/computer act --prompt "press Command+Space, type Safari, press Enter"
+npx @midscene/computer@1 act --prompt "press Command+Space, type Safari, press Enter"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/computer disconnect
+npx @midscene/computer@1 disconnect
 ```
 
 ## Workflow Pattern
@@ -147,22 +147,22 @@ Each CLI command runs as a **separate process**. When a process exits, the OS ma
 **Example — Open an app via launcher (macOS Spotlight / Windows Start / Linux app menu):**
 
 ```bash
-npx @midscene/computer act --prompt "open the app launcher, type Visual Studio Code, press Enter"
-npx @midscene/computer take_screenshot
+npx @midscene/computer@1 act --prompt "open the app launcher, type Visual Studio Code, press Enter"
+npx @midscene/computer@1 take_screenshot
 ```
 
 **Example — Context menu interaction:**
 
 ```bash
-npx @midscene/computer act --prompt "right-click the file icon, then click Delete in the context menu"
-npx @midscene/computer take_screenshot
+npx @midscene/computer@1 act --prompt "right-click the file icon, then click Delete in the context menu"
+npx @midscene/computer@1 take_screenshot
 ```
 
 **Example — Dropdown menu:**
 
 ```bash
-npx @midscene/computer act --prompt "click the File menu, then click New Window"
-npx @midscene/computer take_screenshot
+npx @midscene/computer@1 act --prompt "click the File menu, then click New Window"
+npx @midscene/computer@1 take_screenshot
 ```
 
 ## Common Patterns
@@ -173,31 +173,31 @@ npx @midscene/computer take_screenshot
 
 ```bash
 # macOS
-npx @midscene/computer act --prompt "press Command+Space, type Visual Studio Code, press Enter"
+npx @midscene/computer@1 act --prompt "press Command+Space, type Visual Studio Code, press Enter"
 # Windows
-npx @midscene/computer act --prompt "press the Windows key, type Visual Studio Code, press Enter"
+npx @midscene/computer@1 act --prompt "press the Windows key, type Visual Studio Code, press Enter"
 # Linux (varies by DE)
-npx @midscene/computer act --prompt "open the application menu, type Visual Studio Code, press Enter"
-npx @midscene/computer take_screenshot
+npx @midscene/computer@1 act --prompt "open the application menu, type Visual Studio Code, press Enter"
+npx @midscene/computer@1 take_screenshot
 ```
 
 ### Keyboard Shortcuts
 
 ```bash
 # macOS uses Command, Windows/Linux use Ctrl
-npx @midscene/computer KeyboardPress --value 'Command+C'
-npx @midscene/computer KeyboardPress --value 'Ctrl+C'
+npx @midscene/computer@1 KeyboardPress --value 'Command+C'
+npx @midscene/computer@1 KeyboardPress --value 'Ctrl+C'
 ```
 
 ### Window Management
 
 ```bash
 # macOS
-npx @midscene/computer KeyboardPress --value 'Command+W'
-npx @midscene/computer KeyboardPress --value 'Command+Tab'
+npx @midscene/computer@1 KeyboardPress --value 'Command+W'
+npx @midscene/computer@1 KeyboardPress --value 'Command+Tab'
 # Windows/Linux
-npx @midscene/computer KeyboardPress --value 'Alt+F4'
-npx @midscene/computer KeyboardPress --value 'Alt+Tab'
+npx @midscene/computer@1 KeyboardPress --value 'Alt+F4'
+npx @midscene/computer@1 KeyboardPress --value 'Alt+Tab'
 ```
 
 ## Troubleshooting

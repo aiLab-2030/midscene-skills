@@ -2,8 +2,8 @@
 name: iOS Device Automation
 description: |
   Vision-driven iOS device automation using Midscene CLI. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
-  Control iOS devices and simulators with natural language commands via WebDriverAgent.
-  Triggers: ios, iphone, ipad, ios app, tap on iphone, swipe, ios simulator, mobile app ios,
+  Control iOS devices with natural language commands via WebDriverAgent.
+  Triggers: ios, iphone, ipad, ios app, tap on iphone, swipe, mobile app ios,
   ios device, ios testing, iphone automation, ipad automation, ios screen, ios navigate
 
   Powered by Midscene.js (https://midscenejs.com)
@@ -19,7 +19,7 @@ allowed-tools:
 > 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
 > 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; `act` commands with multi-step operations may need even longer.
 
-Automate iOS devices and simulators using `npx @midscene/ios`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
+Automate iOS devices using `npx @midscene/ios@1`. Each CLI command maps directly to an MCP tool — you (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
 ## Prerequisites
 
@@ -68,13 +68,13 @@ If the model is not configured, ask the user to set it up. See [Model Configurat
 ### Connect to Device
 
 ```bash
-npx @midscene/ios connect
+npx @midscene/ios@1 connect
 ```
 
 ### Take Screenshot
 
 ```bash
-npx @midscene/ios take_screenshot
+npx @midscene/ios@1 take_screenshot
 ```
 
 After taking a screenshot, read the saved image file to understand the current screen state before deciding the next action.
@@ -84,13 +84,13 @@ After taking a screenshot, read the saved image file to understand the current s
 Use actionSpace tools to interact with the device:
 
 ```bash
-npx @midscene/ios Tap --locate '{"prompt":"the Settings icon"}'
-npx @midscene/ios Input --locate '{"prompt":"search field"}' --content 'hello world'
-npx @midscene/ios Scroll --direction down
-npx @midscene/ios Swipe --locate '{"prompt":"the notification panel"}' --direction down
-npx @midscene/ios KeyboardPress --value Enter
-npx @midscene/ios LongPress --locate '{"prompt":"the message bubble"}'
-npx @midscene/ios Launch --uri 'com.apple.Preferences'
+npx @midscene/ios@1 Tap --locate '{"prompt":"the Settings icon"}'
+npx @midscene/ios@1 Input --locate '{"prompt":"search field"}' --content 'hello world'
+npx @midscene/ios@1 Scroll --direction down
+npx @midscene/ios@1 Swipe --locate '{"prompt":"the notification panel"}' --direction down
+npx @midscene/ios@1 KeyboardPress --value Enter
+npx @midscene/ios@1 LongPress --locate '{"prompt":"the message bubble"}'
+npx @midscene/ios@1 Launch --uri 'com.apple.Preferences'
 ```
 
 ### Natural Language Action
@@ -98,13 +98,13 @@ npx @midscene/ios Launch --uri 'com.apple.Preferences'
 Use `act` to execute multi-step operations in a single command — useful for transient UI interactions:
 
 ```bash
-npx @midscene/ios act --prompt "tap Delete, then confirm in the alert dialog"
+npx @midscene/ios@1 act --prompt "tap Delete, then confirm in the alert dialog"
 ```
 
 ### Disconnect
 
 ```bash
-npx @midscene/ios disconnect
+npx @midscene/ios@1 disconnect
 ```
 
 ## Workflow Pattern
@@ -139,18 +139,18 @@ Action sheets, alerts, popup menus, and share sheets **disappear** between comma
 **Example — Alert dialog using `act` (recommended for transient UI):**
 
 ```bash
-npx @midscene/ios act --prompt "tap the Delete button, then confirm in the alert dialog"
-npx @midscene/ios take_screenshot
+npx @midscene/ios@1 act --prompt "tap the Delete button, then confirm in the alert dialog"
+npx @midscene/ios@1 take_screenshot
 ```
 
 **Example — Alert dialog using individual commands (alternative):**
 
 ```bash
 # Tap the button that triggers the alert, then interact with the alert back-to-back
-npx @midscene/ios Tap --locate '{"prompt":"the Delete button"}'
-npx @midscene/ios Tap --locate '{"prompt":"Confirm in the alert dialog"}'
+npx @midscene/ios@1 Tap --locate '{"prompt":"the Delete button"}'
+npx @midscene/ios@1 Tap --locate '{"prompt":"Confirm in the alert dialog"}'
 # NOW take a screenshot to verify the result
-npx @midscene/ios take_screenshot
+npx @midscene/ios@1 take_screenshot
 ```
 
 ## Troubleshooting
@@ -158,15 +158,13 @@ npx @midscene/ios take_screenshot
 ### WebDriverAgent Not Running
 **Symptom:** Connection refused or timeout errors.
 **Solution:**
-- Ensure WebDriverAgent is installed and running on the device/simulator.
-- For simulators: check that `http://localhost:8100/status` returns a valid response.
+- Ensure WebDriverAgent is installed and running on the device.
 - See https://midscenejs.com/zh/usage-ios.html for setup instructions.
 
 ### Device Not Found
 **Symptom:** No device detected or connection errors.
 **Solution:**
-- For physical devices: ensure the device is connected via USB and trusted.
-- For simulators: verify a simulator is booted with `xcrun simctl list devices booted`.
+- Ensure the device is connected via USB and trusted.
 
 ### API Key Issues
 **Symptom:** Authentication or model errors.

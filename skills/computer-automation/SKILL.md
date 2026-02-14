@@ -112,21 +112,26 @@ npx @midscene/computer@1 disconnect
 Since CLI commands are stateless between invocations, follow this pattern:
 
 1. **Connect** to establish a session
-2. **Health check** — take a screenshot and verify it succeeds, then move the mouse to a random position (`act --prompt "move the mouse to a random position"`) and verify it succeeds. If either step fails, stop and troubleshoot before continuing. Only proceed to the next steps after both checks pass without errors.
+2. **Health check** — observe the output of the `connect` command. If `connect` already performed a health check (screenshot and mouse movement test), no additional check is needed. If `connect` did not perform a health check, do one manually: take a screenshot and verify it succeeds, then move the mouse to a random position (`act --prompt "move the mouse to a random position"`) and verify it succeeds. If either step fails, stop and troubleshoot before continuing. Only proceed to the next steps after both checks pass without errors.
 3. **Launch the target app and take screenshot** to see the current state, make sure the app is launched and visible on the screen.
 4. **Execute action** using `act` to perform the desired action or target-driven instructions.
 5. **Disconnect** when done
 
 ## Best Practices
 
-1. **Always run a health check first**: After connecting, take a screenshot and move the mouse to a random position. Both must succeed (no errors) before proceeding with any further operations. This catches environment issues early.
+1. **Always run a health check first**: After connecting, observe the output of the `connect` command. If `connect` already performed a health check (screenshot and mouse movement test), no additional check is needed. If it did not, do one manually: take a screenshot and move the mouse to a random position. Both must succeed (no errors) before proceeding with any further operations. This catches environment issues early.
 2. **Bring the target app to the foreground before using this skill**: For best efficiency, bring the app to the foreground using other means (e.g., `open -a <AppName>` on macOS, `start <AppName>` on Windows) **before** invoking any midscene commands. Then take a screenshot to confirm the app is actually in the foreground. Only after visual confirmation should you proceed with UI automation using this skill. Avoid using Spotlight, Start menu search, or other launcher-based approaches through midscene — they involve transient UI, multiple AI inference steps, and are significantly slower.
 3. **Be specific about UI elements**: Instead of vague descriptions, provide clear, specific details. Say `"the red close button in the top-left corner of the Safari window"` instead of `"the close button"`.
 4. **Describe locations when possible**: Help target elements by describing their position (e.g., `"the icon in the top-right corner of the menu bar"`, `"the third item in the left sidebar"`).
 5. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
 6. **Check for multiple displays**: If you launched an app but cannot see it on the screenshot, the app window may have opened on a different display. Use `list_displays` to check available displays. You have two options: either move the app window to the current display, or use `connect --displayId <id>` to switch to the display where the app is.
 7. **Batch related operations into a single `act` command**: When performing consecutive operations within the same app, combine them into one `act` prompt instead of splitting them into separate commands. For example, "search for X, click the first result, and scroll down to see more details" should be a single `act` call, not three. This reduces round-trips, avoids unnecessary screenshot-analyze cycles, and is significantly faster.
-8. **Summarize report files after completion**: After finishing the automation task, collect and summarize all report files (screenshots, logs, output files, etc.) for the user. Present a clear summary of what was accomplished, what files were generated, and where they are located, making it easy for the user to review the results.
+8. **Set up `PATH` before running (macOS)**: On macOS, some commands (e.g., `system_profiler`) may not be found if the `PATH` is incomplete. Before running any midscene commands, ensure the `PATH` includes the standard system directories:
+   ```bash
+   export PATH="/usr/sbin:/usr/bin:/bin:/sbin:$PATH"
+   ```
+   This prevents screenshot failures caused by missing system utilities.
+9. **Summarize report files after completion**: After finishing the automation task, collect and summarize all report files (screenshots, logs, output files, etc.) for the user. Present a clear summary of what was accomplished, what files were generated, and where they are located, making it easy for the user to review the results.
 
 **Example — Context menu interaction:**
 

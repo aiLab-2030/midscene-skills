@@ -27,6 +27,7 @@ allowed-tools:
 > 1. **Never run midscene commands in the background.** Each command must run synchronously so you can read its output (especially screenshots) before deciding the next action. Background execution breaks the screenshot-analyze-act loop.
 > 2. **Run only one midscene command at a time.** Wait for the previous command to finish, read the screenshot, then decide the next action. Never chain multiple commands together.
 > 3. **Allow enough time for each command to complete.** Midscene commands involve AI inference and screen interaction, which can take longer than typical shell commands. A typical command needs about 1 minute; complex `act` commands may need even longer.
+> 4. **Always report task results before finishing.** After completing the automation task, you MUST proactively summarize the results to the user — including key data found, actions completed, screenshots taken, and any relevant findings. Never silently end after the last automation step; the user expects a complete response in a single interaction.
 
 Automate the user's real Chrome browser via the Midscene Chrome Extension (Bridge mode), preserving cookies, sessions, and login state. You (the AI agent) act as the brain, deciding which actions to take based on screenshots.
 
@@ -128,7 +129,8 @@ Follow this pattern:
 1. **Connect** to a URL to establish a session
 2. **Take screenshot** to see the current state, make sure the page is loaded.
 3. **Execute action** using `act` to perform the desired action or target-driven instructions.
-4. **Disconnect** only when the user's overall task is fully complete. **Do NOT disconnect** if the user may have follow-up actions — keep the session available for continued interaction in subsequent conversation turns.
+4. **Report results** — summarize what was accomplished, present key findings and data extracted during the task, and list any generated files (screenshots, logs, etc.) with their paths
+5. **Disconnect** only when the user's overall task is fully complete. **Do NOT disconnect** if the user may have follow-up actions — keep the session available for continued interaction in subsequent conversation turns.
 
 ## Best Practices
 
@@ -139,7 +141,7 @@ Follow this pattern:
 5. **Disconnect only when fully done**: Only disconnect when the user's overall task is completely finished and no follow-up actions are expected. In multi-turn conversations, skip the disconnect to allow continued browser interaction. Disconnecting is safe — it only closes the CLI-side bridge connection, not the browser or tabs — but reconnecting adds unnecessary overhead if the user wants to continue.
 6. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
 7. **Batch related operations into a single `act` command**: When performing consecutive operations within the same page, combine them into one `act` prompt instead of splitting them into separate commands. For example, "fill in the email and password fields, then click the Login button" should be a single `act` call, not three. This reduces round-trips, avoids unnecessary screenshot-analyze cycles, and is significantly faster.
-8. **Summarize report files after completion**: After finishing the automation task, collect and summarize all report files (screenshots, logs, output files, etc.) for the user. Present a clear summary of what was accomplished, what files were generated, and where they are located, making it easy for the user to review the results.
+8. **Always report results after completion**: After finishing the automation task, you MUST proactively present the results to the user without waiting for them to ask. This includes: (1) the answer to the user's original question or the outcome of the requested task, (2) key data extracted or observed during execution, (3) screenshots and other generated files with their paths, (4) a brief summary of steps taken. Do NOT silently finish after the last automation command — the user expects complete results in a single interaction.
 
 **Example — Dropdown selection:**
 

@@ -121,12 +121,14 @@ npx @midscene/web@1 --bridge disconnect
 
 ## Workflow Pattern
 
-Since CLI commands are stateless between invocations, follow this pattern:
+Bridge mode connects to the user's real Chrome browser. Each CLI command establishes its own temporary connection, but **the browser, tabs, and all state (cookies, login sessions) are always preserved** regardless of whether you disconnect. This makes reconnecting lightweight and lossless.
+
+Follow this pattern:
 
 1. **Connect** to a URL to establish a session
 2. **Take screenshot** to see the current state, make sure the page is loaded.
 3. **Execute action** using `act` to perform the desired action or target-driven instructions.
-4. **Disconnect** when done
+4. **Disconnect** only when the user's overall task is fully complete. **Do NOT disconnect** if the user may have follow-up actions — keep the session available for continued interaction in subsequent conversation turns.
 
 ## Best Practices
 
@@ -134,7 +136,7 @@ Since CLI commands are stateless between invocations, follow this pattern:
 2. **Be specific about UI elements**: Instead of `"the button"`, say `"the blue Submit button in the contact form"`.
 3. **Use natural language**: Describe what you see on the page, not CSS selectors. Say `"the red Buy Now button"` instead of `"#buy-btn"`.
 4. **Handle loading states**: After navigation or actions that trigger page loads, take a screenshot to verify the page has loaded.
-5. **Disconnect when done**: Always disconnect to free resources.
+5. **Disconnect only when fully done**: Only disconnect when the user's overall task is completely finished and no follow-up actions are expected. In multi-turn conversations, skip the disconnect to allow continued browser interaction. Disconnecting is safe — it only closes the CLI-side bridge connection, not the browser or tabs — but reconnecting adds unnecessary overhead if the user wants to continue.
 6. **Never run in background**: Every midscene command must run synchronously — background execution breaks the screenshot-analyze-act loop.
 7. **Batch related operations into a single `act` command**: When performing consecutive operations within the same page, combine them into one `act` prompt instead of splitting them into separate commands. For example, "fill in the email and password fields, then click the Login button" should be a single `act` call, not three. This reduces round-trips, avoids unnecessary screenshot-analyze cycles, and is significantly faster.
 8. **Summarize report files after completion**: After finishing the automation task, collect and summarize all report files (screenshots, logs, output files, etc.) for the user. Present a clear summary of what was accomplished, what files were generated, and where they are located, making it easy for the user to review the results.

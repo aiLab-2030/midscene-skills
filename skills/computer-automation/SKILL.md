@@ -44,25 +44,30 @@ MIDSCENE_MODEL_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai
 MIDSCENE_MODEL_FAMILY="gemini"
 ```
 
-Example: Qwen3-VL
+Example: Qwen 3.5
 
 ```bash
-MIDSCENE_MODEL_API_KEY="your-openrouter-api-key"
-MIDSCENE_MODEL_NAME="qwen/qwen3-vl-235b-a22b-instruct"
-MIDSCENE_MODEL_BASE_URL="https://openrouter.ai/api/v1"
-MIDSCENE_MODEL_FAMILY="qwen3-vl"
+MIDSCENE_MODEL_API_KEY="your-aliyun-api-key"
+MIDSCENE_MODEL_NAME="qwen3.5-plus"
+MIDSCENE_MODEL_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
+MIDSCENE_MODEL_FAMILY="qwen3.5"
+MIDSCENE_MODEL_REASONING_ENABLED="false"
+# If using OpenRouter, set:
+# MIDSCENE_MODEL_API_KEY="your-openrouter-api-key"
+# MIDSCENE_MODEL_NAME="qwen/qwen3.5-plus"
+# MIDSCENE_MODEL_BASE_URL="https://openrouter.ai/api/v1"
 ```
 
-Example: Doubao Seed 1.6
+Example: Doubao Seed 2.0 Lite
 
 ```bash
 MIDSCENE_MODEL_API_KEY="your-doubao-api-key"
-MIDSCENE_MODEL_NAME="doubao-seed-1-6-250615"
+MIDSCENE_MODEL_NAME="doubao-seed-2-0-lite"
 MIDSCENE_MODEL_BASE_URL="https://ark.cn-beijing.volces.com/api/v3"
-MIDSCENE_MODEL_FAMILY="doubao-vision"
+MIDSCENE_MODEL_FAMILY="doubao-seed"
 ```
 
-Commonly used models: Doubao Seed 1.6, Qwen3-VL, Zhipu GLM-4.6V, Gemini-3-Pro, Gemini-3-Flash.
+Commonly used models: Doubao Seed 2.0 Lite, Qwen 3.5, Zhipu GLM-4.6V, Gemini-3-Pro, Gemini-3-Flash.
 
 If the model is not configured, ask the user to set it up. See [Model Configuration](https://midscenejs.com/model-common-config) for supported providers.
 

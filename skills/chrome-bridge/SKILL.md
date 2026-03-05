@@ -3,7 +3,8 @@ name: Chrome Bridge Automation
 description: |
   Vision-driven browser automation using Midscene Bridge mode. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
 
-  This mode connects to the user's desktop Chrome browser via the Midscene Chrome Extension, preserving cookies, sessions, and login state.
+  Connects to the user's desktop Chrome browser via the Midscene Chrome Extension, preserving cookies, sessions, and login state.
+  Does NOT take over the user's mouse or keyboard — operates through Chrome DevTools Protocol.
 
   Use this skill when the user wants to:
   - Browse, navigate, or open web pages in the user's own Chrome browser
@@ -14,6 +15,9 @@ description: |
   - Take screenshots of web pages
   - Automate multi-step web workflows
   - Check website content or appearance
+  - Test the web app in Chrome, verify it works, QA the frontend
+  - Check if the page looks correct, end-to-end test the website
+  - Test what was just built, validate the UI in real browser
 
   Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:

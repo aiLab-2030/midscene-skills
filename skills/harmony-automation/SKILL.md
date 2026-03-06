@@ -1,5 +1,5 @@
 ---
-name: harmonyos-device-automation
+name: HarmonyOS (鸿蒙) Device Automation
 description: >
   Vision-driven HarmonyOS NEXT device automation using Midscene.
   Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.

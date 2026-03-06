@@ -1,5 +1,5 @@
 ---
-name: iOS Device Automation
+name: ios-device-automation
 description: |
   Vision-driven iOS device automation using Midscene CLI. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
   Control iOS devices with natural language commands via WebDriverAgent.

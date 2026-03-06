@@ -1,5 +1,5 @@
 ---
-name: Android Device Automation
+name: android-device-automation
 description: >
   Vision-driven Android device automation using Midscene.
   Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.

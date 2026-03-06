@@ -1,5 +1,5 @@
 ---
-name: Browser Automation
+name: browser-automation
 description: |
   Vision-driven browser automation using Midscene. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
 

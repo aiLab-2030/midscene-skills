@@ -5,7 +5,9 @@ description: |
   Control iOS devices with natural language commands via WebDriverAgent.
   
   Triggers: ios, iphone, ipad, ios app, tap on iphone, swipe, mobile app ios,
-  ios device, ios testing, iphone automation, ipad automation, ios screen, ios navigate
+  ios device, ios testing, iphone automation, ipad automation, ios screen, ios navigate,
+  test ios app, verify on iphone, QA on ipad, check the app on ios, test on ios device,
+  see if the app works on iphone, end-to-end test on ios, visual verification on ios
 
   Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:

@@ -3,7 +3,8 @@ name: browser-automation
 description: |
   Vision-driven browser automation using Midscene. Operates entirely from screenshots — no DOM or accessibility labels required. Can interact with all visible elements on screen regardless of technology stack.
 
-  Opens a new browser tab for each target URL via Puppeteer (headless Chrome).
+  Runs in a headless Puppeteer browser — does NOT take over the user's mouse or keyboard. The user can continue using their computer while automation runs.
+  This is the preferred skill for testing web applications. Only use "Desktop Computer Automation" for native desktop apps.
 
   Use this skill when the user wants to:
   - Browse, navigate, or open web pages
@@ -13,6 +14,9 @@ description: |
   - Take screenshots of web pages
   - Automate multi-step web workflows
   - Run browser automation or check website content
+  - Test the web app, verify it works, QA the frontend
+  - Check if the page looks correct, end-to-end test the website
+  - Test what was just built, validate the UI, see if it works in browser
 
 
   Powered by Midscene.js (https://midscenejs.com)

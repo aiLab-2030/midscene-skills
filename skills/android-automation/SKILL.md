@@ -6,7 +6,9 @@ description: >
   Control Android devices with natural language commands via ADB.
   Perform taps, swipes, text input, app launches, screenshots, and more.
   
-  Trigger keywords: android, phone, mobile app, tap, swipe, install app, open app on phone, android device, mobile automation, adb, launch app, mobile screen
+  Trigger keywords: android, phone, mobile app, tap, swipe, install app, open app on phone, android device, mobile automation, adb, launch app, mobile screen,
+  test android app, verify mobile app, QA on phone, check the app on android, test on device,
+  see if the app works on phone, end-to-end test on android, visual verification on mobile
 
   Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:

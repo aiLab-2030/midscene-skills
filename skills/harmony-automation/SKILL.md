@@ -6,7 +6,9 @@ description: >
   Control HarmonyOS devices with natural language commands via HDC.
   Perform taps, swipes, text input, app launches, screenshots, and more.
 
-  Trigger keywords: harmony, harmonyos, 鸿蒙, hdc, huawei device, harmony app, harmony automation, harmony phone, harmony tablet
+  Trigger keywords: harmony, harmonyos, 鸿蒙, hdc, huawei device, harmony app, harmony automation, harmony phone, harmony tablet,
+  test harmony app, verify on harmonyos, QA on 鸿蒙, check the app on harmony, test on huawei device,
+  see if the app works on harmony, end-to-end test on harmonyos, visual verification on 鸿蒙
 
   Powered by Midscene.js (https://midscenejs.com)
 allowed-tools:

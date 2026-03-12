@@ -15,7 +15,7 @@
   - Android (controlled via ADB): [`skills/android-automation`](skills/android-automation)
   - iOS (controlled via WebDriverAgent): [`skills/ios-automation`](skills/ios-automation)
   - HarmonyOS (controlled via HDC): [`skills/harmony-automation`](skills/harmony-automation)
-  - Vitest + Midscene (AI-powered E2E testing): [`skills/vitest-midscene`](skills/vitest-midscene)
+  - Vitest + Midscene E2E (scaffold, convert, and manage AI-powered E2E tests for Web, Android, iOS): [`skills/vitest-midscene-e2e`](skills/vitest-midscene-e2e)
 
 
 ## Safety Warning

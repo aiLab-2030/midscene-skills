@@ -1,5 +1,5 @@
 ---
-name: vitest-midscene
+name: vitest-midscene-e2e
 description: "Enhances Vitest with Midscene for AI-powered UI testing across Web (Playwright), Android (ADB), and iOS (WDA). Scaffolds new projects, converts existing projects, and creates/updates/debugs/runs E2E tests using natural-language UI interactions. Triggers: write test, add test, create test, update test, fix test, debug test, run test, e2e test, midscene test, new project, convert project, init project, 写测试, 加测试, 创建测试, 更新测试, 修复测试, 调试测试, 运行测试, 新建工程, 转化工程."
 user-invocable: true
 argument-hint: "[create|update|run|init] <feature-name>"

@@ -10,26 +10,16 @@ tags: debug, timeout, element-not-found, network, headed-mode
 
 AI-driven tests are slower than selector-based tests. Default timeout is 180s per test. Most timeout and premature assertion failures are caused by not waiting for the page/app to be ready.
 
-**Web** — use `waitForLoadState` + `aiWaitFor` before asserting:
+Include waiting in the `aiAct` prompt itself, so Midscene waits for the page/app to be ready before asserting:
 
 ```typescript
 // Incorrect — assertion fires before page updates
-await ctx.agent.aiTap('提交按钮');
-await ctx.agent.aiAssert('提交成功');
+await ctx.agent.aiAct('click the submit button');
+await ctx.agent.aiAct('verify the page shows "Submission successful"');
 
-// Correct
-await ctx.agent.aiTap('提交按钮');
-await ctx.page.waitForLoadState('networkidle');
-await ctx.agent.aiWaitFor('提交成功提示出现');
-await ctx.agent.aiAssert('提交成功');
-```
-
-**Android / iOS** — no `ctx.page`, use `aiWaitFor` instead:
-
-```typescript
-await ctx.agent.aiTap('提交按钮');
-await ctx.agent.aiWaitFor('提交成功提示出现');
-await ctx.agent.aiAssert('提交成功');
+// Correct — include wait in the action prompt
+await ctx.agent.aiAct('click the submit button and wait until the submission completes');
+await ctx.agent.aiAct('verify the page shows "Submission successful"');
 ```
 
 ---
@@ -40,18 +30,18 @@ Vague or ambiguous descriptions cause AI to match the wrong element or fail enti
 
 ```typescript
 // Incorrect — too vague, multiple buttons may exist
-await ctx.agent.aiTap('按钮');
-await ctx.agent.aiTap('删除按钮');
+await ctx.agent.aiAct('click the button');
+await ctx.agent.aiAct('click the delete button');
 
 // Correct — include position, context, or visual traits
-await ctx.agent.aiTap('页面顶部的蓝色"提交"按钮');
-await ctx.agent.aiTap('第一行商品的删除按钮');
+await ctx.agent.aiAct('click the blue "Submit" button at the top of the page');
+await ctx.agent.aiAct('click the delete button in the first product row');
 ```
 
 Tips for precise descriptions:
-- Include **position**: 顶部 / 底部 / 第一行 / 左侧
-- Include **text content**: "提交" / "确认" / "删除"
-- Include **visual traits**: 蓝色 / 大号 / 带图标的
+- Include **position**: top / bottom / first row / left side
+- Include **text content**: "Submit" / "Confirm" / "Delete"
+- Include **visual traits**: blue / large / with icon
 
 ---
 

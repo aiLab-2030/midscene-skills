@@ -7,3 +7,5 @@ dist
 *.tsbuildinfo
 midscene_run
 .DS_Store
+
+.workflow

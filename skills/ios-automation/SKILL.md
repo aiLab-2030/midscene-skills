@@ -145,7 +145,7 @@ npx @midscene/ios@1 take_screenshot
 **Symptom:** Connection refused or timeout errors.
 **Solution:**
 - Ensure WebDriverAgent is installed and running on the device.
-- See https://midscenejs.com/zh/usage-ios.html for setup instructions.
+- See [https://midscenejs.com/usage-ios.html](https://midscenejs.com/ios-getting-started.html) for setup instructions.
 
 ### Device Not Found
 **Symptom:** No device detected or connection errors.
